@@ -3,7 +3,7 @@
 
 namespace ts
 {
-   const QString VERSION = "1.1";
+   const QString VERSION = "1.1b";
 };
 
 #endif // TS_VERSION_H

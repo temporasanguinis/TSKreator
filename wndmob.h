@@ -10,7 +10,7 @@ using namespace ts;
 
 class WndMob : public QDialog, private Ui::GuiMob
 {
-  Q_OBJECT
+ Q_OBJECT
 
 public:
   WndMob( Area&, const Mob&, QWidget* );
@@ -34,7 +34,7 @@ protected slots:
   void editResistances();
   void editImmunities();
   void editSusceptibilities();
-  //void editInits();
+  void editInits();
 
 protected:
   void init();

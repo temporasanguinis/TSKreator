@@ -43,6 +43,7 @@ namespace ts
     void setComment( const QString& txt ) { m_comment = txt.simplified(); }
     void setCommentSeparator( const QString& sep ) { m_commentSeparator = sep.trimmed(); }
 
+	bool isQuestorCommand() const { return m_type == 'X'; }
     bool isMobLoad() const { return m_type == 'M'; }
     bool isMobFollower() const { return m_type == 'C'; }
     bool isMobFear() const { return m_type == 'F'; }
@@ -55,7 +56,7 @@ namespace ts
     bool isOnlyComment() const { return m_type == '*' || m_type == ';'; }
     bool isZoneEnd() const { return m_type == 'S'; }
 
-    bool isValidType() const { return isMobLoad() || isMobFollower() ||
+    bool isValidType() const { return isQuestorCommand() || isMobLoad() || isMobFollower() ||
                                  isMobFear() || isMobHate() || isItemPut() || isMobEquip() ||
                                  isMobGive() || isItemLoad() || isDoorInit() ||
                                  isOnlyComment(); }

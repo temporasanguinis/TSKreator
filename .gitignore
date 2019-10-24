@@ -1,0 +1,8 @@
+/*.aps
+/*.user
+/*.filters
+/Release
+/GeneratedFiles
+/Debug
+/.vs
+/qrc_tskreator.cpp

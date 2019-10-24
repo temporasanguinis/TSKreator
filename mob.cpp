@@ -201,12 +201,12 @@ namespace ts
             } else
                 setMobLevel(lTmp);
 
-            setStrength((int)Utils::min(10 + Random::number(0, (int)Utils::max(1, mobLevel() / 5)), 18));
-            setDexterity((int)Utils::min(10 + Random::number(0, (int)Utils::max(1, mobLevel() / 5)), 18));
-            setConstitution((int)Utils::min(10 + Random::number(0, (int)Utils::max(1, mobLevel() / 5)), 18));
-            setIntelligence((int)Utils::min(10 + Random::number(0, (int)Utils::max(1, mobLevel() / 5)), 18));
-            setWisdom((int)Utils::min(10 + Random::number(0, (int)Utils::max(1, mobLevel() / 5)), 18));
-            setCharisma((int)Utils::min(10 + Random::number(0, (int)Utils::max(1, mobLevel() / 5)), 18));
+            setStrength((int)Utils::Min(10 + Random::number(0, (int)Utils::Max(1, mobLevel() / 5)), 18));
+            setDexterity((int)Utils::Min(10 + Random::number(0, (int)Utils::Max(1, mobLevel() / 5)), 18));
+            setConstitution((int)Utils::Min(10 + Random::number(0, (int)Utils::Max(1, mobLevel() / 5)), 18));
+            setIntelligence((int)Utils::Min(10 + Random::number(0, (int)Utils::Max(1, mobLevel() / 5)), 18));
+            setWisdom((int)Utils::Min(10 + Random::number(0, (int)Utils::Max(1, mobLevel() / 5)), 18));
+            setCharisma((int)Utils::Min(10 + Random::number(0, (int)Utils::Max(1, mobLevel() / 5)), 18));
 
             setHitRoll((20 - Utils::readNumber(pFile, sErrorMessage + QString(" (HitRoll)"))));
 
@@ -300,7 +300,7 @@ namespace ts
             setWisdom((Utils::readNumber(pFile, sErrorMessage + QString(" (Wisdom)"), 10)));
             setDexterity((Utils::readNumber(pFile, sErrorMessage + QString(" (Dexterity)"), 10)));
             setConstitution((Utils::readNumber(pFile, sErrorMessage + QString(" (Constitution)"), 10)));
-            setCharisma((int)Utils::min(10 + Random::number(0, (int)Utils::max(1, mobLevel() / 5)), 18));
+            setCharisma((int)Utils::Min(10 + Random::number(0, (int)Utils::Max(1, mobLevel() / 5)), 18));
 
             lTmp = Utils::readNumber(pFile, sErrorMessage + QString(" (MobHitPointsMin)"));
             setMaxHitPoints(Random::number(lTmp, Utils::readNumber(pFile, sErrorMessage + QString(" (MobHitPointsMax)"))));

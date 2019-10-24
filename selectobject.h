@@ -54,7 +54,7 @@ public:
   static BitVector zoneFlags( BitVector, QWidget* parent = 0 );
   static QList<int> getMultipleFlags(const QList<Flags> &list, const QString &title, QWidget* parent );
 
-//   static void showInits(bool mob, VNumber vnum, Area& ref_area, QWidget* parent);
+   static void showInits(bool mob, VNumber vnum, Area& ref_area, QWidget* parent);
 protected:
   static long getLong( const QStringList&, const QString&, int, long, QWidget* parent = 0 );
   static BitVector getBitVector( BitVector, const QStringList &list, const QString &title, QWidget* parent = 0 );

@@ -95,7 +95,11 @@ namespace ts
                 sValue = Handler::spellName(m_value);
                 break;
 
-            case ITEM_AFFECT_SPELL:
+
+			case ITEM_AFFECT_BV2:
+				sValue = Utils::bitvector2string(m_value, Eleuconf::getAllFlagsCaption(Eleuconf::mobAffectionsFlags, 1));
+				break;
+			case ITEM_AFFECT_SPELL:
                 sValue = Utils::bitvector2string(m_value, Eleuconf::getAllFlagsCaption(Eleuconf::mobAffectionsFlags));
                 break;
 

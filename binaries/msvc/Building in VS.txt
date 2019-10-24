@@ -1,0 +1,14 @@
+Download qt-win-opensource-4.8.4-vs2010.exe
+from http://ftp.fau.de/qtproject/archive/qt/4.8/4.8.4/
+
+Install Windows 10 SDK - needed for OpenGL build support
+
+In Visual Studio go to extensions:
+Install Qt Visual Studio Tools
+
+Install Latest QT 5
+
+Copy from QT5\bin into QT4\bin and overwrite file: rcc.exe
+^^ this is required so that the project in VS can build resource files when using the old QT version because the VS extension is based on QT5
+
+Set ENVIronment variable QTDIR to the install path of QT 4.8.4

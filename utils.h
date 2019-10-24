@@ -39,8 +39,8 @@ public:
 
   static QString object2string( VNumber, const QString& );
 
-  static inline double min( double first, double second ) { return ( first < second ? first : second ); }
-  static inline double max( double first, double second ) { return ( first > second ? first : second ); }
+  static inline double Min( double first, double second ) { return ( first < second ? first : second ); }
+  static inline double Max( double first, double second ) { return ( first > second ? first : second ); }
 
   static QString removeTilde( const QString& );
 

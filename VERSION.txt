@@ -1,0 +1,7 @@
+1.1c
+- Nuovo build per MSVC su sistema windows - leggere Readme BUILD.txt
+- Comando questor in init zona
+- SpellAffect2 mostra le descrizioni dei flag nella finestra degli oggetti
+__________________________________
+1.1b
+Versione precedente

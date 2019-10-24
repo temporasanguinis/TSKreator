@@ -1,0 +1,275 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="area.cpp" />
+    <ClCompile Include="bit.cpp" />
+    <ClCompile Include="characterdata.cpp" />
+    <ClCompile Include="constantname.cpp" />
+    <ClCompile Include="constants.cpp" />
+    <ClCompile Include="dice.cpp" />
+    <ClCompile Include="eleuconf.cpp" />
+    <ClCompile Include="exception.cpp" />
+    <ClCompile Include="exit.cpp" />
+    <ClCompile Include="extradescription.cpp" />
+    <ClCompile Include="guiutils.cpp" />
+    <ClCompile Include="handler.cpp" />
+    <ClCompile Include="item.cpp" />
+    <ClCompile Include="itemaffect.cpp" />
+    <ClCompile Include="kreatorsettings.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="mob.cpp" />
+    <ClCompile Include="mobinit.cpp" />
+    <ClCompile Include="myqt.cpp" />
+    <ClCompile Include="objectdata.cpp" />
+    <ClCompile Include="qrc_tskreator.cpp" />
+    <ClCompile Include="random.cpp" />
+    <ClCompile Include="report.cpp" />
+    <ClCompile Include="room.cpp" />
+    <ClCompile Include="selectobject.cpp" />
+    <ClCompile Include="settings.cpp" />
+    <ClCompile Include="shop.cpp" />
+    <ClCompile Include="spell.cpp" />
+    <ClCompile Include="syntax.cpp" />
+    <ClCompile Include="tskreator.cpp" />
+    <ClCompile Include="utils.cpp" />
+    <ClCompile Include="validator.cpp" />
+    <ClCompile Include="wndarea.cpp" />
+    <ClCompile Include="wndchangevnumbers.cpp" />
+    <ClCompile Include="wndcreatearea.cpp" />
+    <ClCompile Include="wndexit.cpp" />
+    <ClCompile Include="wndextradescription.cpp" />
+    <ClCompile Include="wndfind.cpp" />
+    <ClCompile Include="wndinit.cpp" />
+    <ClCompile Include="wnditem.cpp" />
+    <ClCompile Include="wnditemaffects.cpp" />
+    <ClCompile Include="wnditemvalues.cpp" />
+    <ClCompile Include="wndmainwindow.cpp" />
+    <ClCompile Include="wndmap.cpp" />
+    <ClCompile Include="wndmob.cpp" />
+    <ClCompile Include="wndmobinit.cpp" />
+    <ClCompile Include="wndmultiplemodify.cpp" />
+    <ClCompile Include="wndreport.cpp" />
+    <ClCompile Include="wndroom.cpp" />
+    <ClCompile Include="wndselectflags.cpp" />
+    <ClCompile Include="wndsettings.cpp" />
+    <ClCompile Include="wndshop.cpp" />
+    <ClCompile Include="wndteleportroom.cpp" />
+    <ClCompile Include="wndtester.cpp" />
+    <ClCompile Include="wndzone.cpp" />
+    <ClCompile Include="wndzonecommand.cpp" />
+    <ClCompile Include="zone.cpp" />
+    <ClCompile Include="zonecommand.cpp" />
+    <ClCompile Include="zonecommandgroup.cpp" />
+    <ClCompile Include="zonecommandlist.cpp" />
+    <ClCompile Include="zoneinitlist.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="area.h" />
+    <ClInclude Include="bit.h" />
+    <ClInclude Include="characterdata.h" />
+    <ClInclude Include="config.h" />
+    <ClInclude Include="constantname.h" />
+    <ClInclude Include="constants.h" />
+    <ClInclude Include="dice.h" />
+    <ClInclude Include="eleuconf.h" />
+    <ClInclude Include="exception.h" />
+    <ClInclude Include="exit.h" />
+    <ClInclude Include="extradescription.h" />
+    <ClInclude Include="guiutils.h" />
+    <ClInclude Include="guiversion.h" />
+    <ClInclude Include="handler.h" />
+    <ClInclude Include="item.h" />
+    <ClInclude Include="itemaffect.h" />
+    <ClInclude Include="kreatorsettings.h" />
+    <ClInclude Include="mob.h" />
+    <ClInclude Include="mobinit.h" />
+    <QtMoc Include="myqt.h" />
+    <ClInclude Include="objectdata.h" />
+    <ClInclude Include="random.h" />
+    <ClInclude Include="report.h" />
+    <ClInclude Include="room.h" />
+    <ClInclude Include="selectobject.h" />
+    <ClInclude Include="settings.h" />
+    <ClInclude Include="shop.h" />
+    <ClInclude Include="spell.h" />
+    <QtMoc Include="syntax.h" />
+    <QtMoc Include="tskreator.h" />
+    <ClInclude Include="types.h" />
+    <ClInclude Include="utils.h" />
+    <ClInclude Include="validator.h" />
+    <ClInclude Include="version.h" />
+    <QtMoc Include="wndarea.h" />
+    <QtMoc Include="wndchangevnumbers.h" />
+    <QtMoc Include="wndcreatearea.h" />
+    <QtMoc Include="wndexit.h" />
+    <QtMoc Include="wndextradescription.h" />
+    <QtMoc Include="wndfind.h" />
+    <QtMoc Include="wndinit.h" />
+    <QtMoc Include="wnditem.h" />
+    <QtMoc Include="wnditemaffects.h" />
+    <QtMoc Include="wnditemvalues.h" />
+    <QtMoc Include="wndmainwindow.h" />
+    <QtMoc Include="wndmap.h" />
+    <QtMoc Include="wndmob.h" />
+    <QtMoc Include="wndmobinit.h" />
+    <QtMoc Include="wndmultiplemodify.h" />
+    <QtMoc Include="wndreport.h" />
+    <QtMoc Include="wndroom.h" />
+    <QtMoc Include="wndselectflags.h" />
+    <QtMoc Include="wndsettings.h" />
+    <QtMoc Include="wndshop.h" />
+    <QtMoc Include="wndteleportroom.h" />
+    <QtMoc Include="wndtester.h" />
+    <QtMoc Include="wndzone.h" />
+    <QtMoc Include="wndzonecommand.h">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe "%(FullPath)" -o "%(RootDir)%(Directory)moc_%(Filename).cpp"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Compiling %(Filename).%(Extension) using MOC</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(RootDir)%(Directory)moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe "%(FullPath)" -o "%(RootDir)%(Directory)moc_%(Filename).cpp"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Compiling %(Filename).%(Extension) using MOC</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(RootDir)%(Directory)moc_%(Filename).cpp</Outputs>
+    </QtMoc>
+    <ClInclude Include="zone.h" />
+    <ClInclude Include="zonecommand.h" />
+    <ClInclude Include="zonecommandgroup.h" />
+    <ClInclude Include="zonecommandlist.h" />
+    <ClInclude Include="zoneinitlist.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtUic Include="guiarea.ui" />
+    <QtUic Include="guichangevnumbers.ui" />
+    <QtUic Include="guicreatearea.ui" />
+    <QtUic Include="guiexit.ui" />
+    <QtUic Include="guiextradescription.ui" />
+    <QtUic Include="guifind.ui" />
+    <QtUic Include="guiinit.ui" />
+    <QtUic Include="guiitem.ui" />
+    <QtUic Include="guiitemaffects.ui" />
+    <QtUic Include="guiitemvalues.ui" />
+    <QtUic Include="guimainwindow.ui" />
+    <QtUic Include="guimob.ui" />
+    <QtUic Include="guimobinit.ui" />
+    <QtUic Include="guimultiplemodify.ui" />
+    <QtUic Include="guireport.ui" />
+    <QtUic Include="guiroom.ui" />
+    <QtUic Include="guiselectflags.ui" />
+    <QtUic Include="guisettings.ui" />
+    <QtUic Include="guishop.ui" />
+    <QtUic Include="guiteleportroom.ui" />
+    <QtUic Include="guitester.ui" />
+    <QtUic Include="guizone.ui" />
+    <QtUic Include="guizonecommand.ui" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="kreator.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="kreator.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="tskreator.qrc">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\rcc.exe "%(FullPath)" -o %(RootDir)%(Directory)qrc_%(Filename).cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Compiling: %(Filename) using rcc</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(RootDir)%(Directory)qrc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\rcc.exe "%(FullPath)" -o %(RootDir)%(Directory)qrc_%(Filename).cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Compiling: %(Filename) using rcc</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(RootDir)%(Directory)qrc_%(Filename).cpp</Outputs>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Readme BUILD.txt" />
+    <Text Include="VERSION.txt" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{B12702AD-ABFB-343A-A199-8E24837244A3}</ProjectGuid>
+    <Keyword>QtVS</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <PropertyGroup Condition="'$(QtMsBuild)'=='' or !Exists('$(QtMsBuild)\qt.targets')">
+    <QtMsBuild>$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>$(QTDIR)\include;$(QTDIR)\include\QtCore;$(QTDIR)\include\Qt;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtOpenGL;$(IncludePath)</IncludePath>
+    <LibraryPath>$(QTDIR)\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IncludePath>$(QTDIR)\include;$(QTDIR)\include\QtCore;$(QTDIR)\include\Qt;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtOpenGL;$(IncludePath)</IncludePath>
+    <LibraryPath>$(QTDIR)\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
+    <Message Importance="High" Text="QtMsBuild: could not locate qt.targets, qt.props; project may not build correctly." />
+  </Target>
+  <ImportGroup Label="ExtensionSettings" />
+  <ImportGroup Label="Shared" />
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <ImportGroup Condition="Exists('$(QtMsBuild)\qt_defaults.props')">
+    <Import Project="$(QtMsBuild)\qt_defaults.props" />
+  </ImportGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="QtSettings" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="QtSettings" />
+  <ImportGroup Condition="Exists('$(QtMsBuild)\qt.props')">
+    <Import Project="$(QtMsBuild)\qt.props" />
+  </ImportGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <Optimization>Disabled</Optimization>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>qtmaind.lib;QtCored4.lib;QtGuid4.lib;QtOpenGLd4.lib;OpenGL32.Lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <QtUic>
+      <Generator>cpp</Generator>
+    </QtUic>
+    <PreBuildEvent>
+      <Command>copy $(ProjectDir)binaries\msvc\$(Configuration)\*.* $(OutDir)</Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>qtmain.lib;QtCore4.lib;QtGui4.lib;QtOpenGL4.lib;OpenGL32.Lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+    </Link>
+    <QtUic>
+      <Generator>cpp</Generator>
+    </QtUic>
+    <PreBuildEvent>
+      <Command>copy $(ProjectDir)binaries\msvc\$(Configuration)\*.* $(OutDir)</Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
+    <Import Project="$(QtMsBuild)\qt.targets" />
+  </ImportGroup>
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

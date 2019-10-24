@@ -87,7 +87,7 @@ void WndMob::init()
   mp_leHPBonus->setValidator( Validator::integer() );
   mp_leGold->setValidator( Validator::unsignedInteger() );
 
-  //connect( mp_pbInit, SIGNAL( clicked() ), this, SLOT( editInits() ));
+  connect( mp_pbInit, SIGNAL( clicked() ), this, SLOT( editInits() ));
 
   connect( mp_comboType, SIGNAL( activated( int ) ), this, SLOT( typeSelected( int ) ) );
   connect( mp_tbActs, SIGNAL( clicked() ), this, SLOT( editActs() ) );
@@ -542,7 +542,7 @@ void WndMob::editSusceptibilities()
   refreshSusceptibilities();
   somethingChanged();
 }
-/*
+
 void WndMob::editInits()
 {
 #if defined( KREATOR_DEBUG )
@@ -551,7 +551,7 @@ void WndMob::editInits()
 
     SelectObject::showInits(true, m_mob.vnumber(), m_area, this);
 }
-*/
+
 void WndMob::refreshAverageHpAndXP()
 {
 #if defined( KREATOR_DEBUG )

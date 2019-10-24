@@ -7,7 +7,8 @@
 #include "constantname.h"
 #include "constants.h"
 #include "handler.h"
-// #include "wndinit.h"
+#include "wndinit.h"
+#include "wndmobinit.h"
 
 using namespace ts;
 
@@ -798,16 +799,16 @@ BitVector SelectObject::zoneFlags( BitVector bv, QWidget* parent )
 
   return getFlagsBitVector(bv, Eleuconf::zoneFlags, "Flag della zona", parent);
 }
-#if 0
+
 void SelectObject::showInits(bool mob, VNumber vnum, Area& ref_area, QWidget* parent)
 {
-    return;
-// #if defined( KREATOR_DEBUG )
-//   qDebug( "SelectObject::showInits(bool mob, VNumber vnum, Area& ref_area, const Zone& ref_zone, QWidget* parent) called." );
-// #endif
-//     WndInit init(mob, vnum , ref_area, parent);
-//     init.show();
-//     init.setFixedSize( init.size() );
-//     init.exec();
+ #if defined( KREATOR_DEBUG )
+   qDebug( "SelectObject::showInits(bool mob, VNumber vnum, Area& ref_area, const Zone& ref_zone, QWidget* parent) called." );
+ #endif
+return;
+     WndMobInit mobinit(vnum, 0L, 1 , ref_area, parent);
+	 mobinit.show();
+	 mobinit.setFixedSize(mobinit.size() );
+	 mobinit.exec();
 }
-#endif
+

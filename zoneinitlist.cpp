@@ -7,6 +7,8 @@ namespace ts
 {
   void ZoneInitList::reset()
   {
+	if (!m_questorCommands.empty())
+		m_questorCommands.clear();
     if( !m_mobs.empty() )
       m_mobs.clear();
     if( !m_items.empty() )
@@ -28,6 +30,7 @@ namespace ts
 
   ZoneInitList::ZoneInitList( const ZoneInitList& zil )
   {
+	m_questorCommands = zil.m_questorCommands;
     m_mobs = zil.m_mobs;
     m_items = zil.m_items;
     m_doors = zil.m_doors;
@@ -39,6 +42,7 @@ namespace ts
   {
     if( this != &zil )
     {
+	  m_questorCommands = zil.m_questorCommands;
       m_mobs = zil.m_mobs;
       m_items = zil.m_items;
       m_doors = zil.m_doors;
@@ -60,6 +64,8 @@ namespace ts
       ++it;
     }
 
+	qDebug("ZoneInitList: sorting Questor Inits...");
+	qSort(m_questorCommands);
     qDebug( "ZoneInitList: sorting Mob Inits..." );
     qSort( m_mobs );
     qDebug( "ZoneInitList: sorting Item Inits..." );
@@ -108,7 +114,11 @@ namespace ts
 
   void ZoneInitList::parseCommand( const ZoneCommand& zc )
   {
-    if( zc.isMobLoad() || zc.isMobFollower() )
+	if (zc.isQuestorCommand()) 
+	{
+		m_questorCommands.append(zc);
+	}
+    else if( zc.isMobLoad() || zc.isMobFollower() )
     {
       flushBuffer();
       m_lastMobInit.setParent( zc );
@@ -140,6 +150,19 @@ namespace ts
     ZoneCommand cmd_comment;
 
     zcl.addCommand( 1 );  // Init the list
+
+	zcl.appendComment("Inizializzazione parametri zona.");
+	questor_const_iterator qitm = m_questorCommands.begin();
+	while (qitm != m_questorCommands.end())
+	{
+		if ((*qitm).isQuestorCommand())
+		{;
+			zcl.appendCommand(*qitm);
+		}	
+		++qitm;
+	}
+	zcl.appendComment("Fine inizializzazione parametri zona.");
+	zcl.appendComment("");
 
     zcl.appendComment( "Inizializzazione dei Mobs." );
 

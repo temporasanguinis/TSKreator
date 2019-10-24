@@ -60,7 +60,8 @@ void WndZoneCommand::init()
   mp_comboType->insertItem( 6, "Dai oggetto" );
   mp_comboType->insertItem( 7, "Carica oggetto" );
   mp_comboType->insertItem( 8, "Inizializza porta" );
-  mp_comboType->insertItem( 9, "Commento" );
+  mp_comboType->insertItem( 9, "Inizializza Questor");
+  mp_comboType->insertItem( 10, "Commento" );
 
   mp_labelLine->setDisabled( true );
   mp_leLine->setReadOnly( true );
@@ -222,8 +223,18 @@ void WndZoneCommand::refreshPanel()
     mp_labelArgument3->setText( trUtf8( "nello stato" ) );
     mp_labelArgument4->setText( trUtf8( "" ) );
     break;
+  case 'X':
+	  mp_comboType->setCurrentIndex(9);
+	  // X <min> <max>
+	  mp_labelArgument1->setText(trUtf8("Livello minimo PWP"));
+	  mp_labelArgument2->setText(trUtf8("Livello massimo PWP"));
+	  mp_tbArgument3->setEnabled(false);
+	  mp_tbArgument4->setEnabled(false);
+	  mp_labelArgument3->setText(trUtf8(""));
+	  mp_labelArgument4->setText(trUtf8(""));
+	  break;
   default:
-    mp_comboType->setCurrentIndex( 9 );
+    mp_comboType->setCurrentIndex( 10 );
     // Comment
     mp_labelArgument1->setText( trUtf8( "" ) );
     mp_labelArgument2->setText( trUtf8( "" ) );
@@ -389,6 +400,9 @@ void WndZoneCommand::typeSelected( int id )
   case 8:
     m_command.setType( 'D' );
     break;
+  case 9:
+	  m_command.setType('X');
+	  break;
   default:
     m_command.setType( '*' );
   }

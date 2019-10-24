@@ -821,6 +821,13 @@ namespace ts
 
     switch( c )
     {
+	case 'X':
+		// X <if-flag> <min> <max>
+	{
+		sComment.sprintf("Assegna PWP del questor (formato: X 0 <minpwp> <maxpwp>): min %ld, max %ld (0 = non assegnato).",
+			arg_1, arg_2);
+	}
+	break;
     case 'M':
       // M <if-flag> <mob vnum> <max #> <room vnum>
       {

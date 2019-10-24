@@ -48,6 +48,11 @@ namespace ts
     doors_const_iterator doorsBegin() const { return m_doors.begin(); }
     doors_const_iterator doorsEnd() const { return m_doors.end(); }
 
+	typedef QList<ZoneCommand>::const_iterator questor_const_iterator;
+	typedef QList<ZoneCommand>::iterator questor_iterator;
+	questor_const_iterator questorBegin() const { return m_questorCommands.begin(); }
+	questor_const_iterator questorEnd() const { return m_questorCommands.end(); }
+
   protected:
     void parseCommand( const ZoneCommand& );
     void flushBuffer();
@@ -56,6 +61,7 @@ namespace ts
     QList<MobInit> m_mobs;
     QList<ZoneCommandGroup> m_items;
     QList<ZoneCommand> m_doors;
+	QList<ZoneCommand> m_questorCommands;
 
     ZoneCommandGroup m_lastMobInit;
     ZoneCommandGroup m_lastItemInit;

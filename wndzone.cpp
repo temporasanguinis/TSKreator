@@ -179,6 +179,8 @@ void WndZone::refreshView()
                 item = new QTreeWidgetItem(mp_twZoneCommands);
             else if ((*it).isOnlyComment() && !(*it).comment().isEmpty() && mp_cbComments->isChecked())
                 item = new QTreeWidgetItem(mp_twZoneCommands);
+			else if ((*it).isQuestorCommand())
+				item = new QTreeWidgetItem(mp_twZoneCommands);
         }
 
         if (item) {

@@ -10,7 +10,11 @@ namespace ts
   {
     setArgument( Argument0, 0 );
 
-    if( isMobLoad() || isMobFollower() )
+	if (isQuestorCommand()) 
+	{
+		m_numArgs = 3;
+	}
+    else if( isMobLoad() || isMobFollower() )
     {
       m_numArgs = 4;
     }
@@ -291,7 +295,9 @@ namespace ts
 
   int ZoneCommand::priority() const
   {
-    if( isMobLoad() )
+	if (isQuestorCommand())
+      return 1005000;
+    else if( isMobLoad() )
       return 2000000 + argument( Argument1 );
     else if( isMobFollower() )
       return 3000000 + argument( Argument1 );

@@ -415,7 +415,7 @@ void WndMainWindow::showAbout()
 
   QString sAbout = "";
   sAbout.sprintf( "TS Kreator %s di Carlo(Otacon/Brandon)\n"
-          "basato su LeU Kreator.\n", qPrintable( VERSION ));
+          "basato su LeU Kreator.\nAmpliato da Redis(Martinus) e Marino(Auriel)", qPrintable( VERSION ));
 
   QMessageBox::about( this, TS::MESSAGE_BOX_ABOUT, sAbout );
 }

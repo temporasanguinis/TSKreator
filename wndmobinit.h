@@ -1,4 +1,3 @@
-#if 0
 #ifndef TS_WNDMOBINIT_H
 #define TS_WNDMOBINIT_H
 
@@ -50,4 +49,4 @@ class WndMobInit : public QDialog, private Ui::GuiMobInit
 
 };
 #endif
-#endif
+

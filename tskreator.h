@@ -1,5 +1,6 @@
 #ifndef TS_TSKREATOR_H
 #define TS_TSKREATOR_H
+#include <qmetaobject.h>
 
 #include <QApplication>
 

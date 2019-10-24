@@ -2,7 +2,7 @@
 #ifndef TS_ZONE_H
 #define TS_ZONE_H
 
-#define USE_ZONE_COMMAND_LIST_AS_MEMBER
+//#define USE_ZONE_COMMAND_LIST_AS_MEMBER
 
 
 #include <QList>

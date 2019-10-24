@@ -2,7 +2,7 @@
 #include "wndmobinit.h"
 #include "guiutils.h"
 #include "config.h"
-#if 0
+
 using namespace ts;
 
 WndMobInit::WndMobInit( VNumber mvnu, VNumber room, int max,Area& ref_area, QWidget* parent)
@@ -130,4 +130,4 @@ WndMobInit::~WndMobInit()
   qDebug( "WndMobInit::~WndMobInit() called." );
 #endif
 }
-#endif
+

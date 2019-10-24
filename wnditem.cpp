@@ -126,7 +126,7 @@ void WndItem::refreshFlags()
 #if defined( KREATOR_DEBUG )
   qDebug( "WndItem::refreshFlags() called." );
 #endif
-  mp_leFlags->setText( Utils::bitvector2string( m_item.flags(), Eleuconf::getAllFlagsCaption(Eleuconf::objFlags)).toLower() );
+  mp_leFlags->setText( Utils::bitvector2string( m_item.flags(), Eleuconf::getAllFlagsCaption(Eleuconf::objFlags)) );
 }
 
 void WndItem::refreshNewFlags()
@@ -134,7 +134,7 @@ void WndItem::refreshNewFlags()
 #if defined( KREATOR_DEBUG )
   qDebug( "WndItem::refreshNewFlags() called." );
 #endif
-  mp_leNewFlags->setText( Utils::bitvector2string( m_item.extraFlags(), Eleuconf::getAllFlagsCaption(Eleuconf::objFlags, 1) ).toLower() );
+  mp_leNewFlags->setText( Utils::bitvector2string( m_item.extraFlags(), Eleuconf::getAllFlagsCaption(Eleuconf::objFlags, 1) ) );
 }
 
 void WndItem::refreshWearPositions()
@@ -222,7 +222,7 @@ void WndItem::refreshAffects()
     if( ia.isValid() )
     {
       sTmp.sprintf( "%s: %s\n", qPrintable( ia.typeToString() ),
-             qPrintable( ia.valueToString().toLower() ) );
+             qPrintable( ia.valueToString() ) );
       sAffects += sTmp;
       sTmp = "";
     }

@@ -320,8 +320,13 @@ QStringList Eleuconf::getAllFlagsCaption(QList<Flags> flag, int type)
     QStringList lst;
     int i;
     for (i = 0; i < flag.size(); ++i) {
-        if(flag.at(i).findex == type)
-            lst << flag.at(i).caption;
+		if (flag.at(i).findex == type) {
+			QString tmp = flag.at(i).caption;
+			if (tmp.length() > 0) {
+				tmp = tmp.left(1).toUpper() + tmp.mid(1);
+			}
+			lst << tmp;
+		}
     }
 
     return lst;

@@ -189,6 +189,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="Readme BUILD.txt" />
+    <Text Include="VERSION.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{B12702AD-ABFB-343A-A199-8E24837244A3}</ProjectGuid>

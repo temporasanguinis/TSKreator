@@ -101,12 +101,17 @@ namespace ts
     "Angelo",
     "Arcangelo",
     "Unicorno d'argento",
+	"Panda",
     "\n"
   };
 
   QString ConstantName::characterRace( int id )
   {
-    return GetName_Private( strRaceName, 0, CHARACTER_RACE_END, id );
+    QString ret = GetName_Private( strRaceName, 0, CHARACTER_RACE_END, id );
+	if (ret == "" || ret == "UNDEFINED") {
+		qDebug("Errore, razza vuota!!");
+	}
+	return ret;
   }
 
   const QString strItemTypeName[] =

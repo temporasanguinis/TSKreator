@@ -356,7 +356,10 @@ namespace ts
   const int CHARACTER_RACE_SEA_ELF         = 84;
   const int CHARACTER_RACE_BROWNIE         = 85;
   const int CHARACTER_RACE_ANGEL           = 86;
-  const int CHARACTER_RACE_END             = 89;
+  const int CHARACTER_RACE_ARCHANGEL = 87;
+  const int CHARACTER_RACE_UNICORN = 88;
+  const int CHARACTER_RACE_PANDARIEN = 89;
+  const int CHARACTER_RACE_END             = 90;
   /* Races End */
 
   /* Character Genders */

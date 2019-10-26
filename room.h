@@ -22,7 +22,9 @@ namespace ts
 
     Room();
     explicit Room( VNumber, const QString& room_name = "" );
-    Room( const Room& );
+	Room(const Room& r);
+
+	void copyFromRoom(const ts::Room& r, bool cloneExits);
 
     virtual ~Room();
 

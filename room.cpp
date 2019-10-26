@@ -43,23 +43,33 @@ namespace ts
     init();
   }
 
-  Room::Room( const Room& r )
-    : ObjectData( (ObjectData)r )
+  Room::Room(const Room& r) : ObjectData((ObjectData)r)
   {
-    m_description = r.m_description;
-    m_zone = r.m_zone;
-    m_flags = r.m_flags;
-    m_sectorType = r.m_sectorType;
-    m_tunnelLimit = r.m_tunnelLimit;
-    m_teleportTime = r.m_teleportTime;
-    m_teleportToRoom = r.m_teleportToRoom;
-    m_teleportFlags = r.m_teleportFlags;
-    m_teleportCount = r.m_teleportCount;
-    m_teleportSectorType = r.m_teleportSectorType;
-    m_riverDir = r.m_riverDir;
-    m_riverSpeed = r.m_riverSpeed;
-    m_extraDescriptions = r.m_extraDescriptions;
-    m_exits = r.m_exits;
+	  copyFromRoom(r, true);
+  }
+
+  void Room::copyFromRoom(const ts::Room& r, bool cloneExits)
+  {
+	  m_type = r.m_type;
+	  m_vnumber = r.m_vnumber;
+	  m_name = r.m_name;
+	  m_description = r.m_description;
+	  m_zone = r.m_zone;
+	  m_flags = r.m_flags;
+	  m_sectorType = r.m_sectorType;
+	  m_tunnelLimit = r.m_tunnelLimit;
+	  m_teleportTime = r.m_teleportTime;
+	  m_teleportToRoom = r.m_teleportToRoom;
+	  m_teleportFlags = r.m_teleportFlags;
+	  m_teleportCount = r.m_teleportCount;
+	  m_teleportSectorType = r.m_teleportSectorType;
+	  m_riverDir = r.m_riverDir;
+	  m_riverSpeed = r.m_riverSpeed;
+	  m_extraDescriptions = r.m_extraDescriptions;
+	  if (cloneExits)
+	  {
+		  m_exits = r.m_exits;
+	  }
   }
 
   Room::~Room()

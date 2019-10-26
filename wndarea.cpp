@@ -1070,9 +1070,10 @@ void WndArea::cloneObject()
   {
     if( m_area.hasRoom( vnumSelected ) )
     {
-      Room new_room( m_area.room( vnumSelected ) );
-      new_room.setVNumber( ( m_area.topRoomsVNumber() + 1 ) );
-      m_area.addRoom( new_room );
+      Room new_room;
+	  new_room.copyFromRoom(m_area.room(vnumSelected),false);
+	  new_room.setVNumber((m_area.topRoomsVNumber() + 1));
+	  m_area.addRoom( new_room );
       refreshRoomsView();
     }
   }

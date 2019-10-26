@@ -2,6 +2,8 @@
 - Nuovo build per MSVC su sistema windows - leggere Readme BUILD.txt
 - Comando questor in init zona
 - SpellAffect2 mostra le descrizioni dei flag nella finestra degli oggetti
+- Aggiunto il panda nella lista razze
+- Risolto un problema di clonaggio delle locazioni rimuovendo le uscite dal clonaggio, siccome sono solo fastidiose per l'uso del clonaggio
 __________________________________
 1.1b
 Versione precedente

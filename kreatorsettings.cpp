@@ -3,6 +3,8 @@
 #include <QPoint>
 #include "settings.h"
 #include "bit.h"
+#include <QApplication>
+#include <QDesktopWidget>
 
 using namespace ts;
 
@@ -56,14 +58,31 @@ void KreatorSettings::saveGuiStatus( const QString& widget_name, QWidget* w )
   instance().endGroup();
 }
 
-void KreatorSettings::loadGuiStatus( const QString& widget_name, QWidget* w )
+void KreatorSettings::loadGuiStatus(const QString& widget_name, QWidget* w)
 {
 #if defined( KREATOR_DEBUG )
-  qDebug( "KreatorSettings::loadGuiStatus( const QString&, QWidget* ) called." );
+	qDebug("KreatorSettings::loadGuiStatus( const QString&, QWidget* ) called.");
 #endif
-  instance().beginGroup( widget_name.toLower() );
-  w->resize( instance().value( "size", w->size() ).toSize() );
-  w->move( instance().value( "position", w->pos() ).toPoint() );
+	instance().beginGroup(widget_name.toLower());
+	w->resize(instance().value("size", w->size()).toSize());
+	QPoint pos = instance().value("position", w->pos()).toPoint();
+	QDesktopWidget* desktop = QApplication::desktop();
+	bool inScreen = false;
+	for (qint32 i = 0, screens = desktop->screenCount(); i < screens; i++) {
+		if (desktop->screenGeometry(i).contains(pos))
+		{
+			inScreen = true;
+		}
+	}
+
+	if (inScreen)
+	{
+		w->move(pos);
+	}
+	else {
+		w->move(10, 10);
+	}
+
   instance().endGroup();
 }
 

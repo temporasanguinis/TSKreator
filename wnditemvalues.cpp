@@ -79,10 +79,30 @@ void WndItemValues::refreshPanel()
   mp_leValue1->setText( QString::number( m_item.value( ITEM_VALUE_1 ) ) );
   mp_leValue2->setText( QString::number( m_item.value( ITEM_VALUE_2 ) ) );
   mp_leValue3->setText( QString::number( m_item.value( ITEM_VALUE_3 ) ) );
+  mp_labelValue0->setEnabled(true);
+  mp_labelValue1->setEnabled(true);
+  mp_labelValue2->setEnabled(true);
+  mp_labelValue3->setEnabled(true);
+
   mp_labelValue0->setText( m_item.valueName( ITEM_VALUE_0 ) );
   mp_labelValue1->setText( m_item.valueName( ITEM_VALUE_1 ) );
   mp_labelValue2->setText( m_item.valueName( ITEM_VALUE_2 ) );
   mp_labelValue3->setText( m_item.valueName( ITEM_VALUE_3 ) );
+
+  // Mars: disabilito UI per campi non descritti (Value0-3)
+  // Se in versione futura qaulcosa e' disabilitato e non dovrebbe serve aggiungere la descrizione al campo
+  QLabel* wndLabels[] = { mp_labelValue0, mp_labelValue1, mp_labelValue2, mp_labelValue3 };
+  QLineEdit* wndValues[] = { mp_leValue0, mp_leValue1, mp_leValue2, mp_leValue3 };
+  for (size_t i = 0; i < 4; i++)
+  {
+      QString nonDescritto("Value"); nonDescritto = nonDescritto + QString::number(i);
+      if (wndLabels[i]->text() == nonDescritto)
+      {
+          wndLabels[i]->setEnabled(false);
+          wndValues[i]->setEnabled(false);
+          wndLabels[i]->setText("<non usato>");
+      }
+  }
 
   switch( m_item.itemType() )
   {

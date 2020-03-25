@@ -1,3 +1,7 @@
+1.1d
+- Disabilito i campi non usati per gli oggetti
+- Aggiungo file mancante vcruntime140.dll
+__________________________________
 1.1c
 - Nuovo build per MSVC su sistema windows - leggere Readme BUILD.txt
 - Comando questor in init zona

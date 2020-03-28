@@ -39,7 +39,9 @@ namespace ts
     const ZoneCommandList& commandList() const { return m_initList; }
     void setCommandList( const ZoneCommandList& zcl ) { m_initList = zcl; }
 #else
-    ZoneCommandList commandList() const { return m_initList.commandList(); }
+    ZoneCommandList commandList() const {
+        return m_initList.commandList(); 
+    }
     void setCommandList( const ZoneCommandList& zcl ) { m_initList.setCommandList( zcl ); }
     ZoneInitList initList() const { return m_initList; }
     void setInitList( const ZoneInitList& zil ) { m_initList = zil; }
@@ -78,6 +80,7 @@ namespace ts
 
     int pwpLevel() const { return m_pwpLevel; }
     void setPwpLevel(int lvl) { m_pwpLevel = lvl; }
+    void flushBuffer();
 
   protected:
 #if defined( USE_ZONE_COMMAND_LIST_AS_MEMBER )

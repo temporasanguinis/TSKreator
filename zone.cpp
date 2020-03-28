@@ -108,6 +108,11 @@ namespace ts
     validate();
   }
 
+  void Zone::flushBuffer()
+  {
+      m_initList.flushBuffer();
+  }
+
   void Zone::save( QTextStream& stream )
   {
     stream << "#" << m_vnumber << endl << flush;
@@ -125,7 +130,7 @@ namespace ts
     stream << " " << m_pwpLevel << flush;
 
     stream << endl << endl << flush;
-
+    m_initList.flushBuffer();
     ZoneCommandList cmd_list = commandList();
     cmd_list.trimEmptyCommands();
     cmd_list.save( stream );

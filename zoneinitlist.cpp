@@ -63,7 +63,7 @@ namespace ts
       parseCommand( *it );
       ++it;
     }
-
+    flushBuffer();
 	qDebug("ZoneInitList: sorting Questor Inits...");
 	qSort(m_questorCommands);
     qDebug( "ZoneInitList: sorting Mob Inits..." );

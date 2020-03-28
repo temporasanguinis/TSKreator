@@ -1312,6 +1312,7 @@ namespace ts
     zones_iterator itz = m_zones.begin();
     while( itz != m_zones.end() )
     {
+        (*itz).flushBuffer();
       ZoneCommandList zcList = (*itz).commandList();
       ZoneCommandList::iterator itc = zcList.begin();
       while( itc != zcList.end() )

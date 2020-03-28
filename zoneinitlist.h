@@ -52,10 +52,10 @@ namespace ts
 	typedef QList<ZoneCommand>::iterator questor_iterator;
 	questor_const_iterator questorBegin() const { return m_questorCommands.begin(); }
 	questor_const_iterator questorEnd() const { return m_questorCommands.end(); }
+    void flushBuffer();
 
   protected:
     void parseCommand( const ZoneCommand& );
-    void flushBuffer();
 
   private:
     QList<MobInit> m_mobs;

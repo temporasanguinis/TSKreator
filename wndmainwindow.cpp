@@ -68,13 +68,14 @@ void WndMainWindow::closeEvent( QCloseEvent* e )
 }
 
 #define COLUMN_VNUMBER    0
-#define COLUMN_NAME       1
-#define COLUMN_PATH       2
-#define COLUMN_MINMAX     3
-#define COLUMN_REPOP_TIME 4
-#define COLUMN_REPOP_MODE 5
-#define COLUMN_FLAGS      6
-#define COLUNM_MAX        7
+#define COLUMN_INDEX      1
+#define COLUMN_NAME       2
+#define COLUMN_PATH       3
+#define COLUMN_MINMAX     4
+#define COLUMN_REPOP_TIME 5
+#define COLUMN_REPOP_MODE 6
+#define COLUMN_FLAGS      7
+#define COLUNM_MAX        8
 
 
 void WndMainWindow::init()
@@ -106,6 +107,7 @@ void WndMainWindow::init()
 
   QString ColumnName[ COLUNM_MAX ];
   ColumnName[ COLUMN_VNUMBER    ] = trUtf8( "# Zona" );
+  ColumnName[ COLUMN_INDEX]       = trUtf8("#");
   ColumnName[ COLUMN_NAME       ] = trUtf8( "Nome" );
   ColumnName[ COLUMN_PATH       ] = trUtf8( "Path" );
   ColumnName[ COLUMN_MINMAX     ] = trUtf8( "VNumbers" );
@@ -122,6 +124,7 @@ void WndMainWindow::init()
 
   QHeaderView* pHeader = mp_twObjectList->header();
   pHeader->resizeSection( COLUMN_VNUMBER, 80 );
+  pHeader->resizeSection(COLUMN_INDEX, 30);
   pHeader->resizeSection( COLUMN_NAME, 270 );
   pHeader->setStretchLastSection( true );
   pHeader->setSortIndicator( COLUMN_VNUMBER, Qt::AscendingOrder );
@@ -228,7 +231,7 @@ void WndMainWindow::loadAreas()
   QTimer::singleShot( 500, this, SLOT( refreshAreaView() ) );
 }
 
-void WndMainWindow::createItem( const QString& zone_path )
+void WndMainWindow::createItem(int index, const QString& zone_path )
 {
 #if defined( KREATOR_DEBUG )
   qDebug( "WndMainWindow::createItem( const QString ) called." );
@@ -256,6 +259,7 @@ void WndMainWindow::createItem( const QString& zone_path )
           QTreeWidgetItem *item = new QTreeWidgetItem( mp_twObjectList );
           item->setIcon( COLUMN_VNUMBER, QIcon( ":/images/world.png" ) );
           item->setText( COLUMN_VNUMBER, Utils::vnumber2string( new_zone.vnumber(), 3 ) );
+          item->setText( COLUMN_INDEX, QString::number(index));
           item->setText( COLUMN_NAME, new_zone.name() );
           item->setText( COLUMN_PATH, zone_path );
           item->setText( COLUMN_MINMAX, Utils::vnumber2string( new_zone.minVNumber() ) + QString( " - " ) + Utils::vnumber2string( new_zone.maxVNumber() ) );
@@ -305,17 +309,28 @@ void WndMainWindow::refreshAreaView()
   QFileInfoList fiList = areaDir.entryInfoList( QDir::Files );
 
   QList<QFileInfo>::const_iterator it = fiList.begin();
+  int cnt = 0;
   while( it != fiList.end() )
   {
     if( (*it).suffix() == Settings::zoneSuffix() )
-      createItem( (*it).absoluteFilePath() );
+      createItem(cnt, (*it).absoluteFilePath() );
     ++it;
+    cnt++;
   }
 
-  mp_twObjectList->sortItems( COLUMN_VNUMBER, Qt::AscendingOrder );
+  mp_twObjectList->sortItems(COLUMN_MINMAX, Qt::AscendingOrder );
+
+  for (int i = 0; i < mp_twObjectList->topLevelItemCount(); i++)
+  {
+      mp_twObjectList->topLevelItem(i)->setText(COLUMN_INDEX, QString::number(i));
+  }
+
+  showMessage(trUtf8("Pronto."));
+
+  checkBootFile();
 
   QApplication::restoreOverrideCursor();
-  showMessage( trUtf8( "Pronto." ) );
+  
 }
 
 void WndMainWindow::showSettings()
@@ -460,4 +475,57 @@ void WndMainWindow::filterList()
       else
           mp_twObjectList->topLevelItem(i)->setHidden( true );
   }
+}
+
+void WndMainWindow::checkBootFile()
+{
+    QString sAreaDir = Settings::zonesDirectory();
+
+    FILE* filePointer = NULL;
+    const int bufferLength = 255;
+    char buffer[bufferLength];
+    QStringList lines;
+    snprintf(buffer, sizeof(buffer), "%s\\%s", qPrintable(sAreaDir), "boot");
+    filePointer = fopen(buffer, "r");
+    if (filePointer) {
+        while (fgets(buffer, bufferLength, filePointer)) {
+            buffer[strcspn(buffer, "#\r\n")] = 0;
+            if (buffer[0]) {
+                lines.append(QString::fromAscii(buffer));
+            }
+        }
+
+        fclose(filePointer);
+
+        int lastAreaIndex = -1;
+        int lastAreaVnum = -1;
+        bool error = FALSE;
+        QString lastAreaName = "";
+        QString errorMessage = "";
+        for (int i = 0; i < mp_twObjectList->topLevelItemCount(); i++)
+        {
+            QRegExp nomefile("\\/(\\w*)\\.zon");
+            int pos = nomefile.indexIn(mp_twObjectList->topLevelItem(i)->text(COLUMN_PATH));
+            if (pos > -1) {
+                QString nomeZona = nomefile.cap(1);
+                int areaIndex = lines.indexOf(nomeZona);
+                if (areaIndex > -1 && areaIndex < lastAreaIndex)
+                {
+                    errorMessage = "Zona " + nomeZona + ".zon (file:" + mp_twObjectList->topLevelItem(i)->text(COLUMN_INDEX) +", boot:" + QString::number(areaIndex) + ")" + " nella lista aree non e' in ordine boot (precedente: " + lastAreaName + ".zon (file:" + QString::number(lastAreaVnum) + ", boot:" + QString::number(lastAreaIndex) + ")";
+                    error = TRUE;
+                    break;
+                }
+                else
+                {
+                    lastAreaVnum = mp_twObjectList->topLevelItem(i)->text(COLUMN_INDEX).toInt();
+                    lastAreaIndex = areaIndex;
+                    lastAreaName = nomeZona;
+                }
+            }
+        }
+
+        if (error) {
+            showMessage(errorMessage);
+        }
+    }
 }

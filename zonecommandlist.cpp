@@ -160,6 +160,8 @@ namespace ts
       }
       else
       {
+          QString skipped = qPrintable(zc.dumpObject());
+          qDebug("Command %s skipped.", skipped);
         // skip
       }
     }

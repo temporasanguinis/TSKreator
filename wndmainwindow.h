@@ -42,11 +42,12 @@ class WndMainWindow : public QMainWindow, Ui::GuiMainWindow
     void areaSelectionChanged();
     void openRecentFile();
     void filterList();
+    void checkBootFile();
 
   protected:
     void init();
     void closeEvent( QCloseEvent* );
-    void createItem( const QString& );
+    void createItem(int index, const QString& );
 	QString strippedName(const QString &fullFileName);
 
   protected:

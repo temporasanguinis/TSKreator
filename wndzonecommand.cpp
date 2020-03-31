@@ -419,6 +419,8 @@ void WndZoneCommand::generateComment()
 
   ZoneCommand zcTmp = m_command;
 
+  if (zcTmp.isOnlyComment()) return;
+
   if( mp_leArgument1->isEnabled() )
     zcTmp.setArgument( ZoneCommand::Argument1, mp_leArgument1->text().toInt() );
   if( mp_leArgument2->isEnabled() )

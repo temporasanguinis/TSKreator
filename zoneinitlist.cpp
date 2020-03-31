@@ -112,14 +112,17 @@ namespace ts
     }
   }
 
+  int lastAddType = -1;
   void ZoneInitList::parseCommand( const ZoneCommand& zc )
   {
 	if (zc.isQuestorCommand()) 
 	{
+        lastAddType = 0;
 		m_questorCommands.append(zc);
 	}
     else if( zc.isMobLoad() || zc.isMobFollower() )
     {
+        lastAddType = 1;
       flushBuffer();
       m_lastMobInit.setParent( zc );
     }
@@ -133,13 +136,38 @@ namespace ts
     }
     else if( zc.isItemLoad() )
     {
+        lastAddType = 2;
       flushBuffer();
       m_lastItemInit.setParent( zc );
     }
     else if( zc.isDoorInit() )
     {
+        lastAddType = 3;
       flushBuffer();
       m_doors.append( zc );
+    }
+    else if (zc.isOnlyComment() && lastAddType>-1 && zc.comment() != "") {
+        ZoneCommand emptyLine;
+        emptyLine.setType('*');
+        emptyLine.setComment("");
+        switch (lastAddType) {
+        case 0:
+            m_questorCommands.append(emptyLine);
+            m_questorCommands.append(zc);
+            break;
+        case 1:
+            m_lastMobInit.addSon(emptyLine);
+            m_lastMobInit.addSon(zc);
+            break;
+        case 2:
+            m_lastItemInit.addSon(emptyLine);
+            m_lastItemInit.addSon(zc);
+            break;
+        case 3:
+            m_doors.append(emptyLine);
+            m_doors.append(zc);
+            break;
+        }
     }
   }
 

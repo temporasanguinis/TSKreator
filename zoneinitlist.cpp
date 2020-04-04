@@ -5,6 +5,15 @@
 
 namespace ts
 {
+#define CMNT_ZONEBEGIN "Inizializzazione parametri zona."
+#define CMNT_ZONEEND "Fine inizializzazione parametri zona."
+#define CMNT_MOBBEGIN "Inizializzazione dei Mobs."
+#define CMNT_MOBEND "Fine inizializzazione dei Mobs."
+#define CMNT_ITEMBEGIN "Inizializzazione degli Oggetti."
+#define CMNT_ITEMEND "Fine inizializzazione degli Oggetti."
+#define CMNT_DOORSBEGIN "Inizializzazione delle Porte."
+#define CMNT_DOORSEND  "Fine inizializzazione delle Porte."
+
   void ZoneInitList::reset()
   {
 	if (!m_questorCommands.empty())
@@ -112,6 +121,19 @@ namespace ts
     }
   }
 
+  bool isInternalComment(QString& comment) {
+      bool isInternal = false;
+      isInternal |= comment == CMNT_ZONEBEGIN;
+      isInternal |= comment == CMNT_ZONEEND;
+      isInternal |= comment == CMNT_MOBBEGIN;
+      isInternal |= comment == CMNT_MOBEND;
+      isInternal |= comment == CMNT_ITEMBEGIN;
+      isInternal |= comment == CMNT_ITEMEND;
+      isInternal |= comment == CMNT_DOORSBEGIN;
+      isInternal |= comment == CMNT_DOORSEND;
+      return isInternal;
+  }
+
   int lastAddType = -1;
   void ZoneInitList::parseCommand( const ZoneCommand& zc )
   {
@@ -146,7 +168,7 @@ namespace ts
       flushBuffer();
       m_doors.append( zc );
     }
-    else if (zc.isOnlyComment() && lastAddType>-1 && zc.comment() != "") {
+    else if (zc.isOnlyComment() && lastAddType>-1 && zc.comment() != "" && !isInternalComment(zc.comment())) {
         ZoneCommand emptyLine;
         emptyLine.setType('*');
         emptyLine.setComment("");
@@ -179,7 +201,7 @@ namespace ts
 
     zcl.addCommand( 1 );  // Init the list
 
-	zcl.appendComment("Inizializzazione parametri zona.");
+	zcl.appendComment(CMNT_ZONEBEGIN);
 	questor_const_iterator qitm = m_questorCommands.begin();
 	while (qitm != m_questorCommands.end())
 	{
@@ -189,10 +211,10 @@ namespace ts
 		}	
 		++qitm;
 	}
-	zcl.appendComment("Fine inizializzazione parametri zona.");
+	zcl.appendComment(CMNT_ZONEEND);
 	zcl.appendComment("");
 
-    zcl.appendComment( "Inizializzazione dei Mobs." );
+    zcl.appendComment( CMNT_MOBBEGIN );
 
     mobs_const_iterator itm = m_mobs.begin();
     while( itm != m_mobs.end() )
@@ -213,10 +235,10 @@ namespace ts
       ++itm;
     }
 
-    zcl.appendComment( "Fine inizializzazione dei Mobs." );
+    zcl.appendComment( CMNT_MOBEND);
     zcl.appendComment( "" );
 
-    zcl.appendComment( "Inizializzazione degli Oggetti." );
+    zcl.appendComment( CMNT_ITEMBEGIN );
 
     items_const_iterator iti = m_items.begin();
     while( iti != m_items.end() )
@@ -226,9 +248,9 @@ namespace ts
       ++iti;
     }
 
-    zcl.appendComment( "Fine inizializzazione degli Oggetti." );
+    zcl.appendComment( CMNT_ITEMEND );
     zcl.appendComment( "" );
-    zcl.appendComment( "Inizializzazione delle Porte." );
+    zcl.appendComment( CMNT_DOORSBEGIN );
 
     doors_const_iterator itd = m_doors.begin();
     while( itd != m_doors.end() )
@@ -238,7 +260,7 @@ namespace ts
       ++itd;
     }
 
-    zcl.appendComment( "Fine inizializzazione delle Porte." );
+    zcl.appendComment( CMNT_DOORSEND );
     //zcl.appendComment( "" );
 
     zcl.resetCommandsId();

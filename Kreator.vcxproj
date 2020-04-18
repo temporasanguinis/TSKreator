@@ -194,6 +194,25 @@
   <ItemGroup>
     <Natvis Include="NatvisFile.natvis" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="conf\applies.ini">
+      <FileType>Text</FileType>
+      <DeploymentContent>false</DeploymentContent>
+    </None>
+    <None Include="conf\aspells.ini" />
+    <None Include="conf\containerflags.ini" />
+    <None Include="conf\drinkcontainerflags.ini" />
+    <None Include="conf\exitflags.ini" />
+    <None Include="conf\mobactions.ini" />
+    <None Include="conf\mobaffections.ini" />
+    <None Include="conf\objflags.ini" />
+    <None Include="conf\objwear.ini" />
+    <None Include="conf\resistanceflags.ini" />
+    <None Include="conf\roomflags.ini" />
+    <None Include="conf\teleportflags.ini" />
+    <None Include="conf\trapflags.ini" />
+    <None Include="conf\zoneflags.ini" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{B12702AD-ABFB-343A-A199-8E24837244A3}</ProjectGuid>
     <Keyword>QtVS</Keyword>

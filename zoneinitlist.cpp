@@ -2,7 +2,6 @@
 #include "zoneinitlist.h"
 #include "exception.h"
 
-
 namespace ts
 {
 #define CMNT_ZONEBEGIN "Inizializzazione parametri zona."
@@ -61,6 +60,36 @@ namespace ts
     return *this;
   }
 
+  bool CommandGroupIDLessThan(const ts::ZoneCommandGroup& s1, const ts::ZoneCommandGroup& s2)
+  {
+      long loc1 = s1.parent().argument(ts::ZoneCommand::Argument::Argument3);
+      long loc2 = s2.parent().argument(ts::ZoneCommand::Argument::Argument3);
+      long vnum1 = s1.parent().argument(ts::ZoneCommand::Argument::Argument1);
+      long vnum2 = s2.parent().argument(ts::ZoneCommand::Argument::Argument1);
+      if (vnum1 < vnum2) {
+          return true;
+      }
+      else if (vnum1 == vnum2) {
+          return loc1 < loc2;
+      }
+      return false;
+  }
+  
+  bool MobInitIDLessThan(const ts::MobInit& s1, const ts::MobInit& s2)
+  {
+      long loc1 = s1.master().parent().argument(ts::ZoneCommand::Argument::Argument3);
+      long loc2 = s2.master().parent().argument(ts::ZoneCommand::Argument::Argument3);
+      long vnum1 = s1.master().parent().argument(ts::ZoneCommand::Argument::Argument1);
+      long vnum2 = s2.master().parent().argument(ts::ZoneCommand::Argument::Argument1);
+      if (vnum1 < vnum2) {
+          return true;
+      }
+      else if (vnum1 == vnum2) {
+          return loc1 < loc2;
+      }
+      return false;
+  }
+
   void ZoneInitList::setCommandList( const ZoneCommandList& zcl )
   {
     reset();
@@ -76,9 +105,9 @@ namespace ts
 	qDebug("ZoneInitList: sorting Questor Inits...");
 	qSort(m_questorCommands);
     qDebug( "ZoneInitList: sorting Mob Inits..." );
-    qSort( m_mobs );
+    qSort( m_mobs.begin(), m_mobs.end(), MobInitIDLessThan );
     qDebug( "ZoneInitList: sorting Item Inits..." );
-    qSort( m_items );
+    qSort( m_items.begin(), m_items.end(), CommandGroupIDLessThan);
     qDebug( "ZoneInitList: sorting Door Inits..." );
     qSort( m_doors );
     qDebug( "ZoneInitList: sorting completed." );

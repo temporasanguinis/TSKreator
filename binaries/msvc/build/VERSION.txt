@@ -1,3 +1,7 @@
+1.2
+- correggo bug di item PUT su oggetti di MOB che finiva nel load degli oggetti alla fine
+- sorting degli VNUM al salvataggio
+__________________________________
 1.1d
 - Disabilito i campi non usati per gli oggetti
 - Aggiungo file mancante vcruntime140.dll

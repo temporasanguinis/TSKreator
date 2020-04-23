@@ -183,7 +183,15 @@ namespace ts
     }
     else if( zc.isItemPut() )
     {
-      m_lastItemInit.addSon( zc );
+        if (!m_lastItemInit.isNull()) {
+            m_lastItemInit.addSon(zc);
+        }
+        else if (!m_lastMobInit.isNull()) {
+            m_lastMobInit.addSon(zc);
+        }
+        else {
+            throw Exception(ts::Exception::Runtime, "Item PUT senza MOB o senza ITEM LOAD");
+        }
     }
     else if( zc.isItemLoad() )
     {

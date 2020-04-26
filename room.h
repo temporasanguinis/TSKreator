@@ -69,7 +69,9 @@ namespace ts
     typedef QList<ExtraDescription>::iterator extra_description_iterator;
     const QList<ExtraDescription>& extraDescriptions() const { return m_extraDescriptions; }
     bool hasExtraDescription( const QString& extra_keys ) const;
+    bool canFindExtraDescription(const QString& keys) const;
     const ExtraDescription& extraDescription( const QString& extra_keys ) const;
+    const ExtraDescription& findExtraDescription(const QString& key) const;
     void removeExtraDescription( const QString& extra_keys );
     void addExtraDescription( const ExtraDescription& );
 

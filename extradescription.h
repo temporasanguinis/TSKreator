@@ -3,6 +3,7 @@
 #define TS_EXTRADESCRIPTION_H
 
 #include <QString>
+#include <QStringList>
 #include <QTextStream>
 #include <stdio.h>
 #include "utils.h"
@@ -27,6 +28,16 @@ namespace ts
     void setDescription( const QString& new_description ) { m_description = Utils::removeTilde( Utils::stripSpaceAtEnd( new_description ) ); }
 
     QString dumpObject() const;
+
+    bool isname(QString key) const {
+        QStringList lst = keys().split(" ", QString::SkipEmptyParts);
+        for (size_t i = 0; i < lst.length(); i++)
+        {
+            if (lst.at(i).toLower().startsWith(key.toLower()))
+                return true;
+        }
+        return false;
+    }
 
     void load( FILE* );
     void save( QTextStream& );

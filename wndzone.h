@@ -20,19 +20,23 @@ public:
   WndZone( Area&, const Zone&, QWidget* );
   ~WndZone();
 
+  void selectItemId(VNumber id);
+
+public slots:
+    void somethingChanged();
+    void refreshView();
+
 signals:
   void dataSaved();
 
 protected slots:
   void saveData();
   void restoreData();
-  void somethingChanged();
   void saveAndClose();
   void addNewEmptyLine();
   void removeCommandLine();
   void editCommandLine();
   void lineSelected();
-  void refreshView();
   void editFlags();
   void cutCommandLine();
   void copyCommandLine();

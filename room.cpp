@@ -111,6 +111,36 @@ namespace ts
     }
   }
 
+  bool Room::canFindExtraDescription(const QString& extra_keys) const
+  {
+      try
+      {
+          (void)findExtraDescription(extra_keys);
+          return true;
+      }
+      catch (XObjectNotFound&)
+      {
+          return false;
+      }
+  }
+
+  const ExtraDescription& Room::findExtraDescription(const QString& key) const
+  {
+      QString sKeysToFind = key.toLower();
+      extra_description_const_iterator it = m_extraDescriptions.begin();
+
+      while (it != m_extraDescriptions.end())
+      {
+          if ((*it).isname(sKeysToFind))
+              return *it;
+          ++it;
+      }
+
+      QString sException = "";
+      sException.sprintf("ExtraDescription '%s' not found.", sKeysToFind.toUtf8().data());
+      throw XObjectNotFound(sException);
+  }
+
   const ExtraDescription& Room::extraDescription( const QString& extra_keys ) const
   {
     QString sKeysToFind = extra_keys.toLower();

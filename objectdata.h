@@ -3,6 +3,7 @@
 #define TS_OBJECTDATA_H
 
 #include <QString>
+#include <QStringList>
 #include <QTextStream>
 #include "types.h"
 #include "utils.h"
@@ -40,6 +41,15 @@ namespace ts
     VNumber vnumber() const { return m_vnumber; }
     void setVNumber( VNumber new_vnumber ) { m_vnumber = new_vnumber; }
     const QString& name() const { return m_name; }
+    bool isname(QString key) const {
+        QStringList lst = m_name.split(" ", QString::SkipEmptyParts);
+        for (size_t i = 0; i < lst.length(); i++)
+        {
+            if (lst.at(i).toLower().startsWith(key.toLower()))
+                return true;
+        }
+        return false;
+    }
     void setName( const QString& new_name ) { m_name = Utils::removeTilde( new_name.simplified() ); }
 
     bool isValid() const { return m_type != Object_Invalid; }

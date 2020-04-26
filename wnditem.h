@@ -16,13 +16,15 @@ public:
   WndItem( Area&, const Item&, QWidget* );
   virtual ~WndItem();
 
+public slots:
+    void somethingChanged();
+
 signals:
   void dataSaved();
 
 protected slots:
   void saveData();
   void restoreData();
-  void somethingChanged();
   void saveAndClose();
   void typeSelected( int );
   void showNextItem();

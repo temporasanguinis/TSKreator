@@ -605,3 +605,7 @@ void WndZone::updateMaxInits()
         somethingChanged();
     }
 }
+
+void WndZone::selectItemId(VNumber id) {
+    m_lastLineSelected = id;
+}

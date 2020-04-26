@@ -2,6 +2,7 @@
 #ifndef TS_WNDTESTER_H
 #define TS_WNDTESTER_H
 
+#include <QTextBrowser>
 #include <QDialog>
 #include "ui_guitester.h"
 #include "constantname.h"
@@ -32,15 +33,29 @@ protected:
 	void do_move(int cmd);
 	QString ParseAnsiColors(const QString &text);
 	QString ansi_parse(const QString &code);
-        void help();
-        void teleport();
+    void help();
+    void teleport();
 	void checkMobInit(VNumber vnum);
+    void checkObjInit(VNumber vnum);
 	void rstat();
-        void closeEvent( QCloseEvent* );
+    void closeEvent( QCloseEvent* );
 	int inverseDirection(int dir);
-        void editRoom(VNumber room);
+    void editRoom(VNumber room);
+    void editMob(VNumber mob);
+    void statMob(const Mob *mob, VNumber room);
+    void statObj(const Item* item, VNumber room);
+    void showMob(const Mob *mob, VNumber room);
+    void showObj(const Item* item, VNumber room);
+    void initMob(const Mob* mob, VNumber room);
+    void initObj(const Item* item, VNumber room);
+    const Mob* findMobInRoom(VNumber room, QString name, bool* ok);
+    const Item* findObjInRoom(VNumber room, QString name, bool* ok);
+    void editObj(VNumber mob);
+    void editZone(const Zone& zone, VNumber line);
+    bool viewKeyowrd(VNumber room, QString key);
 
 protected:
+    void PrintCommand(QTextBrowser *t, ZoneCommand zc);
 	QScrollBar *scrollBar;
 	Area m_area;
 	Area *m_area_data;

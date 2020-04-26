@@ -19,10 +19,12 @@ public:
 signals:
   void dataSaved();
 
+public slots:
+    void somethingChanged();
+
 protected slots:
   void saveData();
   void restoreData();
-  void somethingChanged();
   void saveAndClose();
   void showNextMob();
   void showPrevMob();

@@ -288,6 +288,20 @@ namespace ts
     return true;
   }
 
+  const Mob& Area::mob(QString key) const
+  {
+      mobs_const_iterator it = m_mobs.begin();
+      while (it != m_mobs.end())
+      {
+          if ((*it).name().toLower().startsWith(key.toLower()))
+              return *it;
+          ++it;
+      }
+      QString sException = "";
+      sException.sprintf("Mob %s not found.", key);
+      throw XObjectNotFound(sException);
+  }
+
   const Mob& Area::mob( VNumber vnum ) const
   {
     mobs_const_iterator it = m_mobs.begin();
@@ -301,6 +315,19 @@ namespace ts
     QString sException = "";
     sException.sprintf( "Mob #%ld not found.", vnum );
     throw XObjectNotFound( sException );
+  }
+
+  bool Area::hasMob(QString key) const
+  {
+      try
+      {
+          (void)mob(key);
+          return true;
+      }
+      catch (XObjectNotFound&)
+      {
+          return false;
+      }
   }
 
   bool Area::hasMob( VNumber vnum ) const

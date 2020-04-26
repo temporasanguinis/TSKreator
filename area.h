@@ -70,7 +70,9 @@ namespace ts
     typedef QList<Mob>::iterator mobs_iterator;
     const QList<Mob>& mobs() const { return m_mobs; }
     const Mob& mob( VNumber ) const;
+    const Mob& mob(QString) const;
     bool hasMob( VNumber ) const;
+    bool hasMob(QString) const;
     void removeMob( VNumber );
     void addMob( const Mob& );
     void sortMobs();

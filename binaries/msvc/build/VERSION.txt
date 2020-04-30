@@ -1,3 +1,15 @@
+1.4
+- corretto spell clone che sia elemental_arrow
+- la lista room ora mostra se non combacia settore e flags
+- le room ora hanno coordinate X e Y (in beta testing, non usare)
+- weaponspell e eat spell si possono cercare scrivendo nel campo il nome al posto del numero
+- create un oggetto lo seleziona subito e apre la finestra per editarlo
+- clonare seleziona e mostra l'oggetto clonato
+- e possibile aprire la finetra della mappa che disegna le room in posizione x e y (in implementazione)
+- corretto un bug che non funzionava look down nel tester
+- ordinamento comandi in zona migliorato
+- fixxato un bug dove i mob seguaci non erano attaccatti al master nel zone
+__________________________________
 1.3
 - Miglioramenti al Tester: fate help nel tester
 __________________________________

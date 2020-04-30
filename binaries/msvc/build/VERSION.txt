@@ -1,6 +1,7 @@
 1.4
 - corretto spell clone che sia elemental_arrow
 - la lista room ora mostra se non combacia settore e flags
+- la lista mob mostra HP e Danno
 - le room ora hanno coordinate X e Y (in beta testing, non usare)
 - weaponspell e eat spell si possono cercare scrivendo nel campo il nome al posto del numero
 - create un oggetto lo seleziona subito e apre la finestra per editarlo

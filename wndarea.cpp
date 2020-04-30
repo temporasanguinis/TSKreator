@@ -20,6 +20,7 @@
 #include "wnditem.h"
 #include "wndmob.h"
 #include "wndtester.h"
+#include "wndmap.h"
 #include "settings.h"
 #include "config.h"
 #include "handler.h"
@@ -260,6 +261,10 @@ void WndArea::initMenuUtils()
   connect( mp_actMultipleModify, SIGNAL( triggered() ), this, SLOT( showMultipleModify() ));
   mp_menuUtils->addAction( mp_actMultipleModify );
   mp_barUtils->addAction( mp_actMultipleModify );
+
+  mp_actMap = new QAction(QIcon(":/images/tester.png"), trUtf8("Mappa..."), this);
+  connect(mp_actMap, SIGNAL(triggered()), this, SLOT(showMap()));
+  mp_menuUtils->addAction(mp_actMap);
 }
 
 void WndArea::closeEvent( QCloseEvent* e )
@@ -560,7 +565,7 @@ void WndArea::changeView( int id )
 #if defined( KREATOR_DEBUG )
   qDebug( "WndArea::changeView( int ) called." );
 #endif
-
+  m_selectedVNum = -1;
   switch( id )
   {
   case 0:
@@ -806,27 +811,46 @@ void WndArea::refreshRoomsView()
   QApplication::processEvents();
   mp_twObjectList->clear();
 
-  mp_twObjectList->setColumnCount( 4 );
+  mp_twObjectList->setColumnCount( 5 );
   QStringList labels;
-  labels << trUtf8( "# Stanza" ) << trUtf8( "Nome" ) << trUtf8( "Settore" ) << trUtf8( "Flags" );
+  labels << trUtf8( "# Stanza" ) << trUtf8( "Nome" ) << trUtf8( "Settore" ) << trUtf8( "Flags" ) << trUtf8("Errori");
   mp_twObjectList->setHeaderLabels( labels );
   QHeaderView* pHeader = mp_twObjectList->header();
   pHeader->resizeSection( 0, 80 );
   pHeader->resizeSection( 1, 270 );
   pHeader->resizeSection( 2, 120 );
+  pHeader->resizeSection( 3, 170);
   pHeader->setSortIndicator( 0, Qt::AscendingOrder );
   pHeader->setSortIndicatorShown( false );
 
   Area::rooms_const_iterator it = m_area.rooms().begin();
+  QTreeWidgetItem* selected = NULL;
   while( it != m_area.rooms().end() )
   {
     QTreeWidgetItem *item = new QTreeWidgetItem( mp_twObjectList );
+    if ((*it).vnumber() == m_selectedVNum) selected = item;
     item->setText( 0, Utils::vnumber2string( (*it).vnumber() ) );
     item->setText( 1, (*it).name() );
     item->setText( 2, ConstantName::roomSector( (*it).sectorType() ).toLower() );
     item->setText( 3, Utils::bitvector2string( (*it).flags(), Eleuconf::getAllFlagsCaption(Eleuconf::roomFlags) ).toLower() );
+    auto settore = ConstantName::roomSector((*it).sectorType()).toLower();
+    auto flags = Utils::bitvector2string((*it).flags(), Eleuconf::getAllFlagsCaption(Eleuconf::roomFlags)).toLower();
+    if ((settore.contains("inside") && !flags.contains("indoor"))) {
+        item->setText(4, "Settore inside richiede flag indoors");
+    }
+    else if (flags.contains("indoors")) {
+        if (!settore.contains("teleport") &&
+            !settore.contains("tree") &&
+            !settore.contains("underwater") &&
+            !settore.contains("inside")) {
+            item->setText(4, "Indoors richiede un settore: inside, teleport, tree, underwater");
+        }
+    }
     ++it;
   }
+
+  select(selected);
+
   QApplication::restoreOverrideCursor();
   QApplication::processEvents();
 }
@@ -840,27 +864,36 @@ void WndArea::refreshMobsView()
   QApplication::processEvents();
   mp_twObjectList->clear();
 
-  mp_twObjectList->setColumnCount( 4 );
+  mp_twObjectList->setColumnCount( 6 );
   QStringList labels;
-  labels << trUtf8( "# Mob" ) << trUtf8( "Nome" ) << trUtf8( "Razza" ) << trUtf8( "Acts" );
+  labels << trUtf8( "# Mob" ) << trUtf8( "Nome" ) << trUtf8( "Razza" ) << trUtf8("HP") << trUtf8("Dam") << trUtf8( "Acts" );
   mp_twObjectList->setHeaderLabels( labels );
   QHeaderView* pHeader = mp_twObjectList->header();
   pHeader->resizeSection( 0, 80 );
   pHeader->resizeSection( 1, 270 );
   pHeader->resizeSection( 2, 120 );
+  pHeader->resizeSection( 3, 60);
+  pHeader->resizeSection( 4, 80);
   pHeader->setSortIndicator( 0, Qt::AscendingOrder );
   pHeader->setSortIndicatorShown( false );
 
   Area::mobs_const_iterator it = m_area.mobs().begin();
+  QTreeWidgetItem* selected = NULL;
   while( it != m_area.mobs().end() )
   {
     QTreeWidgetItem *item = new QTreeWidgetItem( mp_twObjectList );
+    if ((*it).vnumber() == m_selectedVNum) selected = item;
     item->setText( 0, Utils::vnumber2string( (*it).vnumber() ) );
     item->setText( 1, (*it).shortDescription() );
     item->setText( 2, ConstantName::characterRace( (*it).race() ).toLower() );
-    item->setText( 3, Utils::bitvector2string( (*it).acts(), Eleuconf::getAllFlagsCaption(Eleuconf::mobActionsFlags) ).toLower() );
+    item->setText( 3, QString::number((*it).maxHitPoints()));
+    item->setText( 4, (*it).damage().toString());
+    item->setText( 5, Utils::bitvector2string( (*it).acts(), Eleuconf::getAllFlagsCaption(Eleuconf::mobActionsFlags) ).toLower() );
     ++it;
   }
+
+  select(selected);
+
   QApplication::restoreOverrideCursor();
   QApplication::processEvents();
 }
@@ -887,9 +920,11 @@ void WndArea::refreshItemsView()
   pHeader->setSortIndicatorShown( false );
 
   Area::items_const_iterator it = m_area.items().begin();
+  QTreeWidgetItem* selected = NULL;
   while( it != m_area.items().end() )
   {
     QTreeWidgetItem *item = new QTreeWidgetItem( mp_twObjectList );
+    if ((*it).vnumber() == m_selectedVNum) selected = item;
     item->setText( 0, Utils::vnumber2string( (*it).vnumber() ) );
     item->setText( 1, (*it).shortDescription() );
     item->setText( 2, ConstantName::itemType( (*it).itemType() ).toLower() );
@@ -897,8 +932,19 @@ void WndArea::refreshItemsView()
     item->setText( 4, Utils::bitvector2string( (*it).extraFlags(), Eleuconf::getAllFlagsCaption(Eleuconf::objFlags, 1) ).toLower() );
     ++it;
   }
+
+  select(selected);
+
   QApplication::restoreOverrideCursor();
   QApplication::processEvents();
+}
+
+void WndArea::select(QTreeWidgetItem* sel) {
+    if (sel) {
+        mp_twObjectList->clearSelection();
+        mp_twObjectList->setItemSelected(sel, true);
+        mp_twObjectList->scrollToItem(sel);
+    }
 }
 
 void WndArea::refreshShopsView()
@@ -921,14 +967,19 @@ void WndArea::refreshShopsView()
   pHeader->setSortIndicatorShown( false );
 
   Area::shops_const_iterator it = m_area.shops().begin();
+  QTreeWidgetItem* selected = NULL;
   while( it != m_area.shops().end() )
   {
     QTreeWidgetItem *item = new QTreeWidgetItem( mp_twObjectList );
+    if ((*it).vnumber() == m_selectedVNum) selected = item;
     item->setText( 0, Utils::vnumber2string( (*it).vnumber() ) );
     item->setText( 1, m_area.shopName( (*it).vnumber() ) );
     item->setText( 2, m_area.mobName( (*it).keeper() ) );
     ++it;
   }
+  
+  select(selected);
+
   QApplication::restoreOverrideCursor();
   QApplication::processEvents();
 }
@@ -958,9 +1009,11 @@ void WndArea::refreshZonesView()
   pHeader->setSortIndicatorShown( false );
 
   Area::zones_const_iterator it = m_area.zones().begin();
+  QTreeWidgetItem* selected = NULL;
   while( it != m_area.zones().end() )
   {
     QTreeWidgetItem *item = new QTreeWidgetItem( mp_twObjectList );
+    if ((*it).vnumber() == m_selectedVNum) selected = item;
     item->setText( 0, Utils::vnumber2string( (*it).vnumber(), 3 ) );
     item->setText( 1, (*it).name() );
     item->setText( 2, ConstantName::zoneRepopMode( (*it).repopMode() ).toLower() );
@@ -968,6 +1021,8 @@ void WndArea::refreshZonesView()
     item->setText( 4, Utils::bitvector2string( (*it).newFlags(), Eleuconf::getAllFlagsCaption(Eleuconf::zoneFlags) ).toLower() );
     ++it;
   }
+
+  select(selected);
 
   QApplication::restoreOverrideCursor();
   QApplication::processEvents();
@@ -1048,6 +1103,8 @@ void WndArea::cloneObject()
   qDebug( "WndArea::cloneObject() called." );
 #endif
 
+  m_selectedVNum = -1;
+
   QList<QTreeWidgetItem*> wiList = mp_twObjectList->selectedItems();
   if( wiList.empty() )
     return;
@@ -1062,6 +1119,7 @@ void WndArea::cloneObject()
     {
       Zone new_zone( m_area.zone( vnumSelected ) );
       new_zone.setVNumber( ( m_area.topZonesVNumber() + 1 ) );
+      m_selectedVNum = new_zone.vnumber();
       m_area.addZone( new_zone );
       refreshZonesView();
     }
@@ -1073,6 +1131,7 @@ void WndArea::cloneObject()
       Room new_room;
 	  new_room.copyFromRoom(m_area.room(vnumSelected),false);
 	  new_room.setVNumber((m_area.topRoomsVNumber() + 1));
+      m_selectedVNum = new_room.vnumber();
 	  m_area.addRoom( new_room );
       refreshRoomsView();
     }
@@ -1083,6 +1142,7 @@ void WndArea::cloneObject()
     {
       Item new_item( m_area.item( vnumSelected ) );
       new_item.setVNumber( ( m_area.topItemsVNumber() + 1 ) );
+      m_selectedVNum = new_item.vnumber();
       m_area.addItem( new_item );
       refreshItemsView();
     }
@@ -1093,6 +1153,7 @@ void WndArea::cloneObject()
     {
       Mob new_mob( m_area.mob( vnumSelected ) );
       new_mob.setVNumber( ( m_area.topMobsVNumber() + 1 ) );
+      m_selectedVNum = new_mob.vnumber();
       m_area.addMob( new_mob );
       refreshMobsView();
     }
@@ -1103,12 +1164,14 @@ void WndArea::cloneObject()
     {
       Shop new_shop( m_area.shop( vnumSelected ) );
       new_shop.setVNumber( ( m_area.topShopsVNumber() + 1 ) );
+      m_selectedVNum = new_shop.vnumber();
       m_area.addShop( new_shop );
       refreshShopsView();
     }
   }
   else
     qWarning( "WndArea::cloneObject() : unknown object_type." );
+
 }
 
 void WndArea::createObject()
@@ -1116,10 +1179,12 @@ void WndArea::createObject()
 #if defined( KREATOR_DEBUG )
   qDebug( "WndArea::createObject() called." );
 #endif
+  m_selectedVNum = -1;
 
   if( m_currentObjectTypeList == ObjectData::Object_Zone )
   {
     Zone new_zone( m_area.newZonesVNumber() );
+    m_selectedVNum = new_zone.vnumber();
     m_area.addZone( new_zone );
     refreshZonesView();
   }
@@ -1129,28 +1194,35 @@ void WndArea::createObject()
     if( KreatorSettings::instance().assignZoneToRooms() )
       new_room.setZone( m_area.zoneReferenced( new_room.vnumber() ) );
     m_area.addRoom( new_room );
+    m_selectedVNum = new_room.vnumber();
     refreshRoomsView();
   }
   else if( m_currentObjectTypeList == ObjectData::Object_Item )
   {
     Item new_item( m_area.newItemsVNumber() );
+    m_selectedVNum = new_item.vnumber();
     m_area.addItem( new_item );
     refreshItemsView();
   }
   else if( m_currentObjectTypeList == ObjectData::Object_Mob )
   {
     Mob new_mob( m_area.newMobsVNumber() );
+    m_selectedVNum = new_mob.vnumber();
     m_area.addMob( new_mob );
     refreshMobsView();
   }
   else if( m_currentObjectTypeList == ObjectData::Object_Shop )
   {
     Shop new_shop( m_area.newShopsVNumber() );
+    m_selectedVNum = new_shop.vnumber();
     m_area.addShop( new_shop );
     refreshShopsView();
   }
   else
     qWarning( "WndArea::createObject() : unknown object_type." );
+
+  if (m_selectedVNum>=0) showEditDialog(m_currentObjectTypeList, m_selectedVNum);
+
 }
 
 void WndArea::changeFileName()
@@ -1278,6 +1350,16 @@ void WndArea::showTester()
   WndTester* pWnd = new WndTester( &m_area, this );
   m_childs.append( pWnd );
   pWnd->show();
+}
+
+void WndArea::showMap()
+{
+#if defined( KREATOR_DEBUG )
+    qDebug("WndArea::showMap() called.");
+#endif
+    WndMap* pWnd = new WndMap(&m_area, this);
+    m_childs.append(pWnd);
+    pWnd->show();
 }
 
 void WndArea::showMultipleModify()

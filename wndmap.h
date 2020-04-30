@@ -3,6 +3,7 @@
 
 #include <QMap>
 #include <QGLWidget>
+#include <QCloseEvent>
 
 #include "room.h"
 #include "area.h"
@@ -44,9 +45,12 @@ namespace ts
         Q_OBJECT
 
         public:
-            WndMap(Area ar);
+            WndMap(Area *ar, QWidget* parent);
 
-        private:
+    protected:
+        void closeEvent(QCloseEvent* e);
+
+    private:
             GlMap *map;
 
     };

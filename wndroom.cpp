@@ -104,6 +104,8 @@ void WndRoom::init()
   mp_leCharLimit->setValidator( Validator::unsignedInteger() );
   mp_leRiverSpeed->setValidator( Validator::unsignedInteger() );
 
+  connect(mp_PosX, SIGNAL(textChanged(const QString&)), this, SLOT(somethingChanged()));
+  connect(mp_PosY, SIGNAL(textChanged(const QString&)), this, SLOT(somethingChanged()));
   connect( mp_leVNumber, SIGNAL( textChanged( const QString& ) ), this, SLOT( somethingChanged() ) );
   connect( mp_leZone, SIGNAL( textChanged( const QString& ) ), this, SLOT( somethingChanged() ) );
   connect( mp_leName, SIGNAL( textChanged( const QString& ) ), this, SLOT( somethingChanged() ) );
@@ -239,6 +241,8 @@ void WndRoom::loadData()
   refreshFlags();
   refreshExits();
   refreshExtraDescriptions();
+  mp_PosX->setText(QString::number(m_room.getX()));
+  mp_PosY->setText(QString::number(m_room.getY()));
   mp_pbSave->setEnabled( false );
   refreshTitle();
 }
@@ -277,7 +281,7 @@ void WndRoom::saveData()
   m_room.setRiverDir( mp_comboRiverDirection->currentIndex() );
   m_room.setRiverSpeed( mp_leRiverSpeed->text().toInt() );
   m_room.setDescription( mp_teDescription->toPlainText() );
-
+  m_room.setPos(mp_PosX->text().toInt(), mp_PosY->text().toInt());
   m_area.addRoom( m_room );
   m_area.setRoomsChanged();
   m_area.sortRooms();

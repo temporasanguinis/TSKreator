@@ -23,7 +23,7 @@ namespace ts
     bool operator<( const MobInit& mi ) const { return m_master.parent().priority() < mi.m_master.parent().priority(); }
     bool operator>( const MobInit& mi ) const { return m_master.parent().priority() > mi.m_master.parent().priority(); }
 
-    VNumber id() const { return m_master.id(); }
+    VNumber id() const;
     ZoneCommandGroup master() const { return m_master; }
 
     void setMaster( const ZoneCommandGroup& new_value ) { m_master = new_value; }

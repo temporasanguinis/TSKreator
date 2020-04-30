@@ -24,6 +24,7 @@ class WndArea : public QMainWindow, private Ui::GuiArea
 
     bool isChanged() { return m_area.isChanged(); }
     void loadArea( const QString& );
+    void select(QTreeWidgetItem* item);
 
   public slots:
     void saveArea();
@@ -54,6 +55,7 @@ class WndArea : public QMainWindow, private Ui::GuiArea
     void showFind();
 	void showTester();
     void showMultipleModify();
+    void showMap();
 
   protected:
     void init();
@@ -89,6 +91,7 @@ class WndArea : public QMainWindow, private Ui::GuiArea
     QAction* mp_actFind;
 	QAction* mp_actTester;
     QAction* mp_actMultipleModify;
+    QAction* mp_actMap;
 
     QMenu* mp_menuArea;
     QMenu* mp_menuActions;
@@ -105,7 +108,7 @@ class WndArea : public QMainWindow, private Ui::GuiArea
     int m_currentObjectTypeList;
     MyQt::ButtonGroup* mp_bgViews;
     QList<QWidget*> m_childs;
-
+    VNumber m_selectedVNum = -1;
 };
 
 #endif // TS_WNDAREA_H

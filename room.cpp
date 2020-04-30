@@ -24,6 +24,8 @@ namespace ts
     /* river */
     m_riverDir = 0;
     m_riverSpeed = 0;
+    posX = 0;
+    posY = 0;
     /* lists */
     if( !m_extraDescriptions.empty() )
       m_extraDescriptions.clear();
@@ -66,6 +68,8 @@ namespace ts
 	  m_riverDir = r.m_riverDir;
 	  m_riverSpeed = r.m_riverSpeed;
 	  m_extraDescriptions = r.m_extraDescriptions;
+      posX = r.posX;
+      posY = r.posY;
 	  if (cloneExits)
 	  {
 		  m_exits = r.m_exits;
@@ -94,6 +98,8 @@ namespace ts
       m_riverSpeed = r.m_riverSpeed;
       m_extraDescriptions = r.m_extraDescriptions;
       m_exits = r.m_exits;
+      posX = r.posX;
+      posY = r.posY;
     }
     return *this;
   }
@@ -294,6 +300,11 @@ namespace ts
       ++itd;
     }
 
+    if (posX > 0 && posY > 0) {
+        stream << "L" << endl;
+        stream << posX << " " << posY << endl << flush;
+        qDebug("saving location.");
+    }
     /* Closing fields */
     stream << "S" << endl << flush;
 
@@ -377,6 +388,12 @@ namespace ts
       case 'E': /* extra description field */
         loadExtraDescription( pFile );
         break;
+      case 'L': /* location field */
+          {
+          posX = Utils::readNumber(pFile, "Position X", 0);
+          posY = Utils::readNumber(pFile, "Position Y", 0);
+          }
+          break;
       case 'S': /* end of room */
         qDebug( "%s loading completed.", dumpObject().toUtf8().data() );
         validate();

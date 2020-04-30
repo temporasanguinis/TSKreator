@@ -85,7 +85,12 @@ namespace ts
           return true;
       }
       else if (vnum1 == vnum2) {
-          return loc1 < loc2;
+          if (loc1 < loc2) {
+              return true;
+          }
+          else if (loc1 == loc2) {
+              return s1.id() < s2.id();
+          }
       }
       return false;
   }
@@ -173,9 +178,14 @@ namespace ts
 	}
     else if( zc.isMobLoad() || zc.isMobFollower() )
     {
-        lastAddType = 1;
-      flushBuffer();
-      m_lastMobInit.setParent( zc );
+        if (!zc.isMobFollower()) {
+            lastAddType = 1;
+            flushBuffer();
+            m_lastMobInit.setParent(zc);
+        }
+        else {
+            m_lastMobInit.addSon(zc);
+        }
     }
     else if( zc.isMobFear() || zc.isMobHate() || zc.isMobEquip() || zc.isMobGive() )
     {

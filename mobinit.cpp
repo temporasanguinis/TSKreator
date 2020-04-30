@@ -39,6 +39,8 @@ namespace ts
     return *this;
   }
 
+  VNumber MobInit::id() const { return m_master.id(); }
+
   void MobInit::addFollower( const ZoneCommandGroup& zcg )
   {
     removeFollower( zcg.id() );

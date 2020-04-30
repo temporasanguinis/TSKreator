@@ -157,6 +157,17 @@ void WndItemAffects::somethingChanged()
   qDebug( "WndItemAffects::somethingChanged() called." );
 #endif
   mp_pbSave->setEnabled( true );
+  for (size_t i = 0; i < 4; i++)
+  {
+      int idx = getComboBoxAffect(i)->currentIndex();
+      if (idx == ITEM_AFFECT_WEAPON_SPELL ||
+          idx == ITEM_AFFECT_EAT_SPELL) {
+          getLineEditAffect(i)->setValidator(Validator::spell());
+      }
+      else {
+          getLineEditAffect(i)->setValidator(Validator::integer());
+      }
+  }
   refreshTitle();
 }
 
@@ -280,7 +291,8 @@ void WndItemAffects::editAffect( int id )
   QComboBox *pcb = getComboBoxAffect( id );
 
   long newValue = 0;
-  long curValue = ple->text().toLong();
+  bool ok;
+  long curValue = ple->text().toLong(&ok);
 
   switch( pcb->currentIndex() )
   {
@@ -296,6 +308,7 @@ void WndItemAffects::editAffect( int id )
 
     case ITEM_AFFECT_EAT_SPELL:
     case ITEM_AFFECT_WEAPON_SPELL:
+        
       newValue = SelectObject::spell( curValue, this );
       break;
 

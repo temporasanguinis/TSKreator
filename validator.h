@@ -3,10 +3,40 @@
 #define TS_VALIDATOR_H
 
 #include <QIntValidator>
+#include "selectobject.h"
+
+class SpellValidator : public QIntValidator
+{
+public:
+    explicit SpellValidator(QObject* parent = nullptr)
+        :QIntValidator(parent) {}
+
+    QValidator::State validate(QString& str, int& i) const {
+        if (!str.size() || QIntValidator::validate(str, i) == State::Acceptable) {
+            return State::Acceptable;
+        }
+        int spell = SelectObject::findSpell(str);
+        if (spell) {
+            return State::Intermediate;
+        }
+        return State::Invalid;
+    }
+
+    virtual void fixup(QString& input)const override {
+        input = QString::number(SelectObject::findSpell(input));
+    }
+};
 
 class Validator
 {
 public:
+    static const QValidator* spell()
+    {
+        if (!mp_spell)
+            mp_spell = new SpellValidator();
+        return mp_spell;
+    }
+
   static const QIntValidator* vnumber()
   {
     if( !mp_vnumber )
@@ -61,6 +91,7 @@ private:
   static QIntValidator* mp_vnumber;
   static QIntValidator* mp_integer;
   static QIntValidator* mp_unsignedInteger;
+  static QValidator* mp_spell;
 
 };
 

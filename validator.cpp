@@ -4,3 +4,4 @@
 QIntValidator* Validator::mp_vnumber = NULL;
 QIntValidator* Validator::mp_integer = NULL;
 QIntValidator* Validator::mp_unsignedInteger = NULL;
+QValidator* Validator::mp_spell = NULL;

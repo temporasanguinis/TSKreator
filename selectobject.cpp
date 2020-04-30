@@ -419,6 +419,29 @@ int SelectObject::exit( const Area& area, VNumber vnum_room, int def_value, QWid
   return getLong( sList, QObject::trUtf8( "Seleziona la direzione dell'uscita" ), cur_item, def_value, parent );
 }
 
+int SelectObject::findSpell(QString value)
+{
+#if defined( KREATOR_DEBUG )
+    qDebug("SelectObject::findSpell( int, QWidget* ) called.");
+#endif
+
+    QStringList sList;
+    QString sTmp = "";
+    int cur_item = 0;
+    int i = 0;
+    QList<Spell>::const_iterator it = Handler::spells().begin();
+    it++;
+    while (it != Handler::spells().end())
+    {
+        if ((*it).name().toLower().contains(value.toLower()))
+            return (*it).id();
+
+        it++;
+    }
+
+    return 0;
+}
+
 int SelectObject::spell( int def_value, QWidget* parent )
 {
 #if defined( KREATOR_DEBUG )

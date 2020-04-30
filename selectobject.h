@@ -3,6 +3,8 @@
 #define TS_SELECTOBJECT_H
 
 #include <QStringList>
+#include <QIntValidator>
+#include <QValidator>
 #include "area.h"
 #include "wndselectflags.h"
 
@@ -10,7 +12,6 @@
 using namespace ts;
 
 class QWidget;
-
 
 class SelectObject
 {
@@ -27,6 +28,7 @@ public:
   static int equipmentPosition( int def_value, QWidget* parent = 0 );
   static int exitStatus( int def_value, QWidget* parent = 0 );
   static int exit( const Area&, VNumber vnum_room, int def_value, QWidget* parent = 0 );
+  static int findSpell(QString value);
   static int spell( int def_value, QWidget* parent = 0 );
   static int itemWeaponDamageType( int def_value, QWidget* parent = 0 );
   static int itemTrapDamageType( int def_value, QWidget* parent = 0 );

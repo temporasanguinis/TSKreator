@@ -26,6 +26,11 @@ namespace ts
   public:
     void init();
     void validate();
+    virtual bool operator<(const Zone& zc) const { return minVNumber() < zc.minVNumber(); }
+    virtual bool operator>(const Zone& zc) const { return minVNumber() > zc.minVNumber(); }
+    virtual bool operator==(const Zone& zc) const { return minVNumber() == zc.minVNumber(); }
+    virtual bool operator<=(const Zone& zc) const { return minVNumber() <= zc.minVNumber(); }
+    virtual bool operator>=(const Zone& zc) const { return minVNumber() >= zc.minVNumber(); }
 
     Zone();
     explicit Zone( VNumber, const QString& zone_name = "" );

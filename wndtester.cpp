@@ -256,7 +256,7 @@ void WndTester::mudChangeText()
         }
     } else if (QString("look").startsWith(buf)) {
         if (buf2 == "s" || buf2 == "w" || buf2 == "n" || buf2 == "e" || buf2 == "u" || buf2 == "s" ||
-            buf2 == "a" || buf2 == "b" || buf2 == "o") {
+            buf2 == "a" || buf2 == "b" || buf2 == "o" || buf2 == "d") {
             int dir = -1;
             if (QString("south").startsWith(buf2) || QString("sud").startsWith(buf2))
                 dir = EXIT_DIRECTION_SOUTH;
@@ -279,10 +279,10 @@ void WndTester::mudChangeText()
                 textBrowser->append(ParseAnsiColors(QString("$c0009Guardi verso ").append(buf2.toUpper())));
                 Exit exitp = rp.exit(dir);
 
-                if (exitp.hasKeyHole() && !exitp.doorKey())
+                if (exitp.hasDoor() && !exitp.doorKey())
                     textBrowser->append(ParseAnsiColors(QString("$c0010.. attraverso un'uscita (%1)").arg(exitp.keys())));
 
-                if (exitp.hasKeyHole() && exitp.doorKey())
+                if (exitp.hasDoor() && exitp.doorKey())
                     textBrowser->append(ParseAnsiColors(QString("$c0010.. attraverso un'uscita (%1) chiusa dalla chiave: %2").arg(exitp.keys()).arg(exitp.doorKey())));
 
                 VNumber crold = cr;

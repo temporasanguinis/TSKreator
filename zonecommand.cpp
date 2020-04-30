@@ -293,7 +293,7 @@ namespace ts
     return sCommand;
   }
 
-  int ZoneCommand::priority() const
+  long ZoneCommand::priority() const
   {
 	if (isQuestorCommand())
       return 1005000;
@@ -313,8 +313,11 @@ namespace ts
       return 9000000 + argument( Argument1 );
     else if( isItemPut() )
       return 10000000 + argument( Argument3 );
-    else if( isDoorInit() )
-      return 11000000 + argument( Argument1 );
+    else if (isDoorInit()) {
+        auto a1 = argument(Argument1);
+        auto a2 = argument(Argument2);
+        return 11000000 + ((a1<<4) | a2);
+    }
     else
       return 50000000;
   }

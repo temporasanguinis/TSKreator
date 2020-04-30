@@ -30,6 +30,9 @@ namespace ts
     // Useful only in DoorInits
     virtual bool operator<( const ZoneCommand& zc ) const { return priority() < zc.priority(); }
     virtual bool operator>( const ZoneCommand& zc ) const { return priority() > zc.priority(); }
+    virtual bool operator==(const ZoneCommand& zc) const { return priority() == zc.priority(); }
+    virtual bool operator<=(const ZoneCommand& zc) const { return priority() <= zc.priority(); }
+    virtual bool operator>=(const ZoneCommand& zc) const { return priority() >= zc.priority(); }
 
     QChar type() const { return m_type; }
     long argument( Argument arg ) const { return mp_args[ arg ]; }
@@ -87,7 +90,7 @@ namespace ts
 
     QString toString( bool append_comment ) const;
 
-    int priority() const;
+    long priority() const;
 
   protected:
     QChar m_type;

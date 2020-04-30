@@ -1,6 +1,7 @@
 
 #include "wndmap.h"
 #include <QHBoxLayout>
+#include "kreatorsettings.h"
 
 namespace ts
 {
@@ -33,13 +34,17 @@ void GlMap::initializeGL()
 
 }
 
+void WndMap::closeEvent(QCloseEvent* e)
+{
+    e->accept();
+    KreatorSettings::instance().saveGuiStatus("MapWindow", this);
+}
+
 void GlMap::paintGL()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);     // Clear The Screen And The Depth Buffer
     glLoadIdentity();                       // Reset The View
     glCallList(object);
-
-
 }
 
 void GlMap::resizeGL(int w, int h)
@@ -47,8 +52,10 @@ void GlMap::resizeGL(int w, int h)
     glViewport( 0, 0, (GLint)w, (GLint)h );
     glMatrixMode( GL_PROJECTION );
     glLoadIdentity();
-    glFrustum( -1.0, 1.0, -1.0, 1.0, 5.0, 15.0 );
+    glOrtho( 0, w, 0, h, 0.0, 15.0 );
+    //glFrustum(-1000.0, 1000.0, -1000.0, 1000.0, 5.0, 15.0);
     glMatrixMode( GL_MODELVIEW );
+    //glLoadIdentity();
 }
 
 GLuint GlMap::makeobject()
@@ -61,22 +68,27 @@ GLuint GlMap::makeobject()
 
     for(int i = 0; i < m_rooms.size(); i++) {
         struct glCoords gC;
-        if(!i) {
+        auto rm = m_rooms.at(i);
+        if(!objMap.contains(rm.vnumber()) &&
+            rm.getX() && rm.getY()) {
             glBegin(GL_QUADS);
-            glTexCoord2f( 0.0, 0.0 ); glVertex3f( -0.2, -0.2,  0.2 );
-            glTexCoord2f( 1.0, 0.0 ); glVertex3f(  0.2, -0.2,  0.2 );
-            glTexCoord2f( 1.0, 1.0 ); glVertex3f(  0.2,  0.2,  0.2 );
-            glTexCoord2f( 0.0, 1.0 ); glVertex3f( -0.2,  0.2,  0.2 );
+            gC.aX = (rm.getX()) * 100.0 - 25;
+            gC.bX = (rm.getX()) * 100.0 + 25;
+            gC.aY = (rm.getY()) * 100.0 - 25;
+            gC.bY = (rm.getY()) * 100.0 + 25;
+            
+            glTexCoord2f( 0.0, 0.0 ); glVertex3f(gC.aX, gC.aY,  0.2 );
+            glTexCoord2f( 1.0, 0.0 ); glVertex3f(gC.bX, gC.aY,  0.2 );
+            glTexCoord2f( 1.0, 1.0 ); glVertex3f(gC.bX, gC.bY,  0.2 );
+            glTexCoord2f( 0.0, 1.0 ); glVertex3f(gC.aX, gC.bY,  0.2 );
+            /*
+            glTexCoord2f(0.0, 0.0); glVertex3f(-110.2, -110.2, 0.2);
+            glTexCoord2f(1.0, 0.0); glVertex3f(110.2, -110.2, 0.2);
+            glTexCoord2f(1.0, 1.0); glVertex3f(110.2, 110.2, 0.2);
+            glTexCoord2f(0.0, 1.0); glVertex3f(-110.2, 110.2, 0.2);
+            */
             glEnd();
-            gC.aX = -0.2;
-            gC.aY = 0.2;
-            gC.bX = 0.2;
-            gC.bY = -0.2;
             objMap[m_rooms.at(i).vnumber()] = gC;
-        } else if(objMap.contains(m_rooms.at(i).vnumber())) {
-
-        } else {
-
         }
 
 //         for(int k = 0; k < m_rooms.at(i).exits() ; k++) {
@@ -126,14 +138,15 @@ GLuint GlMap::makeobject()
     return list;
 }
 
-WndMap::WndMap(Area ar)
+WndMap::WndMap(Area *ar, QWidget* parent)
 {
-    map = new GlMap(ar.rooms(), this);
-    QHBoxLayout *lay = new QHBoxLayout;
+    map = new GlMap(ar->rooms(), parent);
+    QHBoxLayout *lay = new QHBoxLayout(parent);
     lay->addWidget(map);
     setLayout(lay);
-
-    resize(800, 600);
+    KreatorSettings::instance().loadGuiStatus("MapWindow", this);
+    //resize(parent->width(), parent->height());
+    
 }
 
 }

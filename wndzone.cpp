@@ -141,6 +141,17 @@ void WndZone::refreshView()
 
     mp_twZoneCommands->clear();
     mp_twZoneCommands->setAlternatingRowColors(mp_cbGroup->isChecked());
+    mp_twZoneCommands->setColumnCount(3);
+    mp_twZoneCommands->hideColumn(1);
+
+    QStringList labels;
+    labels << trUtf8("Linea") << trUtf8("Priorita'") << trUtf8("Comando");
+    mp_twZoneCommands->setHeaderLabels(labels);
+    QHeaderView* pHeader = mp_twZoneCommands->header();
+    pHeader->resizeSection(0, 100);
+    pHeader->resizeSection(1, 200);
+    pHeader->setStretchLastSection(true);
+
     ZoneCommandList::const_iterator it = m_zoneCommands.begin();
 
     QTreeWidgetItem* last_item = 0;
@@ -185,7 +196,8 @@ void WndZone::refreshView()
 
         if (item) {
             item->setText(0, Utils::vnumber2string((*it).id(), 6));
-            item->setText(1, sTxt);
+            item->setText(2, sTxt);
+            item->setText(1, QString::number((*it).priority()));
             if ((*it).id() == m_lastLineSelected) {
                 selected_item = item;
                 if ((*it).hasParent() && mp_cbGroup->isChecked())
@@ -415,7 +427,7 @@ void WndZone::editCommandLine()
     disconnect(pWndZoneCommand, SIGNAL(dataSaved()), this, SLOT(somethingChanged()));
     delete pWndZoneCommand;
 
-    item->setText(1, m_zoneCommands.command(iLine).toString(true));
+    item->setText(2, m_zoneCommands.command(iLine).toString(true));
 }
 
 void WndZone::lineSelected()

@@ -61,7 +61,12 @@ WndTester::WndTester(Area *ref_area, QWidget* parent)
     parentwnd = parent;
     init();
     le_Input->setFocus();
-    go(m_area.rooms().at(0).vnumber());
+    if (m_area.rooms().length()) {
+        go(m_area.rooms().at(0).vnumber());
+    }
+    else {
+        textBrowser->append(QString("<font color=\"red\" size=4>").append("NON CI SONO ROOMS IN AREA").append("</font>"));
+    }
 }
 
 WndTester::~WndTester()

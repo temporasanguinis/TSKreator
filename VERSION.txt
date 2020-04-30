@@ -1,15 +1,17 @@
 1.4
-- corretto spell clone che sia elemental_arrow
-- la lista room ora mostra se non combacia settore e flags
+- il tester non crasha piu se lanciato senza rooms
+- aggiungo ricerca spell sui values di pozioni, wand, staff e scroll
+- corretto spell 'clone' che sia 'elemental_arrow' come lo e' nel mud
+- la lista room ora mostra se non combacia settore con flags
 - la lista mob mostra HP e Danno
-- le room ora hanno coordinate X e Y (in beta testing, non usare)
-- weaponspell e eat spell si possono cercare scrivendo nel campo il nome al posto del numero
-- create un oggetto lo seleziona subito e apre la finestra per editarlo
-- clonare seleziona e mostra l'oggetto clonato
-- e possibile aprire la finetra della mappa che disegna le room in posizione x e y (in implementazione)
-- corretto un bug che non funzionava look down nel tester
+- le room ora hanno coordinate X e Y (in beta testing, non usare, anche se i file .wld con le coordinate vengono letti dal mud)
+- weaponspell e eat spell si possono cercare scrivendo nel campo il nome al posto del numero, che poi cambia in numero
+- creare un entita' la seleziona subito e apre la finestra per editarla
+- clonare seleziona e mostra l'entita' clonata nella lista
+- e' possibile aprire la finestra della mappa che disegna le room che hanno posizione x e y (in implementazione)
+- corretto un bug - non funzionava look down nel tester
 - ordinamento comandi in zona migliorato
-- fixxato un bug dove i mob seguaci non erano attaccatti al master nel zone
+- fixxato un bug dove i mob seguaci non erano attaccatti al master nel zone ma avevano una riga vuota in mezzo
 __________________________________
 1.3
 - Miglioramenti al Tester: fate help nel tester

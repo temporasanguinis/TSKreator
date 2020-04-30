@@ -115,11 +115,15 @@ void WndItemValues::refreshPanel()
     enableValueButton( ITEM_VALUE_1, true );
     enableValueButton( ITEM_VALUE_2, true );
     enableValueButton( ITEM_VALUE_3, true );
+    mp_leValue1->setValidator(Validator::spell());
+    mp_leValue2->setValidator(Validator::spell());
+    mp_leValue3->setValidator(Validator::spell());
     break;
 
   case ITEM_TYPE_WAND:
   case ITEM_TYPE_STAFF:
     enableValueButton( ITEM_VALUE_3, true );
+    mp_leValue3->setValidator(Validator::spell());
     break;
 
   case ITEM_TYPE_WEAPON:

@@ -24,8 +24,8 @@ namespace ts
     m_time[ SHOP_TIME_OPEN_2  ] = 15;
     m_time[ SHOP_TIME_CLOSE_2 ] = 19;
 
-    m_profitSell = 1.1;
-    m_profitBuy = 0.3;
+    m_profitSell = 1.1f;
+    m_profitBuy = 0.3f;
 
     for( i = 0; i < SHOP_REACTION_END; i++ )
       m_reactions[ i ] = 2;

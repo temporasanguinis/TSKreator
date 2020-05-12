@@ -60,7 +60,7 @@ protected:
 	Area m_area;
 	Area *m_area_data;
 	VNumber cr;
-        QWidget *parentwnd;
+    WndArea*parentwnd;
 
 };
 /*

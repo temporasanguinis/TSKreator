@@ -26,6 +26,7 @@ namespace ts
     m_riverSpeed = 0;
     posX = 0;
     posY = 0;
+    posZ = 0;
     /* lists */
     if( !m_extraDescriptions.empty() )
       m_extraDescriptions.clear();
@@ -70,6 +71,7 @@ namespace ts
 	  m_extraDescriptions = r.m_extraDescriptions;
       posX = r.posX;
       posY = r.posY;
+      posZ = r.posZ;
 	  if (cloneExits)
 	  {
 		  m_exits = r.m_exits;
@@ -100,6 +102,7 @@ namespace ts
       m_exits = r.m_exits;
       posX = r.posX;
       posY = r.posY;
+      posZ = r.posZ;
     }
     return *this;
   }
@@ -250,7 +253,7 @@ namespace ts
     qDebug( "%s added to %s.", new_exit.dumpObject().toUtf8().data(), dumpObject().toUtf8().data() );
   }
 
-  void Room::save( QTextStream& stream )
+  void Room::save( QTextStream& stream, bool map )
   {
     stream << "#" << m_vnumber << endl;
     stream << m_name << "~" << endl;
@@ -300,10 +303,12 @@ namespace ts
       ++itd;
     }
 
-    if (posX > 0 && posY > 0) {
+    if (map) {
         stream << "L" << endl;
-        stream << posX << " " << posY << endl << flush;
-        qDebug("saving location.");
+        stream << posX << " " << posY << " " << posZ << endl << flush;
+    }
+    else {
+        posX = posY = posZ = 0;
     }
     /* Closing fields */
     stream << "S" << endl << flush;
@@ -392,6 +397,7 @@ namespace ts
           {
           posX = Utils::readNumber(pFile, "Position X", 0);
           posY = Utils::readNumber(pFile, "Position Y", 0);
+          posZ = Utils::readNumber(pFile, "Position Z", 0);
           }
           break;
       case 'S': /* end of room */

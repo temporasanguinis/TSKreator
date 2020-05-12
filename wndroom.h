@@ -43,6 +43,7 @@ protected slots:
   void editExit();
   void editExit( QListWidgetItem* );
   void removeExit();
+  void followExit();
   void addExit();
   void showNextRoom();
   void showPrevRoom();

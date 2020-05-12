@@ -276,7 +276,14 @@ namespace ts
     QTextStream stream( &file );
     while( it != m_rooms.end() )
     {
-      (*it).save( stream );
+        bool map = false;
+        if (this->hasZone((*it).zone())) {
+            auto z = this->zone((*it).zone());
+            if (z.hasNewFlag(19)) {
+                map = true;
+            }
+        }
+      (*it).save( stream, map);
       ++it;
     }
 

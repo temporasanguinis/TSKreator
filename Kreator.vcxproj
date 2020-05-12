@@ -105,6 +105,29 @@
     <QtMoc Include="syntax.h" />
     <QtMoc Include="tskreator.h" />
     <ClInclude Include="types.h" />
+    <ClInclude Include="ui_guiarea.h" />
+    <ClInclude Include="ui_guichangevnumbers.h" />
+    <ClInclude Include="ui_guicreatearea.h" />
+    <ClInclude Include="ui_guiexit.h" />
+    <ClInclude Include="ui_guiextradescription.h" />
+    <ClInclude Include="ui_guifind.h" />
+    <ClInclude Include="ui_guiinit.h" />
+    <ClInclude Include="ui_guiitem.h" />
+    <ClInclude Include="ui_guiitemaffects.h" />
+    <ClInclude Include="ui_guiitemvalues.h" />
+    <ClInclude Include="ui_guimainwindow.h" />
+    <ClInclude Include="ui_guimob.h" />
+    <ClInclude Include="ui_guimobinit.h" />
+    <ClInclude Include="ui_guimultiplemodify.h" />
+    <ClInclude Include="ui_guireport.h" />
+    <ClInclude Include="ui_guiroom.h" />
+    <ClInclude Include="ui_guiselectflags.h" />
+    <ClInclude Include="ui_guisettings.h" />
+    <ClInclude Include="ui_guishop.h" />
+    <ClInclude Include="ui_guiteleportroom.h" />
+    <ClInclude Include="ui_guitester.h" />
+    <ClInclude Include="ui_guizone.h" />
+    <ClInclude Include="ui_guizonecommand.h" />
     <ClInclude Include="utils.h" />
     <ClInclude Include="validator.h" />
     <ClInclude Include="version.h" />
@@ -281,6 +304,9 @@
     <PreBuildEvent>
       <Command>copy $(ProjectDir)binaries\msvc\$(Configuration)\*.* $(OutDir)</Command>
     </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>copy "$(ProjectDir)GeneratedFiles\$(Configuration)\*.h" "$(ProjectDir)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -298,6 +324,9 @@
     <PreBuildEvent>
       <Command>copy $(ProjectDir)binaries\msvc\$(Configuration)\*.* $(OutDir)</Command>
     </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>copy "$(ProjectDir)GeneratedFiles\$(Configuration)\*.h" "$(ProjectDir)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

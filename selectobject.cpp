@@ -51,8 +51,6 @@ long SelectObject::getLong( const QStringList& string_list, const QString& label
     if( sRet.size() <= 2 )
       return def_value;
 
-    // We have problems with -1 value :-)
-
     int iIndex = sRet.indexOf( QString( "-" ), 1 );
     if( iIndex != -1 )
       sRet.truncate( iIndex - 1 );
@@ -296,7 +294,7 @@ VNumber SelectObject::exitRoom( const Area& area, VNumber def_vnum, QWidget* par
   int cur_item = 0;
   int iTmp = 1;
 
-  sTmp = QObject::trUtf8( "0 - Finta uscita" );
+  sTmp = QObject::trUtf8( "-1 - Finta uscita" );
   sList << sTmp;
   if( def_vnum == -1 )
     cur_item = 0;

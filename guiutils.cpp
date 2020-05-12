@@ -41,6 +41,11 @@ namespace TS
     return QIcon( ":/images/remove.png" );
   }
 
+  QIcon GetRightArrowIcon()
+  {
+      return QIcon(":/images/rightarrow.png");
+  }
+
   QIcon GetInitIcon()
   {
       return QIcon( ":/images/init.png" );

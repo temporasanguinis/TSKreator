@@ -25,7 +25,8 @@ class WndArea : public QMainWindow, private Ui::GuiArea
     bool isChanged() { return m_area.isChanged(); }
     void loadArea( const QString& );
     void select(QTreeWidgetItem* item);
-
+    void showEditDialog(int, VNumber);
+    void changeView(int);
   public slots:
     void saveArea();
     void saveAreaAs();
@@ -34,10 +35,8 @@ class WndArea : public QMainWindow, private Ui::GuiArea
 
   protected slots:
     void showEditDialog( QTreeWidgetItem*, int );
-    void showEditDialog( int, VNumber );
     void showEditDialog();
     void changeFileName();
-    void changeView( int );
     void refreshMobsView();
     void refreshItemsView();
     void refreshShopsView();

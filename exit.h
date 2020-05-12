@@ -46,7 +46,7 @@ namespace ts
     bool hasFlag( int flag ) const { return Bit::has( m_flags, flag ); }
     bool hasKeyHole() const { return m_doorKey != -1; }
     bool hasDoor() const { return Bit::has( m_flags, EXIT_FLAG_ISDOOR ); }
-    bool isFake() const { return m_toRoom == 0; }
+    bool isFake() const { return m_toRoom == VNumberInvalid || m_toRoom == ZoneVNumberInvalid; }
     bool hasDirection() const { return (m_direction >= EXIT_DIRECTION_NORTH && m_direction <= EXIT_DIRECTION_DOWN); }
     int status() const { return m_status; }
     bool isOpened() const { return m_status == EXIT_STATUS_OPENED; }

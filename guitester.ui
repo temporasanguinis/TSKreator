@@ -201,6 +201,19 @@ p, li { white-space: pre-wrap; }
        </property>
       </widget>
      </item>
+     <item>
+      <widget class="QCheckBox" name="chkAssegnaPosizioni">
+       <property name="toolTip">
+        <string>Muovendoti verso una uscita assegnera' le coordinate della room di destinazione a seconda di quelle della room corrente (Se indeterminato solo se la dest ha le coordinate vuote)</string>
+       </property>
+       <property name="text">
+        <string>Assegna posizioni</string>
+       </property>
+       <property name="tristate">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
    <item>

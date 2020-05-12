@@ -73,6 +73,7 @@ void WndRoom::init()
   mp_tbAddExit->setIcon( TS::GetAddIcon() );
   mp_tbEditExit->setIcon( TS::GetEditIcon() );
   mp_tbRemoveExit->setIcon( TS::GetRemoveIcon() );
+  mp_tbFollowExit->setIcon(TS::GetRightArrowIcon());
   mp_tbAddExtraDescription->setIcon( TS::GetAddIcon() );
   mp_tbEditExtraDescription->setIcon( TS::GetEditIcon() );
   mp_tbRemoveExtraDescription->setIcon( TS::GetRemoveIcon() );
@@ -106,6 +107,7 @@ void WndRoom::init()
 
   connect(mp_PosX, SIGNAL(textChanged(const QString&)), this, SLOT(somethingChanged()));
   connect(mp_PosY, SIGNAL(textChanged(const QString&)), this, SLOT(somethingChanged()));
+  connect(mp_PosZ, SIGNAL(textChanged(const QString&)), this, SLOT(somethingChanged()));
   connect( mp_leVNumber, SIGNAL( textChanged( const QString& ) ), this, SLOT( somethingChanged() ) );
   connect( mp_leZone, SIGNAL( textChanged( const QString& ) ), this, SLOT( somethingChanged() ) );
   connect( mp_leName, SIGNAL( textChanged( const QString& ) ), this, SLOT( somethingChanged() ) );
@@ -128,6 +130,11 @@ void WndRoom::init()
   connect( mp_tbEditExit, SIGNAL( clicked() ), this, SLOT( editExit() ) );
   connect( mp_tbAddExit, SIGNAL( clicked() ), this, SLOT( addExit() ) );
   connect( mp_tbRemoveExit, SIGNAL( clicked() ), this, SLOT( removeExit() ) );
+  connect(mp_tbFollowExit, SIGNAL(clicked()), this, SLOT(followExit()));
+  mp_tbEditExit->setToolTip("Proprieta'");
+  mp_tbAddExit->setToolTip("Aggiungi");
+  mp_tbRemoveExit->setToolTip("Elimina");
+  mp_tbFollowExit->setToolTip("Segui uscita");
 }
 
 void WndRoom::refreshPanel()
@@ -243,6 +250,7 @@ void WndRoom::loadData()
   refreshExtraDescriptions();
   mp_PosX->setText(QString::number(m_room.getX()));
   mp_PosY->setText(QString::number(m_room.getY()));
+  mp_PosZ->setText(QString::number(m_room.getZ()));
   mp_pbSave->setEnabled( false );
   refreshTitle();
 }
@@ -281,7 +289,7 @@ void WndRoom::saveData()
   m_room.setRiverDir( mp_comboRiverDirection->currentIndex() );
   m_room.setRiverSpeed( mp_leRiverSpeed->text().toInt() );
   m_room.setDescription( mp_teDescription->toPlainText() );
-  m_room.setPos(mp_PosX->text().toInt(), mp_PosY->text().toInt());
+  m_room.setPos(mp_PosX->text().toInt(), mp_PosY->text().toInt(), mp_PosZ->text().toInt());
   m_area.addRoom( m_room );
   m_area.setRoomsChanged();
   m_area.sortRooms();
@@ -602,5 +610,28 @@ void WndRoom::removeExit()
     refreshExits();
     somethingChanged();
   }
+}
+
+void WndRoom::followExit()
+{
+#if defined( KREATOR_DEBUG )
+    qDebug("WndRoom::followExit() called.");
+#endif
+    QList<QListWidgetItem*> wiList = mp_lwExits->selectedItems();
+    if (wiList.empty())
+        return;
+
+    QListWidgetItem* item = wiList.first();
+
+    QString sExitName = getExitName(item->text());
+
+    if (m_room.hasExit(sExitName))
+    {
+        auto ex = m_room.exit(sExitName);
+        if (m_area.hasRoom(ex.toRoom())) {
+            m_room = m_area.room(ex.toRoom());
+            loadData();
+        }
+    }
 }
 

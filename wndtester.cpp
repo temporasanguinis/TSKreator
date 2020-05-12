@@ -58,7 +58,7 @@ WndTester::WndTester(Area *ref_area, QWidget* parent)
     } else {
         //QMessageBox::information( this, "Kreator", QString(typeid(WndArea).name()) + " " + QString(typeid(*parent).name()));
     }*/
-    parentwnd = parent;
+    parentwnd = (WndArea*)parent;
     init();
     le_Input->setFocus();
     if (m_area.rooms().length()) {
@@ -480,6 +480,48 @@ void WndTester::do_move(int cmd)
     Exit exitp = rp.exit(cmd);
     if (exitp.hasKeyHole() && exitp.doorKey())
         textBrowser->append(ParseAnsiColors(QString("$c0010Attraversi un'uscita chiusa dalla chiave: %1").arg(exitp.doorKey())));
+
+    if (chkAssegnaPosizioni->checkState() == Qt::CheckState::PartiallyChecked || 
+        chkAssegnaPosizioni->checkState() == Qt::CheckState::Checked) {
+        if (m_area_data->hasRoom(exitp.toRoom())) {
+            int x = 0, y = 0, z = 0;
+            auto r = m_area_data->room(exitp.toRoom());
+            if (chkAssegnaPosizioni->checkState() == Qt::CheckState::Checked ||
+                (chkAssegnaPosizioni->checkState() == Qt::CheckState::PartiallyChecked &&
+                 r.getX() == 0 && r.getY() == 0 && r.getZ() == 0)) {
+                x = rp.getX();
+                y = rp.getY();
+                z = rp.getZ();
+                switch (exitp.direction())
+                {
+                case EXIT_DIRECTION_DOWN:
+                    z--;
+                    break;
+                case EXIT_DIRECTION_UP:
+                    z++;
+                    break;
+                case EXIT_DIRECTION_NORTH:
+                    y++;
+                    break;
+                case EXIT_DIRECTION_EAST:
+                    x++;
+                    break;
+                case EXIT_DIRECTION_SOUTH:
+                    y--;
+                    break;
+                case EXIT_DIRECTION_WEST:
+                    x--;
+                    break;
+                default:
+                    break;
+                }
+                r.setPos(x, y, z);
+                m_area_data->addRoom(r);
+                m_area = *(m_area_data);
+                parentwnd->somethingChanged();
+            }
+        }
+    }
     go(exitp.toRoom());
 }
 

@@ -21,7 +21,7 @@ namespace ts
     m_openCommand = EXIT_OPEN_COMMAND_DEFAULT;
     m_flags = 0;
 
-    m_toRoom = VNumberInvalid;
+    m_toRoom = ZoneVNumberInvalid;
     m_fromRoom = from_room;
 
     m_status = EXIT_STATUS_OPENED;
@@ -30,7 +30,7 @@ namespace ts
   Exit::Exit()
   {
     m_direction = EXIT_DIRECTION_INVALID;
-    init( "default", VNumberInvalid );
+    init( "default", ZoneVNumberInvalid);
 #if defined( TS_DEBUG_PANIC )
     qDebug( "%s created (default).", dumpObject().toUtf8().data() );
 #endif

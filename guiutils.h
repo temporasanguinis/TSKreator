@@ -18,6 +18,7 @@ namespace TS
   QIcon GetEditIcon();
   QIcon GetCopyIcon();
   QIcon GetRemoveIcon();
+  QIcon GetRightArrowIcon();
   QIcon GetInitIcon();
   void SetKreatorLogo( QWidget* );
   void SetLeftArrow( QAbstractButton* );

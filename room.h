@@ -89,10 +89,11 @@ namespace ts
     void load( FILE* );
     void loadExit( FILE*, const QString& );
     void loadExtraDescription( FILE* );
-    void save( QTextStream& );
-    void setPos(int x, int y) { posX = x; posY = y; }
-    int getX() { return posX; }
-    int getY() { return posY; }
+    void save( QTextStream&, bool map);
+    void setPos(int x, int y, int z) { posX = x; posY = y; posZ = z; }
+    int getX() const { return posX; }
+    int getY() const { return posY; }
+    int getZ() const { return posZ; }
 
   protected:
     QString m_description;
@@ -114,6 +115,7 @@ namespace ts
     QList<Exit> m_exits;
     int posX = 0;
     int posY = 0;
+    int posZ = 0;
   };
 
 } // namespace ts

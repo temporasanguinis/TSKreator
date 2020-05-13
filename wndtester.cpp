@@ -118,8 +118,18 @@ void WndTester::go(VNumber vnum)
     if (m_area.hasRoom(vnum)) {
         cr = vnum;
         QString buf;
-        statusbar->showMessage(QString("Vnum: %1").arg(vnum));
         Room rp = m_area.room(vnum);
+        auto &zn = m_area.zone(floor(vnum / 100));
+        if (zn.hasNewFlag(19)) {
+            int x, y, z;
+            x = rp.getX();
+            y = rp.getY();
+            z = rp.getZ();
+            statusbar->showMessage(QString("Vnum: %1, X:%2, Y:%3, Z:%4").arg(vnum).arg(x).arg(y).arg(z));
+        }
+        else {
+            statusbar->showMessage(QString("Vnum: %1").arg(vnum));
+        }
         buf = QString("<font color=\"yellow\" size=4>").append(ParseAnsiColors(rp.name())).append("</font>");
         if (rp.sectorType() == ROOM_SECTOR_TELEPORT) {
             buf.append(ParseAnsiColors(" $c0015 (TELEPORT)"));

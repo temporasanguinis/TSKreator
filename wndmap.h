@@ -12,6 +12,7 @@
 
 namespace ts
 {
+    
     typedef enum dirType {
         None = 0,
         Normal = 1,
@@ -62,6 +63,7 @@ namespace ts
                 {
                     roomMap[rm->vnumber()] = rm;
                 }
+                ResetObjects();
             }
             void ResetObjects();
             void setPos(GLfloat x, GLfloat y, GLfloat z) {
@@ -80,44 +82,7 @@ namespace ts
                 }
                 return false;
             }
-            bool moveSelected(GLfloat x, GLfloat y, GLfloat z) {
-                bool ok = true;
-                for (auto& r : objMap)
-                {
-                    Room* rm = const_cast<Room*>(roomMap[r.vnum]);
-                    int x2 = rm->getX() + x;
-                    int y2 = rm->getY() + y;
-                    int z2 = rm->getZ() + z;
-                    if (r.bSelected) {
-                        for (auto& r2 : objMap)
-                        {
-                            if (!r2.bSelected) {
-                                Room* rm2 = const_cast<Room*>(roomMap[r2.vnum]);
-                                if (rm2->getX() == x2 &&
-                                    rm2->getY() == y2 &&
-                                    rm2->getZ() == z2) {
-                                    ok = false;
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                    if (!ok) break;
-                }
-                if (!ok) {
-                    QMessageBox::warning(this, "Conflitto", "Lo spostamento non e' possibile perche alcune locazioni si sovraporrebbero!");
-                    return ok;
-                }
-                for (auto& r : objMap)
-                {
-                    if (r.bSelected) {
-                        Room* rm = const_cast<Room*>(roomMap[r.vnum]);
-                        rm->setPos(rm->getX() + x, rm->getY() + y, rm->getZ() + z);
-                    }
-                }
-                if (x || y ) ResetObjects();
-                return ok;
-            };
+            bool moveSelected(GLfloat x, GLfloat y, GLfloat z);
             void getPos(GLfloat &x, GLfloat &y, GLfloat &z) {
                 x = offsetX;
                 y = offsetY;
@@ -202,8 +167,13 @@ namespace ts
 
         public:
             WndMap(Area *ar, WndArea* parent);
-
+            void setRoomsChanged() { area->setRoomsChanged(); }
             WndArea* getWndArea() { return parent; }
+            void Refresh() {
+                QList<const Room*> rooms;
+                CreateRooms(rooms);
+                map->setRooms(rooms);
+            }
         public slots:
             void doubleClicked(VNumber vnum);
             void somethingChanged();
@@ -211,7 +181,7 @@ namespace ts
         void CreateRooms(QList<const Room*>& rooms);
         void closeEvent(QCloseEvent* e);
         virtual void wheelEvent(QWheelEvent*);
-        virtual void keyReleaseEvent(QKeyEvent*);
+        virtual void keyPressEvent(QKeyEvent*);
         void mouseMoveEvent(QMouseEvent* event);
 
 

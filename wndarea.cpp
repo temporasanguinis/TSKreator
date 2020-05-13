@@ -1359,9 +1359,35 @@ void WndArea::showMap()
 #if defined( KREATOR_DEBUG )
     qDebug("WndArea::showMap() called.");
 #endif
-    WndMap* pWnd = new WndMap(&m_area, this);
-    m_childs.append(pWnd);
-    pWnd->show();
+    try
+    {
+        WndMap* pWnd = NULL;
+        for (size_t i = 0; i < m_childs.size(); i++)
+        {
+            if (m_childs.at(i)->objectName() == "Mappa") {
+                pWnd = (WndMap*)m_childs.at(i);
+                break;
+            }
+        }
+        if (!pWnd) {
+            pWnd = new WndMap(&m_area, this);
+            pWnd->setObjectName("Mappa");
+            pWnd->Refresh();
+            m_childs.append(pWnd);
+        }
+        else {
+            pWnd->setFocus();
+            pWnd->Refresh();
+            pWnd->raise();
+            pWnd->activateWindow();
+        }
+
+        pWnd->show();
+    }
+    catch (const std::exception &ex)
+    {
+        printf(ex.what());
+    }
 }
 
 void WndArea::showMultipleModify()

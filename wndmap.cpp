@@ -469,6 +469,7 @@ namespace ts
     }
 
     void GlMap::paintEvent(QPaintEvent* event) {
+        if (object == 0) return;
         makeCurrent();
         GLclampf red = 194.0f / 255.0f;
         GLclampf green = 212.0f / 255.0f;
@@ -727,24 +728,29 @@ namespace ts
 
     WndMap::WndMap(Area* ar, WndArea* parent)
     {
-        this->area = ar;
-        this->parent = parent;
         QList<const Room*> rooms;
-        CreateRooms(rooms);
-        map = new GlMap(rooms, parent);
-        /*QObject::connect(map, &GlMap::doubleClicked,
-            this, &WndMap::doubleClicked);*/
-        if (!connect(map, SIGNAL(doubleClicked(VNumber)), this, SLOT(doubleClicked(VNumber)))) {
-            throw Exception(ts::Exception::Runtime, "Cannot connect signal");
+        try
+        {
+            this->area = ar;
+            this->parent = parent;
+            map = new GlMap(rooms, parent);
+
+            if (!connect(map, SIGNAL(doubleClicked(VNumber)), this, SLOT(doubleClicked(VNumber)))) {
+                throw Exception(ts::Exception::Runtime, "Cannot connect signal");
+            }
+
+            QHBoxLayout* lay = new QHBoxLayout(parent);
+            lay->addWidget(map);
+            setLayout(lay);
+            KreatorSettings::instance().loadGuiStatus("MapWindow", this);
+            map->setMouseTracking(true);
+            setMouseTracking(true);
+        }
+        catch (const std::exception&)
+        {
+            throw;
         }
 
-        QHBoxLayout* lay = new QHBoxLayout(parent);
-        lay->addWidget(map);
-        setLayout(lay);
-        KreatorSettings::instance().loadGuiStatus("MapWindow", this);
-        map->setMouseTracking(true);
-        setMouseTracking(true);
-        //resize(parent->width(), parent->height());
         if (rooms.size()) {
             this->window()->setWindowTitle("Mappa - usa tastierino numerico per muoverti o Freccette + PgUp/PgDown, mouse scroll per zoom");
         }
@@ -796,22 +802,12 @@ namespace ts
             z = z1;
 
             transformScreenToModel(x, y, 0, x2, y2, z2);
-            /*float x1, y1, z1;
-            getPos(x1, y1, z1);*/
-            /*GLdouble model[4][4], proj[4][4];
-            GLint view[4];
-            glGetDoublev(GL_MODELVIEW_MATRIX, &model[0][0]);
-            glGetDoublev(GL_PROJECTION_MATRIX, &proj[0][0]);
-            glGetIntegerv(GL_VIEWPORT, &view[0]);
-            project(x, y, z, &model[0][0], &proj[0][0], &view[0], &x, &y, &z);*/
             x2 = ((x2 - 50) / 100);
             y2 = ((y2 - 50) / 100);
             GLdouble newX = (GLdouble)x1 + x2/100;
             GLdouble newY = (GLdouble)y1 + y2/100;
             GLdouble newX1 = (GLdouble)x1 - x2 / 100;
             GLdouble newY1 = (GLdouble)y1 - y2 / 100;
-            //mouseDownX = ev->pos().x();
-            //mouseDownY = ev->pos().y();
             setPos(newX, newY, z);
         }
         repaint();
@@ -866,8 +862,51 @@ namespace ts
         repaint();
     }
 
-    void WndMap::keyReleaseEvent(QKeyEvent* ev) {
-        QWidget::keyReleaseEvent(ev);
+    bool GlMap::moveSelected(GLfloat x, GLfloat y, GLfloat z) {
+        bool ok = true;
+        for (auto& r : objMap)
+        {
+            Room* rm = const_cast<Room*>(roomMap[r.vnum]);
+            int x2 = rm->getX() + x;
+            int y2 = rm->getY() + y;
+            int z2 = rm->getZ() + z;
+            if (r.bSelected) {
+                for (auto& r2 : objMap)
+                {
+                    if (!r2.bSelected) {
+                        Room* rm2 = const_cast<Room*>(roomMap[r2.vnum]);
+                        if (rm2->getX() == x2 &&
+                            rm2->getY() == y2 &&
+                            rm2->getZ() == z2) {
+                            ok = false;
+                            break;
+                        }
+                    }
+                }
+            }
+            if (!ok) break;
+        }
+        if (!ok) {
+            QMessageBox::warning(this, "Conflitto", "Lo spostamento non e' possibile perche alcune locazioni si sovraporrebbero!");
+            return ok;
+        }
+        for (auto& r : objMap)
+        {
+            if (r.bSelected) {
+                Room* rm = const_cast<Room*>(roomMap[r.vnum]);
+                rm->setPos(rm->getX() + x, rm->getY() + y, rm->getZ() + z);
+                WndMap* wndMap = (WndMap*)this->parent();
+                WndArea* wndArea = (WndArea*)((wndMap)->getWndArea());
+                wndMap->setRoomsChanged();
+                wndArea->somethingChanged();
+            }
+        }
+        if (x || y) ResetObjects();
+        return ok;
+    };
+
+    void WndMap::keyPressEvent(QKeyEvent* ev) {
+        QWidget::keyPressEvent(ev);
         if (ev->key()) {
             int key = ev->key();
             QString sKey = QKeySequence(key).toString();
@@ -898,7 +937,7 @@ namespace ts
                     map->moveSelected(-1, 0, 0);
                 }
                 else {
-                    map->setPos(x + 0.1, y, z);
+                    map->setPos(x + 0.2, y, z);
                 }
             }
             else if (sKey == "Right" || sKey == "6") {
@@ -906,7 +945,7 @@ namespace ts
                     map->moveSelected(1, 0, 0);
                 }
                 else {
-                    map->setPos(x - 0.1, y, z);
+                    map->setPos(x - 0.2, y, z);
                 }
             }
             else if (sKey == "Up" || sKey == "8") {
@@ -914,7 +953,7 @@ namespace ts
                     map->moveSelected(0, 1, 0);
                 }
                 else {
-                    map->setPos(x, y - 0.1, z);
+                    map->setPos(x, y - 0.2, z);
                 }
             }
             else if (sKey == "Down" || sKey == "2") {
@@ -922,7 +961,7 @@ namespace ts
                     map->moveSelected(0, -1, 0);
                 }
                 else {
-                    map->setPos(x, y + 0.1, z);
+                    map->setPos(x, y + 0.2, z);
                 }
             }
             else if (sKey == "Clear" || sKey == "5") {

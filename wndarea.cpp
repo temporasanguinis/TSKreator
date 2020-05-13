@@ -35,6 +35,7 @@
 #include "wndfind.h"
 #include "eleuconf.h"
 #include "wndmultiplemodify.h"
+#include "exception.h"
 
 
 using namespace ts;
@@ -116,7 +117,8 @@ void WndArea::init()
   pHeader->setStretchLastSection( true );
   pHeader->setClickable( false );
 
-  connect( mp_bgViews, SIGNAL( buttonClicked( int ) ), this, SLOT( changeView( int ) ) );
+  if (!connect(mp_bgViews, SIGNAL(buttonClicked(int)), this, SLOT(changeView(int))))
+      throw Exception(ts::Exception::Type::Runtime, "Cannot connect signal");
   connect( mp_twObjectList, SIGNAL( itemDoubleClicked( QTreeWidgetItem *, int ) ), this, SLOT( showEditDialog( QTreeWidgetItem*, int ) ) );
   connect( mp_pbEdit, SIGNAL( clicked() ), this, SLOT( showEditDialog() ) );
   connect( mp_pbRemove, SIGNAL( clicked() ), this, SLOT( removeObject() ) );

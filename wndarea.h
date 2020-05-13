@@ -26,12 +26,12 @@ class WndArea : public QMainWindow, private Ui::GuiArea
     void loadArea( const QString& );
     void select(QTreeWidgetItem* item);
     void showEditDialog(int, VNumber);
-    void changeView(int);
   public slots:
     void saveArea();
     void saveAreaAs();
     void refreshRoomsView();
     void somethingChanged();
+    void changeView(int);
 
   protected slots:
     void showEditDialog( QTreeWidgetItem*, int );

@@ -21,7 +21,7 @@ namespace ts
     struct glCoords {
         QRect rect = QRect();
         VNumber vnum = 0;
-        float aX,aY,bX,bY = 0.0f;
+        float aX,aY,bX,bY,Z = 0.0f;
         QString title = "";
         QString subtitle = "";
         QString text = "";
@@ -141,7 +141,8 @@ namespace ts
             void paintGL();
             void initializeGL();
             void resizeGL(int w, int h);
-            GLuint makeobject();
+            GLuint CreateRoomViewData();
+            bool RoomLower(const Room* r1, const Room* r2);
             inline void GlMap::transformPoint(GLdouble out[4], const GLdouble m[16], const GLdouble in[4]);
             inline GLint GlMap::project(GLfloat objx, GLfloat objy, GLfloat objz,
                 const GLdouble model[16], const GLdouble proj[16],
@@ -149,7 +150,7 @@ namespace ts
                 GLdouble* winx, GLdouble* winy, GLdouble* winz);
             void GlMap::renderText(QPainter *painter, D3DVECTOR& textPosWorld, glCoords &obj);
             bool GlMap::renderRoom(QPainter* painter, glCoords& gc);
-            bool GlMap::renderRoomLinks(QPainter* painter, glCoords& gc);
+            bool GlMap::renderRoomLinks(QPainter* painter, glCoords& gc, QPen normal, QPen oneWay);
             void DrawLink(int dir, QRect& var, GLdouble  model[4][4], GLdouble  proj[4][4], GLint  view[4], GLdouble& textPosX, GLdouble& textPosY, GLdouble& textPosZ, GLdouble& textPosX2, GLdouble& textPosY2, GLdouble& textPosZ2, int height, QPainter* painter);
             void transformScreenToModel(GLdouble winx, GLdouble winy, GLdouble winz, GLdouble& X, GLdouble& Y, GLdouble& Z);
             virtual void mousePressEvent(QMouseEvent*);

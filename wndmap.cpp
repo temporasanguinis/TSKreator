@@ -2,6 +2,7 @@
 #include "wndmap.h"
 #include <QHBoxLayout>
 #include <QCoreApplication>
+#include <qalgorithms.h>
 #include "kreatorsettings.h"
 #include "exception.h"
 #include "wndroom.h"
@@ -150,10 +151,8 @@ namespace ts
         return true;
     }
 
-    bool GlMap::renderRoomLinks(QPainter* painter, glCoords& var) {
+    bool GlMap::renderRoomLinks(QPainter* painter, glCoords& var, QPen normal, QPen oneWay) {
         painter->setRenderHints(QPainter::TextAntialiasing | QPainter::Antialiasing);
-        QPen normal = QPen(Qt::blue, 3);
-        QPen oneWay = QPen(Qt::lightGray, 2);
 
         int width = this->width();
         int height = this->height();
@@ -203,7 +202,7 @@ namespace ts
             }
             DrawLink(3, var.west, model, proj, view, textPosX, textPosY, textPosZ, textPosX2, textPosY2, textPosZ2, height, painter);
         }
-        if (var.bUp) {
+        if (var.bUp && var.Z == offsetZ) {
             QPainterPath path;
             QPoint pts[4];
             project(var.aX+2, (GLdouble)var.bY - 12, 0,
@@ -227,9 +226,9 @@ namespace ts
             path.lineTo(pts[1]);
             path.lineTo(pts[2]);
             path.lineTo(pts[3]);
-            painter->fillPath(path, QBrush(QColor::fromRgb(0, 0, 255)));
+            painter->fillPath(path, QBrush(normal.color()));
         }
-        if (var.bDown) {
+        if (var.bDown && var.Z == offsetZ) {
             QPainterPath path;
             QPoint pts[4];
             project(var.aX+2, (GLdouble)var.bY - 35, 0,
@@ -252,7 +251,7 @@ namespace ts
             path.lineTo(pts[1]);
             path.lineTo(pts[2]);
             path.lineTo(pts[3]);
-            painter->fillPath(path, QBrush(QColor::fromRgb(0, 0, 255)));
+            painter->fillPath(path, QBrush(normal.color()));
         }
         return true;
     }
@@ -273,7 +272,12 @@ namespace ts
             &textPosX2, &textPosY2, &textPosZ2);
         textPosY2 = this->height() - textPosY2; // y is inverted
 
-        //painter->setPen(color);
+        /*QColor trc(0xFF, 0, 0, 0x80);
+        QPen transRed(trc);
+        painter->setPen(transRed);
+        QBrush rb(trc);
+        painter->setBrush(rb);*/
+        //painter->setCompositionMode(QPainter::CompositionMode_SourceOver);
         painter->drawLine(textPosX1, textPosY1, textPosX2, textPosY2);
     }
 
@@ -424,7 +428,7 @@ namespace ts
             }
         }
         objMap.clear();
-        object = makeobject();
+        object = CreateRoomViewData();
         for (auto& r : objMap)
         {
             if (selVnums[r.vnum]) {
@@ -438,15 +442,18 @@ namespace ts
 #endif
     void GlMap::initializeGL()
     {
-        texture[0] = bindTexture(QPixmap("bookmark.png"), GL_TEXTURE_2D);
-        glShadeModel(GL_SMOOTH);
-        glEnable(GL_MULTISAMPLE);
+        //texture[0] = bindTexture(QPixmap("bookmark.png"), GL_TEXTURE_2D);
+        //glShadeModel(GL_SMOOTH);
+        //glEnable(GL_MULTISAMPLE);
         glClearColor(0.0, 0.0, 0.0, 0.5);
         glClearDepth(1.0);
         glEnable(GL_DEPTH_TEST);
-        glEnable(GL_TEXTURE_2D);                        // Enable Texture Mapping ( NEW )
-        glDepthFunc(GL_LEQUAL);
-        glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+        //glEnable(GL_TEXTURE_2D);                        // Enable Texture Mapping ( NEW )
+        glDisable(GL_TEXTURE_2D);
+        //glDepthFunc(GL_LEQUAL);
+        //glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         ResetObjects();
     }
 
@@ -478,10 +485,22 @@ namespace ts
         int any = 0;
         for (auto& var : objMap)
         {
-            renderRoomLinks(&painter, var);
+            QPen normal = QPen(Qt::blue, 3);
+            QPen oneWay = QPen(Qt::lightGray, 2);
+            if (var.Z != this->offsetZ) {
+                double diffMul = 125;
+                for (size_t i = 0; i < abs(var.Z+offsetZ); i++)
+                {
+                    diffMul -= diffMul / 2;
+                }
+                normal = QPen(QColor(0,0,255, 10), 2);
+                oneWay = QPen(QColor(127, 127, 127, 10), 1);
+            }
+            renderRoomLinks(&painter, var, normal, oneWay);
         }
         for (auto& var : objMap)
         {
+            if (var.Z != this->offsetZ) continue;
             renderRoom(&painter, var);
             any++;
         }
@@ -533,24 +552,56 @@ namespace ts
         //glLoadIdentity();
     }
 
-    GLuint GlMap::makeobject()
+    bool GlMap::RoomLower(const Room* r1, const Room* r2) {
+        return (r1)->getZ() < (r2)->getZ();
+    }
+
+    GLuint GlMap::CreateRoomViewData()
     {
         GLuint list = glGenLists(1);
         glNewList(list, GL_COMPILE);
-
         glTranslatef(offsetX + 0.0, offsetY + 0.0, -15.0);
-        glBindTexture(GL_TEXTURE_2D, texture[0]);
+        //glBindTexture(GL_TEXTURE_2D, texture[0]);
+        /*QList<const Room*> rooms(m_rooms);
+        qSort(rooms.begin(), rooms.end(), &GlMap::RoomLower);*/
+        QList<const Room*> rooms(m_rooms);
+        qSort(rooms.begin(), rooms.end(),
+            [](const Room* a, const Room* b) -> bool { return a->getZ() < b->getZ(); });
 
-        for (int i = 0; i < m_rooms.size(); i++) {
+        for (int i = 0; i < rooms.size(); i++) {
             struct glCoords gC;
             //gC.bUp = gC.bDown = gC.bNorth = gC.bEast = gC.bSouth = gC.bWest = 0;
-            auto rm = m_rooms.at(i);
-            if (!objMap.contains(rm->vnumber()) && offsetZ == rm->getZ()) {
+            auto rm = rooms.at(i);
+            if (!objMap.contains(rm->vnumber()) && (true || offsetZ == rm->getZ() || offsetZ-1 == rm->getZ())) {
+                glEnable(GL_BLEND);
+                glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+                
+                double diff = abs(rm->getZ() - (double)offsetZ);
+                double alpha = 1.0;
+                for (size_t i = 0; i < diff; i++)
+                {
+                    alpha /= 2;
+                }
+                if (offsetZ == rm->getZ())
+                    glColor4f(1.0, 1.0, 1.0, 1);
+                else
+                {
+                    if (rm->getZ() > offsetZ) {
+                        glColor4f(1.0, .5, 0.0, alpha);
+                    }
+                    else {
+                        glColor4f(0.0, .5, 1.0, alpha);
+                    }
+                }
+
                 glBegin(GL_QUADS);
-                gC.aX = (rm->getX()) * 100.0 - 25;
-                gC.bX = (rm->getX()) * 100.0 + 25;
-                gC.aY = (rm->getY()) * 100.0 - 25;
-                gC.bY = (rm->getY()) * 100.0 + 25;
+                double levelDelta = 10.0 * (rm->getZ() - (double)offsetZ);
+
+                gC.aX = (rm->getX()) * 100.0 - 25 + levelDelta;
+                gC.bX = (rm->getX()) * 100.0 + 25 + levelDelta;
+                gC.aY = (rm->getY()) * 100.0 - 25 + levelDelta;
+                gC.bY = (rm->getY()) * 100.0 + 25 + levelDelta;
+                gC.Z = (rm->getZ());
 
                 for (auto& re : rm->exits()) {
                     float addX1 = 0, addX2 = 0, addY1 = 0, addY2 = 0;
@@ -569,34 +620,34 @@ namespace ts
                         {
                         case EXIT_DIRECTION_NORTH:
                             gC.bNorth = other ? Normal : OneWay;
-                            addX1 = 0;
-                            addY1 = 25;
-                            addX2 = 0;
-                            addY2 = -25;
+                            addX1 = 0+levelDelta;
+                            addY1 = 25 + levelDelta;
+                            addX2 = 0 + levelDelta;
+                            addY2 = -25 + levelDelta;
                             rect = &gC.north;
                             break;
                         case EXIT_DIRECTION_EAST:
                             gC.bEast = other ? Normal : OneWay;
-                            addX1 = 25;
-                            addY1 = 0;
-                            addX2 = -25;
-                            addY2 = 0;
+                            addX1 = 25 + levelDelta;
+                            addY1 = 0 + levelDelta;
+                            addX2 = -25 + levelDelta;
+                            addY2 = 0 + levelDelta;
                             rect = &gC.east;
                             break;
                         case EXIT_DIRECTION_WEST:
                             gC.bWest = other ? Normal : OneWay;
-                            addX1 = -25;
-                            addY1 = 0;
-                            addX2 = 25;
-                            addY2 = 0;
+                            addX1 = -25 + levelDelta;
+                            addY1 = 0 + levelDelta;
+                            addX2 = 25 + levelDelta;
+                            addY2 = 0 + levelDelta;
                             rect = &gC.west;
                             break;
                         case EXIT_DIRECTION_SOUTH:
                             gC.bSouth = other ? Normal : OneWay;
-                            addX1 = 0;
-                            addY1 = -25;
-                            addX2 = 0;
-                            addY2 = 25;
+                            addX1 = 0 + levelDelta;
+                            addY1 = -25 + levelDelta;
+                            addX2 = 0 + levelDelta;
+                            addY2 = 25 + levelDelta;
                             rect = &gC.south;
                             break;
                         case EXIT_DIRECTION_UP:
@@ -626,7 +677,7 @@ namespace ts
                 glTexCoord2f(1.0, 1.0); glVertex3f((GLfloat)gC.bX, (GLfloat)gC.bY, 0.2f);
                 glTexCoord2f(0.0, 1.0); glVertex3f((GLfloat)gC.aX, (GLfloat)gC.bY, 0.2f);
 
-                auto room = m_rooms.at(i);
+                auto room = rooms.at(i);
                 gC.title = QString::number(room->zone());
                 gC.subtitle = QString::number(room->vnumber() - room->zone()*100);
                 gC.text = room->name();

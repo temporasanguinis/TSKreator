@@ -422,6 +422,19 @@ qDebug( "loadArea( const QString& ) 1" );
   qDebug( "loadArea( const QString& ) 4" );
 }
 
+class MyMSG : public QMessageBox {
+protected:
+    void MyMSG::resizeEvent(QResizeEvent* Event)
+    {
+        QMessageBox::resizeEvent(Event);
+        this->setFixedWidth(myFixedWidth);
+        //this->setFixedHeight(myFixedHeight);
+    }
+private:
+    int myFixedWidth = 450;
+    int myFixedHeight = 250;
+};
+
 void WndMainWindow::showAbout()
 {
 #if defined( KREATOR_DEBUG )
@@ -432,7 +445,24 @@ void WndMainWindow::showAbout()
   sAbout.sprintf( "TS Kreator %s di Carlo(Otacon/Brandon)\n"
           "basato su LeU Kreator.\nAmpliato da Redis(Martinus) e Marino(Auriel)", qPrintable( VERSION ));
 
-  QMessageBox::about( this, TS::MESSAGE_BOX_ABOUT, sAbout );
+  //QMessageBox::about( this, TS::MESSAGE_BOX_ABOUT, sAbout );
+  MyMSG msgBox;
+  msgBox.setSizePolicy(QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Expanding);
+  //msgBox.setParent(this);
+  QFile fl(":/about/VERSION.txt");
+  fl.open(QFile::ReadOnly);
+  QTextStream in(&fl);
+  in.setCodec("UTF-8");
+  QString version = in.readAll();
+
+  msgBox.setWindowIcon(this->windowIcon());
+  msgBox.setWindowTitle(TS::MESSAGE_BOX_ABOUT);
+  msgBox.setIcon(QMessageBox::Icon::Information);
+  msgBox.setText(sAbout);
+  msgBox.setInformativeText("Premi il bottone dei dettagli per vedere le versioni.");
+  msgBox.setDetailedText(version);
+  //msgBox.setStyleSheet("QLabel{min-width: 300px;}");
+  msgBox.exec();
 }
 
 void WndMainWindow::loadArea( QTreeWidgetItem* item, int )

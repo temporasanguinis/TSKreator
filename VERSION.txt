@@ -1,3 +1,9 @@
+﻿1.5
+- implementata la funzionalita per il mapper (finestra mappa, e supporto per assegnare le coordinate via tester)
+- aggiunto bottone "segui uscita" nella finestra della room
+- la finestra Informazioni ora mostra le versioni
+- il tester mostra le coordinate della room
+__________________________________
 1.4
 - il tester non crasha piu se lanciato senza rooms
 - aggiungo ricerca spell sui values di pozioni, wand, staff e scroll

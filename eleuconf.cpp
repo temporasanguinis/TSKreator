@@ -71,12 +71,13 @@ void Eleuconf::readApplies()
 {
     QString line;
 
-	QFile fl(":/conf/applies.ini");
+    QString name = ":/conf/applies.ini";
+	QFile fl(name);
     if(!fl.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qWarning("file applies.ini non aperto");
         return;
     } else {
-        qDebug("file applies.ini aperto");
+        qDebug("file %s aperto", qPrintable(name));
 
         QTextStream in(&fl);
 		in.setCodec("UTF-8");
@@ -137,12 +138,13 @@ void Eleuconf::readAspells()
 
     bool ok;
 
-	QFile fl(":/conf/aspells.ini");
+    QString name = ":/conf/aspells.ini";
+	QFile fl(name);
     if(!fl.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qWarning("file aspells.ini non aperto");
         return;
     } else {
-        qDebug("file aspells.ini aperto");
+        qDebug("file %s aperto", qPrintable(name));
 
         QTextStream in(&fl);
 		in.setCodec("UTF-8");

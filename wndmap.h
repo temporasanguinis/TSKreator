@@ -56,6 +56,14 @@ namespace ts
         void doubleClicked(VNumber vnum);
 
         public:
+            bool setShowImages(bool v) {
+                bImages = v;
+                ResetObjects();
+                return bImages;
+            }
+            bool getShowImages() { return bImages; }
+            bool setShowVnums(bool v) { return (bVnums = v); }
+            bool getShowVnums() { return bVnums; }
             void setRooms(QList<const Room*> rooms) {
                 m_rooms = rooms;
                 roomMap.clear();
@@ -106,7 +114,11 @@ namespace ts
             void paintGL();
             void initializeGL();
             void resizeGL(int w, int h);
-            GLuint CreateRoomViewData();
+			void ColorizeRoom(const ts::Room* rm);
+			GLuint CreateRoomViewData();
+			void CreateRoomGeometry(const ts::Room*& rm, ts::glCoords& gC);
+			void CreateRoomData(ts::glCoords& gC, const ts::Room* rm);
+			void CreateExits(const ts::Room* rm, ts::glCoords& gC, double levelDelta);
             bool RoomLower(const Room* r1, const Room* r2);
             inline void GlMap::transformPoint(GLdouble out[4], const GLdouble m[16], const GLdouble in[4]);
             inline GLint GlMap::project(GLfloat objx, GLfloat objy, GLfloat objz,
@@ -131,7 +143,8 @@ namespace ts
                 GLdouble model[4][4], GLdouble proj[4][4],
                 GLint viewport[4], QPoint from, QPoint to, QColor color);
     protected:
-            void mouseDoubleClickEvent(QMouseEvent*) {
+        void loadGLTextures();
+        void mouseDoubleClickEvent(QMouseEvent*) {
                 if (hovering) {
                     emit doubleClicked(hovering->vnum);
                 }
@@ -142,7 +155,7 @@ namespace ts
             GLfloat     zrot;                               // Z Rotation ( NEW )
             GLfloat xspeed;                                 // X Rotation Speed
             GLfloat yspeed;                                 // Y Rotation Speed
-            GLuint      texture[3];                         // Storage For One Texture ( NEW )
+            GLuint      texture[ROOM_SECTOR_END] = { 0 };
             GLuint filter;
             GLuint object;
             QMap<VNumber, glCoords> objMap;
@@ -154,11 +167,13 @@ namespace ts
             GLfloat zoomRatio = 1;
             QFont font = QFont("Arial", 18);
             QFont font2 = QFont("Arial", 12);
-            QFont font3 = QFont("Arial", 14);
+            QFont font3 = QFont("Arial", 12);
             int mouseDownX, mouseDownY;
             int mouseMoveX, mouseMoveY;
             int bMouseDown = 0;
             const glCoords* hovering = NULL;
+            bool bImages = FALSE;
+            bool bVnums = TRUE;
     };
 
     class WndMap : public QWidget

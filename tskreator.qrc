@@ -46,4 +46,23 @@
         <file>conf/zoneflags.ini</file>
         <file>conf/drinkcontainerflags.ini</file>
     </qresource>
+    <qresource prefix="/sector">
+        <file>images/field.png</file>
+        <file>images/forest.png</file>
+        <file>images/hills.png</file>
+        <file>images/mountains.png</file>
+        <file>images/teleport.png</file>
+        <file>images/water-noswim.png</file>
+        <file>images/water-swim.png</file>
+        <file>images/air.png</file>
+        <file>images/desert.png</file>
+        <file>images/tree.png</file>
+        <file>images/underwater.png</file>
+        <file>images/dark-city.png</file>
+        <file>images/city.png</file>
+        <file>images/inside.png</file>
+    </qresource>
+    <qresource prefix="/about">
+        <file>VERSION.txt</file>
+    </qresource>
 </RCC>

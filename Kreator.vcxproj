@@ -235,6 +235,7 @@
     <None Include="conf\teleportflags.ini" />
     <None Include="conf\trapflags.ini" />
     <None Include="conf\zoneflags.ini" />
+    <None Include="RuleSet.ruleset" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{B12702AD-ABFB-343A-A199-8E24837244A3}</ProjectGuid>
@@ -291,6 +292,7 @@
       <WarningLevel>Level2</WarningLevel>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <BrowseInformation>true</BrowseInformation>
+      <PreprocessorDefinitions>KREATOR_DEBUG;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalDependencies>qtmaind.lib;QtCored4.lib;QtGuid4.lib;QtOpenGLd4.lib;OpenGL32.Lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -312,6 +314,8 @@
     <ClCompile>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <WholeProgramOptimization>true</WholeProgramOptimization>
+      <PreprocessorDefinitions>
+      </PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalDependencies>qtmain.lib;QtCore4.lib;QtGui4.lib;QtOpenGL4.lib;OpenGL32.Lib;%(AdditionalDependencies)</AdditionalDependencies>

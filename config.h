@@ -1,8 +1,9 @@
 
 #ifndef TS_CONFIG_H
 #define TS_CONFIG_H
-
-#include <qstring.h>
+#pragma warning(push, 0)
+#include <Qstring>
+#pragma warning(pop)
 #include "version.h"
 
 namespace TS

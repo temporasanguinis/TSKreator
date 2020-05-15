@@ -1,4 +1,5 @@
 #include "wndfind.h"
+#pragma warning(push, 0)
 #include <QTreeWidget>
 #include <QPushButton>
 #include <QHeaderView>
@@ -7,6 +8,7 @@
 #include <QApplication>
 #include <QCloseEvent>
 #include <QLabel>
+#pragma warning(pop)
 #include "config.h"
 #include "kreatorsettings.h"
 #include "utils.h"

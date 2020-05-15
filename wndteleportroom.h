@@ -1,8 +1,9 @@
 #ifndef TS_WNDTELEPORTROOM_H
 #define TS_WNDTELEPORTROOM_H
-
+#pragma warning(push, 0)
 #include <QDialog>
 #include "ui_guiteleportroom.h"
+#pragma warning(pop)
 #include "area.h"
 
 using namespace ts;

@@ -1,9 +1,10 @@
 
 #ifndef TS_WNDZONECOMMAND_H
 #define TS_WNDZONECOMMAND_H
-
+#pragma warning(push, 0)
 #include <QDialog>
 #include "ui_guizonecommand.h"
+#pragma warning(pop)
 #include "area.h"
 
 using namespace ts;

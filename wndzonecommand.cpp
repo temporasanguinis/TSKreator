@@ -1,4 +1,5 @@
 #include "wndzonecommand.h"
+#pragma warning(push, 0)
 #include <QLineEdit>
 #include <QCheckBox>
 #include <QTextEdit>
@@ -8,6 +9,7 @@
 #include <QLabel>
 #include <QMessageBox>
 #include <QCloseEvent>
+#pragma warning(pop)
 #include "validator.h"
 #include "config.h"
 #include "selectobject.h"

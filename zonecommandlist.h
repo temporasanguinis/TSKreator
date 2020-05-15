@@ -1,9 +1,10 @@
 
 #ifndef TS_ZONECOMMANDLIST_H
 #define TS_ZONECOMMANDLIST_H
-
+#pragma warning(push, 0)
 #include <QList>
 #include <QTextStream>
+#pragma warning(pop)
 #include "zonecommand.h"
 #include "zonecommandgroup.h"
 

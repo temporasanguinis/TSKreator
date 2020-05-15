@@ -1,4 +1,5 @@
 #include "wndmob.h"
+#pragma warning(push, 0)
 #include <QLineEdit>
 #include <QTextEdit>
 #include <QComboBox>
@@ -8,6 +9,7 @@
 #include <QSpinBox>
 #include <QCheckBox>
 #include <QToolButton>
+#pragma warning(pop)
 #include "validator.h"
 #include "config.h"
 #include "constantname.h"
@@ -36,6 +38,7 @@ WndMob::~WndMob()
 #if defined( KREATOR_DEBUG )
   qDebug( "WndMob::~WndMob() called." );
 #endif
+  delete highLighter;
 }
 
 void WndMob::init()
@@ -45,7 +48,7 @@ void WndMob::init()
 #endif
   setupUi( this );
   KreatorSettings::instance().loadGuiStatus( "MobWindow", this );
-
+  highLighter = new Syntax(mp_teDescription->document());
   mp_teDescription->setFont( TS::GetFixedFont() );
 
   mp_tbActs->setIcon( TS::GetEditIcon() );

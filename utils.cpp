@@ -1,6 +1,8 @@
 #include "utils.h"
+#pragma warning(push, 0)
 #include <QFile>
 #include <QDir>
+#pragma warning(pop)
 #include <ctype.h>
 #include "bit.h"
 #include "errno.h"

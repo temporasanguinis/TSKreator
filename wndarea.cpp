@@ -1,4 +1,5 @@
 #include "wndarea.h"
+#pragma warning(push, 0)
 #include <QFileInfo>
 #include <QFileDialog>
 #include <QApplication>
@@ -15,6 +16,7 @@
 #include <QMenuBar>
 #include <QToolBar>
 #include <QTimer>
+#pragma warning(pop)
 #include "wndzone.h"
 #include "wndroom.h"
 #include "wnditem.h"

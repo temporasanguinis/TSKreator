@@ -1,4 +1,5 @@
 #include "wndroom.h"
+#pragma warning(push, 0)
 #include <QTextEdit>
 #include <QPushButton>
 #include <QString>
@@ -9,6 +10,7 @@
 #include <QComboBox>
 #include <QHeaderView>
 #include <QCloseEvent>
+#pragma warning(pop)
 #include "validator.h"
 #include "selectobject.h"
 #include "config.h"
@@ -60,6 +62,7 @@ WndRoom::~WndRoom()
 #if defined( KREATOR_DEBUG )
   qDebug( "WndRoom::~WndRoom() called." );
 #endif
+  delete highLighter;
 }
 
 void WndRoom::init()
@@ -91,8 +94,10 @@ void WndRoom::init()
   for( i = 0; i < EXIT_DIRECTION_END; i++ )
     mp_comboRiverDirection->insertItem( i, ConstantName::exitDirection( i ).toLower() );
 
-  mp_teDescription->setFont( TS::GetFixedFont() );
+  highLighter = new Syntax(mp_teDescription->document());
 
+  mp_teDescription->setFont( TS::GetFixedFont() );
+  
   connect( mp_pbSave, SIGNAL( clicked() ), this, SLOT( saveData() ) );
   connect( mp_pbRestore, SIGNAL( clicked() ), this, SLOT( restoreData() ) );
   connect( mp_pbOk, SIGNAL( clicked() ), this, SLOT( saveAndClose() ) );

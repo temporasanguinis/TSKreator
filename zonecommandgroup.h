@@ -1,8 +1,9 @@
 
 #ifndef TS_ZONECOMMANDGROUP_H
 #define TS_ZONECOMMANDGROUP_H
-
+#pragma warning(push, 0)
 #include <QList>
+#pragma warning(pop)
 #include "zonecommand.h"
 
 

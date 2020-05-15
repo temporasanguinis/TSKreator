@@ -1,5 +1,7 @@
 #include "wndmultiplemodify.h"
+#pragma warning(push, 0)
 #include <QHeaderView>
+#pragma warning(pop)
 #include "area.h"
 #include "selectobject.h"
 

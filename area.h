@@ -1,8 +1,10 @@
 
 #ifndef TS_AREA_H
 #define TS_AREA_H
-
+#pragma warning(push, 0)
 #include <QList>
+#pragma warning(pop)
+
 #include "room.h"
 #include "mob.h"
 #include "item.h"

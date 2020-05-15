@@ -1,8 +1,9 @@
 #ifndef TS_WNDITEMAFFECTS_H
 #define TS_WNDITEMAFFECTS_H
-
+#pragma warning(push, 0)
 #include <QDialog>
 #include "ui_guiitemaffects.h"
+#pragma warning(pop)
 #include "area.h"
 
 using namespace ts;

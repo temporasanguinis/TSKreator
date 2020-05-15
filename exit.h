@@ -1,9 +1,10 @@
 
 #ifndef TS_EXIT_H
 #define TS_EXIT_H
-
+#pragma warning(push, 0)
 #include <QString>
 #include <QTextStream>
+#pragma warning(pop)
 #include <stdio.h>
 #include "types.h"
 #include "utils.h"

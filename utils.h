@@ -1,9 +1,10 @@
 
 #ifndef TS_UTILS_H
 #define TS_UTILS_H
-
+#pragma warning(push, 0)
 #include <QString>
 #include <QTextStream>
+#pragma warning(pop)
 #include <stdio.h>
 #include "types.h"
 #include "dice.h"

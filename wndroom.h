@@ -1,10 +1,12 @@
 
 #ifndef TS_WNDROOM_H
 #define TS_WNDROOM_H
-
+#pragma warning(push, 0)
 #include <QDialog>
 #include "ui_guiroom.h"
+#pragma warning(pop)
 #include "area.h"
+#include "syntax.h"
 
 using namespace ts;
 
@@ -61,7 +63,7 @@ protected:
 private:
   Area& m_area;
   Room m_room;
-
+  Syntax *highLighter;
 };
 
 

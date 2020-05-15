@@ -1,7 +1,8 @@
 #ifndef TS_WNDEXTRADESCRIPTION_H
 #define TS_WNDEXTRADESCRIPTION_H
-
+#pragma warning(push, 0)
 #include "ui_guiextradescription.h"
+#pragma warning(pop)
 #include "extradescription.h"
 #include "syntax.h"
 
@@ -20,7 +21,6 @@ public:
   bool keysChanged() const { return m_extraDescription.keys() != m_oldExtraDescription.keys(); }
   bool descriptionChanged() const { return m_extraDescription.description() != m_oldExtraDescription.description(); }
   const ExtraDescription& extraDescriptionSelected() const { return m_extraDescription; }
-
 protected slots:
   void saveData();
   void restoreData();

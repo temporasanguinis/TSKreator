@@ -127,7 +127,7 @@
       <property name="spacing">
        <number>6</number>
       </property>
-      <item row="1" column="2" rowspan="1">
+      <item row="1" column="2">
        <widget class="QToolButton" name="mp_tbAddExit">
         <property name="text">
          <string>+</string>
@@ -148,13 +148,13 @@
         </property>
        </widget>
       </item>
-       <item row="4" column="2">
-         <widget class="QToolButton" name="mp_tbFollowExit">
-           <property name="text">
-             <string>-&gt;</string>
-           </property>
-         </widget>
-       </item>
+      <item row="4" column="2">
+       <widget class="QToolButton" name="mp_tbFollowExit">
+        <property name="text">
+         <string>-&gt;</string>
+        </property>
+       </widget>
+      </item>
       <item row="0" column="2">
        <spacer>
         <property name="orientation">
@@ -417,7 +417,7 @@
           </property>
          </widget>
         </item>
-		<item>
+        <item>
          <widget class="QLabel" name="mp_labelX">
           <property name="minimumSize">
            <size>
@@ -433,7 +433,7 @@
           </property>
          </widget>
         </item>
-		<item>
+        <item>
          <widget class="QLineEdit" name="mp_PosX">
           <property name="minimumSize">
            <size>
@@ -452,7 +452,7 @@
           </property>
          </widget>
         </item>
-		<item>
+        <item>
          <widget class="QLabel" name="mp_labelY">
           <property name="minimumSize">
            <size>
@@ -468,7 +468,7 @@
           </property>
          </widget>
         </item>
-		<item>
+        <item>
          <widget class="QLineEdit" name="mp_PosY">
           <property name="minimumSize">
            <size>
@@ -487,41 +487,41 @@
           </property>
          </widget>
         </item>
-         <item>
-           <widget class="QLabel" name="mp_labelZ">
-             <property name="minimumSize">
-               <size>
-                 <width>10</width>
-                 <height>0</height>
-               </size>
-             </property>
-             <property name="text">
-               <string>Z</string>
-             </property>
-             <property name="alignment">
-               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-           </widget>
-         </item>
-         <item>
-           <widget class="QLineEdit" name="mp_PosZ">
-             <property name="minimumSize">
-               <size>
-                 <width>10</width>
-                 <height>0</height>
-               </size>
-             </property>
-             <property name="maximumSize">
-               <size>
-                 <width>50</width>
-                 <height>16777215</height>
-               </size>
-             </property>
-             <property name="maxLength">
-               <number>3</number>
-             </property>
-           </widget>
-         </item>
+        <item>
+         <widget class="QLabel" name="mp_labelZ">
+          <property name="minimumSize">
+           <size>
+            <width>10</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Z</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="mp_PosZ">
+          <property name="minimumSize">
+           <size>
+            <width>10</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>50</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="maxLength">
+           <number>3</number>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
       <item row="3" column="0">
@@ -773,7 +773,78 @@
         <number>6</number>
        </property>
        <item row="0" column="0">
-        <widget class="QTextEdit" name="mp_teDescription"/>
+        <widget class="QTextEdit" name="mp_teDescription">
+         <property name="palette">
+          <palette>
+           <active>
+            <colorrole role="Text">
+             <brush brushstyle="SolidPattern">
+              <color alpha="255">
+               <red>192</red>
+               <green>192</green>
+               <blue>192</blue>
+              </color>
+             </brush>
+            </colorrole>
+            <colorrole role="Base">
+             <brush brushstyle="SolidPattern">
+              <color alpha="255">
+               <red>47</red>
+               <green>47</green>
+               <blue>47</blue>
+              </color>
+             </brush>
+            </colorrole>
+           </active>
+           <inactive>
+            <colorrole role="Text">
+             <brush brushstyle="SolidPattern">
+              <color alpha="255">
+               <red>192</red>
+               <green>192</green>
+               <blue>192</blue>
+              </color>
+             </brush>
+            </colorrole>
+            <colorrole role="Base">
+             <brush brushstyle="SolidPattern">
+              <color alpha="255">
+               <red>47</red>
+               <green>47</green>
+               <blue>47</blue>
+              </color>
+             </brush>
+            </colorrole>
+           </inactive>
+           <disabled>
+            <colorrole role="Text">
+             <brush brushstyle="SolidPattern">
+              <color alpha="255">
+               <red>120</red>
+               <green>120</green>
+               <blue>120</blue>
+              </color>
+             </brush>
+            </colorrole>
+            <colorrole role="Base">
+             <brush brushstyle="SolidPattern">
+              <color alpha="255">
+               <red>240</red>
+               <green>240</green>
+               <blue>240</blue>
+              </color>
+             </brush>
+            </colorrole>
+           </disabled>
+          </palette>
+         </property>
+         <property name="font">
+          <font>
+           <family>Consolas</family>
+           <pointsize>11</pointsize>
+          </font>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>

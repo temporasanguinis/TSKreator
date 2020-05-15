@@ -1,9 +1,11 @@
 #include "wndextradescription.h"
+#pragma warning(push, 0)
 #include <QLineEdit>
 #include <QTextEdit>
 #include <QPushButton>
 #include <QMessageBox>
 #include <QCloseEvent>
+#pragma warning(pop)
 #include "config.h"
 #include "utils.h"
 #include "guiutils.h"
@@ -28,6 +30,7 @@ WndExtraDescription::~WndExtraDescription()
 #if defined( KREATOR_DEBUG )
   qDebug( "WndExtraDescription::~WndExtraDescription() called." );
 #endif
+  delete highLighter;
 }
 
 void WndExtraDescription::init()

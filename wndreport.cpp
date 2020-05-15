@@ -1,9 +1,11 @@
 #include "wndreport.h"
+#pragma warning(push, 0)
 #include <QPushButton>
 #include <QTextEdit>
 #include <QCloseEvent>
 #include <QFileDialog>
 #include <QDir>
+#pragma warning(pop)
 #include "settings.h"
 #include "kreatorsettings.h"
 

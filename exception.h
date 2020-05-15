@@ -1,8 +1,9 @@
 
 #ifndef TS_EXCEPTION_H
 #define TS_EXCEPTION_H
-
+#pragma warning(push, 0)
 #include <QString>
+#pragma warning(pop)
 
 
 namespace ts

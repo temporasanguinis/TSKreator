@@ -1,4 +1,5 @@
 #include "wnditem.h"
+#pragma warning(push, 0)
 #include <QLineEdit>
 #include <QCheckBox>
 #include <QTextEdit>
@@ -8,6 +9,7 @@
 #include <QMessageBox>
 #include <QCloseEvent>
 #include <QListWidget>
+#pragma warning(pop)
 #include "validator.h"
 #include "config.h"
 #include "constantname.h"

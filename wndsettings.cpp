@@ -1,4 +1,5 @@
 #include "wndsettings.h"
+#pragma warning(push, 0)
 #include <QLineEdit>
 #include <QPushButton>
 #include <QToolButton>
@@ -7,6 +8,7 @@
 #include <QCloseEvent>
 #include <QDir>
 #include <QStyleFactory>
+#pragma warning(pop)
 #include "validator.h"
 #include "config.h"
 #include "settings.h"

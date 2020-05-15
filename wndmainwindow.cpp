@@ -1,4 +1,5 @@
 #include "wndmainwindow.h"
+#pragma warning(push, 0)
 #include <QStyleFactory>
 #include <QMainWindow>
 #include <QAction>
@@ -14,6 +15,7 @@
 #include <QToolBar>
 #include <QTimer>
 #include <QStatusBar>
+#pragma warning(pop)
 #include "wndarea.h"
 #include "config.h"
 #include "wndsettings.h"
@@ -93,8 +95,8 @@ void WndMainWindow::init()
     QApplication::setStyle(QStyleFactory::create(QStyleFactory::keys().at(KreatorSettings::instance().kreatorTheme())));
   } else {
 #ifdef Q_WS_WIN32
-      if(QStyleFactory::keys().contains("windowsxp", Qt::CaseInsensitive))
-          QApplication::setStyle(QStyleFactory::create("windowsxp"));
+      if(QStyleFactory::keys().contains("cleanlooks", Qt::CaseInsensitive))
+          QApplication::setStyle(QStyleFactory::create("cleanlooks"));
       else
           QApplication::setStyle(QStyleFactory::create("windows"));
 #elif defined( Q_WS_MAC )

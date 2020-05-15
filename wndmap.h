@@ -1,10 +1,11 @@
 #ifndef WNDMAP_H
 #define WNDMAP_H
-
+#pragma warning(push, 0)
 #include <QMap>
 #include <QGLWidget>
 #include <QCloseEvent>
 #include <QMessageBox>
+#pragma warning(pop)
 
 #include "room.h"
 #include "area.h"
@@ -22,7 +23,7 @@ namespace ts
     struct glCoords {
         QRect rect = QRect();
         VNumber vnum = 0;
-        float aX,aY,bX,bY,Z = 0.0f;
+        float aX=0.0f,aY = 0.0f,bX = 0.0f,bY = 0.0f,Z = 0.0f;
         QString title = "";
         QString subtitle = "";
         QString text = "";

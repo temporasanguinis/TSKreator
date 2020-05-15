@@ -1,9 +1,10 @@
 #ifndef TS_WNDMULTIPLEMODIFY_H
 #define TS_WNDMULTIPLEMODIFY_H
-
+#pragma warning(push, 0)
 #include <QDialog>
 #include <QMap>
 #include "ui_guimultiplemodify.h"
+#pragma warning(pop)
 #include "area.h"
 
 using namespace ts;

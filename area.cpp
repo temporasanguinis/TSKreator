@@ -1,12 +1,16 @@
 #include "area.h"
+#pragma warning(push, 0)
+
 #include <QFile>
 #include <QTextStream>
+#include <qmessagebox.h>
+#pragma warning(pop)
 #include "exception.h"
 #include "utils.h"
 #include "settings.h"
 #include "constantname.h"
 #include "eleuconf.h"
-#include <qmessagebox.h>
+
 
 namespace ts
 {

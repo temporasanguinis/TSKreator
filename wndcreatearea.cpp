@@ -1,9 +1,11 @@
 #include "wndcreatearea.h"
+#pragma warning(push, 0)
 #include <QPushButton>
 #include <QLineEdit>
 #include <QFile>
 #include <QTextStream>
 #include <QMessageBox>
+#pragma warning(pop)
 #include "validator.h"
 #include "zone.h"
 #include "config.h"

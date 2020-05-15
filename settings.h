@@ -1,9 +1,10 @@
 
 #ifndef TS_SETTINGS_H
 #define TS_SETTINGS_H
-
+#pragma warning(push, 0)
 #include <QString>
 #include <QSettings>
+#pragma warning(pop)
 
 
 namespace ts

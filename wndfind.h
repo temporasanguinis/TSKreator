@@ -1,8 +1,9 @@
 #ifndef TS_WNDFIND_H
 #define TS_WNDFIND_H
-
+#pragma warning(push, 0)
 #include <QDialog>
 #include "ui_guifind.h"
+#pragma warning(pop)
 #include "area.h"
 #include "myqt.h"
 

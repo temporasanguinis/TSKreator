@@ -4,9 +4,10 @@
 
 //#define USE_ZONE_COMMAND_LIST_AS_MEMBER
 
-
+#pragma warning(push, 0)
 #include <QList>
 #include <QTextStream>
+#pragma warning(pop)
 #include "objectdata.h"
 #include "zonecommandgroup.h"
 #include "zonecommandlist.h"

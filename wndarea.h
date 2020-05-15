@@ -1,10 +1,11 @@
 
 #ifndef TS_WNDAREA_H
 #define TS_WNDAREA_H
-
+#pragma warning(push, 0)
 #include <QMainWindow>
-#include "myqt.h"
 #include "ui_guiarea.h"
+#pragma warning(pop)
+#include "myqt.h"
 #include "area.h"
 
 using namespace ts;

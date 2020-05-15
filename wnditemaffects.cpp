@@ -1,10 +1,12 @@
 #include "wnditemaffects.h"
+#pragma warning(push, 0)
 #include <QLineEdit>
 #include <QToolButton>
 #include <QPushButton>
 #include <QMessageBox>
 #include <QCloseEvent>
 #include <QComboBox>
+#pragma warning(pop)
 #include "validator.h"
 #include "config.h"
 #include "constantname.h"

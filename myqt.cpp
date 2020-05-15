@@ -1,7 +1,9 @@
 
 #include "myqt.h"
+#pragma warning(push, 0)
 #include <QMouseEvent>
 #include <QMenu>
+#pragma warning(pop)
 
 namespace MyQt
 {

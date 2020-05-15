@@ -1,4 +1,5 @@
 #include "wndexit.h"
+#pragma warning(push, 0)
 #include <QLineEdit>
 #include <QCheckBox>
 #include <QTextEdit>
@@ -7,6 +8,7 @@
 #include <QLabel>
 #include <QMessageBox>
 #include <QCloseEvent>
+#pragma warning(pop)
 #include "validator.h"
 #include "config.h"
 #include "constantname.h"
@@ -36,6 +38,7 @@ WndExit::~WndExit()
 #if defined( KREATOR_DEBUG )
   qDebug( "WndExit::~WndExit() called." );
 #endif
+  delete highLighter;
 }
 
 void WndExit::init()
@@ -44,6 +47,7 @@ void WndExit::init()
   qDebug( "WndExit::init() called." );
 #endif
   setupUi( this );
+  highLighter = new Syntax(mp_teDescription->document());
   mp_teDescription->setFont( TS::GetFixedFont() );
   mp_tbFlags->setIcon( TS::GetEditIcon() );
   mp_tbToRoom->setIcon( TS::GetEditIcon() );

@@ -1,13 +1,18 @@
 
-#include "wndmap.h"
+#pragma warning(push, 0)
 #include <QHBoxLayout>
 #include <QCoreApplication>
 #include <qalgorithms.h>
+#include <map>
+#include <QDebug>
+#pragma warning(pop)
+
 #include "kreatorsettings.h"
 #include "exception.h"
 #include "wndroom.h"
-#include <map>
-#include <QDebug>
+#include "wndmap.h"
+
+
 #define matsize 4
 #ifndef GL_MULTISAMPLE
 #define GL_MULTISAMPLE  0x809D

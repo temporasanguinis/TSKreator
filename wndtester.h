@@ -1,10 +1,11 @@
 
 #ifndef TS_WNDTESTER_H
 #define TS_WNDTESTER_H
-
+#pragma warning(push, 0)
 #include <QTextBrowser>
 #include <QDialog>
 #include "ui_guitester.h"
+#pragma warning(pop)
 #include "constantname.h"
 #include "area.h"
 #include "wndarea.h"

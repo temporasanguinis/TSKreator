@@ -1,9 +1,10 @@
 
 #ifndef TS_WNDSELECTFLAGS_H
 #define TS_WNDSELECTFLAGS_H
-
+#pragma warning(push, 0)
 #include <QDialog>
 #include "ui_guiselectflags.h"
+#pragma warning(pop)
 #include "types.h"
 #include "myqt.h"
 #include "eleuconf.h"

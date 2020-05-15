@@ -1,8 +1,9 @@
 
 #ifndef TS_DICE_H
 #define TS_DICE_H
-
+#pragma warning(push, 0)
 #include <QString>
+#pragma warning(pop)
 
 
 namespace ts

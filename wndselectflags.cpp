@@ -1,10 +1,12 @@
 #include "wndselectflags.h"
+#pragma warning(push, 0)
 #include <QPushButton>
 #include <QString>
 #include <QCloseEvent>
 #include <QMessageBox>
 #include <QAbstractButton>
 #include <QCheckBox>
+#pragma warning(pop)
 #include "constantname.h"
 #include "config.h"
 #include "bit.h"

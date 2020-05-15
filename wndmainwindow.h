@@ -1,9 +1,10 @@
 
 #ifndef TS_WNDMAINWINDOW_H
 #define TS_WNDMAINWINDOW_H
-
+#pragma warning(push, 0)
 #include <QMainWindow>
 #include "ui_guimainwindow.h"
+#pragma warning(pop)
 
 class QAction;
 class QMenu;

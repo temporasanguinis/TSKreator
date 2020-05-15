@@ -1,8 +1,9 @@
 #ifndef TS_WNDSHOP_H
 #define TS_WNDSHOP_H
-
+#pragma warning(push, 0)
 #include <QDialog>
 #include "ui_guishop.h"
+#pragma warning(pop)
 #include "area.h"
 
 using namespace ts;

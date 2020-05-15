@@ -1,8 +1,9 @@
 #ifndef TS_WNDSETTINGS_H
 #define TS_WNDSETTINGS_H
-
+#pragma warning(push, 0)
 #include <QDialog>
 #include "ui_guisettings.h"
+#pragma warning(pop)
 
 class QLineEdit;
 

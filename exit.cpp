@@ -1,5 +1,7 @@
 #include "exit.h"
-#include <qtextstream.h>
+#pragma warning(push, 0)
+#include <QTextStream>
+#pragma warning(pop)
 #include "constantname.h"
 
 

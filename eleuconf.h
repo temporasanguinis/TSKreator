@@ -1,12 +1,13 @@
 #ifndef TS_ELEUCONF_H
 #define TS_ELEUCONF_H
-
+#pragma warning(push, 0)
 #include <QFile>
 #include <QString>
 #include <QDataStream>
 #include <QTextStream>
 #include <QStringList>
 #include <QList>
+#pragma warning(pop)
 
 
 class Applies

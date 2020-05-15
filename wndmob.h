@@ -1,9 +1,11 @@
 #ifndef TS_WNDMOB_H
 #define TS_WNDMOB_H
-
+#pragma warning(push, 0)
 #include <QDialog>
 #include "ui_guimob.h"
+#pragma warning(pop)
 #include "area.h"
+#include "syntax.h"
 
 using namespace ts;
 
@@ -56,7 +58,7 @@ protected:
 private:
   Area& m_area;
   Mob m_mob;
-
+  Syntax* highLighter = NULL;
 };
 
 #endif // TS_WNDMOB_H

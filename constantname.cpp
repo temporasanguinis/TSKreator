@@ -1,6 +1,9 @@
 #include "constantname.h"
-#include <QStringList>
 #include "constants.h"
+#pragma warning(push, 0)
+#include <QStringList>
+#pragma warning(pop)
+
 
 namespace ts
 {

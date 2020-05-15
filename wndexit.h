@@ -1,9 +1,11 @@
 #ifndef TS_WNDEXIT_H
 #define TS_WNDEXIT_H
-
+#pragma warning(push, 0)
 #include <QDialog>
 #include "ui_guiexit.h"
+#pragma warning(pop)
 #include "area.h"
+#include "syntax.h"
 
 using namespace ts;
 
@@ -49,7 +51,7 @@ private:
   Exit m_exit;
   QString m_originalName;
   ZoneCommand m_doorInit;
-
+  Syntax* highLighter = NULL;
 };
 
 #endif // TS_WNDEXIT_H

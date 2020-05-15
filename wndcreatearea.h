@@ -1,10 +1,11 @@
 
 #ifndef TS_WNDCREATEAREA_H
 #define TS_WNDCREATEAREA_H
-
+#pragma warning(push, 0)
 #include <QDialog>
 #include <QString>
 #include "ui_guicreatearea.h"
+#pragma warning(pop)
 
 
 class WndCreateArea : public QDialog, Ui::GuiCreateArea

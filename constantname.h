@@ -1,8 +1,9 @@
 
 #ifndef TS_CONSTANTNAME_H
 #define TS_CONSTANTNAME_H
-
-#include <qstring.h>
+#pragma warning(push, 0)
+#include <QString>
+#pragma warning(pop)
 
 
 namespace ts

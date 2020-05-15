@@ -1,10 +1,11 @@
 
 #ifndef TS_WNDREPORT_H
 #define TS_WNDREPORT_H
-
+#pragma warning(push, 0)
 #include <QDialog>
 #include <QString>
 #include "ui_guireport.h"
+#pragma warning(pop)
 
 
 class WndReport : public QDialog, Ui::GuiReport

@@ -1,9 +1,11 @@
 #include "wndinit.h"
+#pragma warning(push, 0)
 #include <QPushButton>
 #include <QMessageBox>
 #include <QCloseEvent>
 #include <QListWidget>
 #include <QHeaderView>
+#pragma warning(pop)
 #include "wndmobinit.h"
 #include "guiutils.h"
 #include "config.h"

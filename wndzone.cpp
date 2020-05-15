@@ -1,4 +1,5 @@
 #include "wndzone.h"
+#pragma warning(push, 0)
 #include <QTreeWidget>
 #include <QLineEdit>
 #include <QGroupBox>
@@ -12,6 +13,7 @@
 #include <QHeaderView>
 #include <QApplication>
 #include <QRegExp>
+#pragma warning(pop)
 #include "wndzonecommand.h"
 #include "validator.h"
 #include "config.h"

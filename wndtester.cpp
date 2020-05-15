@@ -3,15 +3,17 @@
 #include "wnditem.h"
 #include "wndzone.h"
 #include "wndmob.h"
+#pragma warning(push, 0)
 #include <QScrollBar>
 #include <QCheckBox>
 #include <QCloseEvent>
+#include <QMessageBox>
+#include <QTextBrowser>
+#include <QTextOption>
+#pragma warning(pop)
 #include "eleuconf.h"
 #include "kreatorsettings.h"
 #include <typeinfo>
-#include <qmessagebox.h>
-#include <QTextBrowser>
-#include <QTextOption>
 
 using namespace ts;
 

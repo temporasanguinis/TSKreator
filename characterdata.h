@@ -2,8 +2,10 @@
 #ifndef TS_CHARACTERDATA_H
 #define TS_CHARACTERDATA_H
 
+#pragma warning(push, 0)
 
 #include <QString>
+#pragma warning(pop)
 #include "objectdata.h"
 #include "constants.h"
 #include "bit.h"

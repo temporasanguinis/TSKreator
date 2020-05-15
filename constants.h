@@ -1,8 +1,9 @@
 
 #ifndef TS_CONSTANTS_H
 #define TS_CONSTANTS_H
-
+#pragma warning(push, 0)
 #include <QStringList>
+#pragma warning(pop)
 
 namespace ts
 {

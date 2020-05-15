@@ -1,8 +1,9 @@
 #ifndef TS_WNDMOBINIT_H
 #define TS_WNDMOBINIT_H
-
+#pragma warning(push, 0)
 #include <QDialog>
 #include "ui_guimobinit.h"
+#pragma warning(pop)
 #include "area.h"
 #include "wndzone.h"
 

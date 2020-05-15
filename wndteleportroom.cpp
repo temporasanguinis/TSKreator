@@ -1,10 +1,12 @@
 #include "wndteleportroom.h"
+#pragma warning(push, 0)
 #include <QLineEdit>
 #include <QToolButton>
 #include <QComboBox>
 #include <QPushButton>
 #include <QMessageBox>
 #include <QCloseEvent>
+#pragma warning(pop)
 #include "validator.h"
 #include "config.h"
 #include "constantname.h"

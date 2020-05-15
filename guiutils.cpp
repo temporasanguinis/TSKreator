@@ -17,7 +17,8 @@ namespace TS
   QFont GetFixedFont()
   {
     QFont fixFont = QApplication::font();
-    fixFont.setFamily( "Courier New" );
+    fixFont.setFamily( "Consolas" );
+    fixFont.setPointSize(11);
     return fixFont;
   }
 

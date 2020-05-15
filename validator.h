@@ -1,8 +1,9 @@
 
 #ifndef TS_VALIDATOR_H
 #define TS_VALIDATOR_H
-
+#pragma warning(push, 0)
 #include <QIntValidator>
+#pragma warning(pop)
 #include "selectobject.h"
 
 class SpellValidator : public QIntValidator

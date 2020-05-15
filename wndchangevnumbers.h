@@ -1,8 +1,9 @@
 #ifndef TS_WNDCHANGEVNUMBERS_H
 #define TS_WNDCHANGEVNUMBERS_H
-
+#pragma warning(push, 0)
 #include <QDialog>
 #include "ui_guichangevnumbers.h"
+#pragma warning(pop)
 #include "area.h"
 
 

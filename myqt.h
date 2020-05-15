@@ -1,12 +1,13 @@
 
 #ifndef MM_MYQT_H
 #define MM_MYQT_H
+#pragma warning(push, 0)
 
 #include <QButtonGroup>
 #include <QAbstractButton>
 #include <QMap>
 #include <QTreeWidget>
-
+#pragma warning(pop)
 class QMenu;
 
 

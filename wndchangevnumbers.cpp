@@ -1,4 +1,5 @@
 #include "wndchangevnumbers.h"
+#pragma warning(push, 0)
 #include <QLineEdit>
 #include <QPushButton>
 #include <QMessageBox>
@@ -6,6 +7,7 @@
 #include <QProgressBar>
 #include <QLabel>
 #include <QApplication>
+#pragma warning(pop)
 #include "validator.h"
 #include "config.h"
 

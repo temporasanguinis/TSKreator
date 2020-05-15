@@ -65,7 +65,11 @@ void KreatorSettings::loadGuiStatus(const QString& widget_name, QWidget* w)
 #endif
 	instance().beginGroup(widget_name.toLower());
 	w->resize(instance().value("size", w->size()).toSize());
+    auto sz = instance().value("size", w->size()).toSize();
 	QPoint pos = instance().value("position", w->pos()).toPoint();
+    QPoint startPos = pos;
+    pos.setX(pos.x() + sz.width() / 2);
+    pos.setY(pos.y() + sz.height() / 2);
 	QDesktopWidget* desktop = QApplication::desktop();
 	bool inScreen = false;
 	for (qint32 i = 0, screens = desktop->screenCount(); i < screens; i++) {
@@ -77,7 +81,7 @@ void KreatorSettings::loadGuiStatus(const QString& widget_name, QWidget* w)
 
 	if (inScreen)
 	{
-		w->move(pos);
+		w->move(startPos);
 	}
 	else {
 		w->move(10, 10);

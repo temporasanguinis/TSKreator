@@ -65,4 +65,20 @@
     <qresource prefix="/about">
         <file>VERSION.txt</file>
     </qresource>
+    <qresource prefix="/sector2">
+        <file>images/alternate/air.png</file>
+        <file>images/alternate/city.png</file>
+        <file>images/alternate/dark-city.png</file>
+        <file>images/alternate/desert.png</file>
+        <file>images/alternate/field.png</file>
+        <file>images/alternate/forest.png</file>
+        <file>images/alternate/hills.png</file>
+        <file>images/alternate/inside.png</file>
+        <file>images/alternate/mountains.png</file>
+        <file>images/alternate/teleport.png</file>
+        <file>images/alternate/tree.png</file>
+        <file>images/alternate/underwater.png</file>
+        <file>images/alternate/water-noswim.png</file>
+        <file>images/alternate/water-swim.png</file>
+    </qresource>
 </RCC>

@@ -1,4 +1,9 @@
-﻿1.5
+﻿1.51
+- le porte vengono disegnate sulla mappa
+- e possibile mettere ai mob random fisiche e magiche su immunita, resistenze e suscettibilita'
+- possibilita di disegnare i settori nella mappa con solo colori (senza immagini)
+__________________________________
+1.5
 - implementata la funzionalita per il mapper (finestra mappa, e supporto per assegnare le coordinate via tester)
 - aggiunto bottone "segui uscita" nella finestra della room
 - la finestra Informazioni ora mostra le versioni

@@ -5,6 +5,7 @@
 #include <qalgorithms.h>
 #include <map>
 #include <QDebug>
+#include <QDesktopWidget>
 #pragma warning(pop)
 
 #include "kreatorsettings.h"
@@ -30,6 +31,29 @@ namespace ts
         zrot = 0;
         setAutoFillBackground(false);
         setMouseTracking(true);
+    }
+
+    /*void drawDoorAt(GLfloat x, GLfloat y, GLfloat z, bool isLocked) {
+        glColor4f(0.0, 0.0, 1.0, 1.0);
+        if (isLocked) glColor4f(0.75, 0.0, 0.0, 1.0);
+        glBegin(GL_QUADS);
+        glTexCoord2f(0.0, 0.0); glVertex3f(x - 5, y - 5, 0.2f);
+        glTexCoord2f(1.0, 0.0); glVertex3f(x + 5, y - 5, 0.2f);
+        glTexCoord2f(1.0, 1.0); glVertex3f(x + 5, y + 5, 0.2f);
+        glTexCoord2f(0.0, 1.0); glVertex3f(x - 5, y + 5, 0.2f);
+        glEnd();
+    }*/
+
+    void GlMap::drawDoorAt(QPainter* p, GLfloat x, GLfloat y, GLfloat z, bool isLocked) {
+        QColor c = QColor(127, 127, 255);
+        if (isLocked) c = QColor(0, 0, 255);
+        GLdouble model[4][4], proj[4][4];
+        GLint view[4];
+        glGetDoublev(GL_MODELVIEW_MATRIX, &model[0][0]);
+        glGetDoublev(GL_PROJECTION_MATRIX, &proj[0][0]);
+        glGetIntegerv(GL_VIEWPORT, &view[0]);
+        QRect r = QRect(x - 5, y - 5, 10, 10);
+        drawRectAtWorld(p, model, proj, view, r, c, 0.0, true);
     }
 
     void reverseMatrix(GLdouble A[matsize][matsize], GLdouble I[matsize][matsize]) {
@@ -366,7 +390,7 @@ namespace ts
 
         if (bVnums) {
             QColor c = QColor(255, 255, 255, 170);
-            QRect r = QRect(textPosWorld.x-2, textPosWorld.y-15, 28, 41);
+            QRect r = QRect(textPosWorld.x-4, textPosWorld.y-17, 26, 38);
             drawRectAtWorld(painter, model, proj, view, r, c, 0.0f, false);
             painter->setPen(Qt::black);
             painter->setFont(font2);
@@ -486,6 +510,24 @@ namespace ts
 
             }
         }
+        for (size_t i = 0; i < ROOM_SECTOR_END; i++)
+        {
+            if (images[i] != "") {
+                if (!b.load(QString(":/sector2/images/alternate/%1").arg(images[i])))
+                {
+                    b = QImage(16, 16, QImage::Format_ARGB32);
+                    b.fill(Qt::green);
+                }
+
+                t = QGLWidget::convertToGLFormat(b);
+                glGenTextures(1, &texture2[i]);
+                glBindTexture(GL_TEXTURE_2D, texture2[i]);
+                glTexImage2D(GL_TEXTURE_2D, 0, 3, t.width(), t.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, t.bits());
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+            }
+        }
     }
 
     void WndMap::closeEvent(QCloseEvent* e)
@@ -499,6 +541,20 @@ namespace ts
 
     }
 
+    QRect ScreenRect(QWidget *w) {
+        auto pos = w->pos();
+        pos.setX(pos.x() + w->width() / 2);
+        pos.setY(pos.y() + w->height() / 2);
+        QDesktopWidget* desktop = QApplication::desktop();
+        bool inScreen = false;
+        for (qint32 i = 0, screens = desktop->screenCount(); i < screens; i++) {
+            if (desktop->screenGeometry(i).contains(pos))
+            {
+                return desktop->screenGeometry(i);
+            }
+        }
+        return QRect(0, 0, 1920, 1080);
+    }
     void GlMap::paintEvent(QPaintEvent* event) {
         if (object == 0) return;
         makeCurrent();
@@ -510,13 +566,16 @@ namespace ts
         glLoadIdentity();                       // Reset The View
         glScalef(zoomRatio, zoomRatio, 1.0);
         glTranslatef(offsetX * 100 / zoomRatio, offsetY * 100 / zoomRatio, 0.0);
+        //glRotatef(0.5f, 1.0f, 1.0f, 1.0f);
         glCallList(object);
-        font.setPointSize(14 * zoomRatio);
-        font2.setPointSize(10 * zoomRatio);
+        font.setPixelSize(14 * zoomRatio);
+        font2.setPixelSize(10 * zoomRatio);
+        font3.setPixelSize(12);
         QPainter painter(this);
         int any = 0;
         for (auto& var : objMap)
         {
+            if (var.Z != this->offsetZ) continue;
             QPen normal = QPen(Qt::blue, 3);
             QPen oneWay = QPen(QColor(90, 90, 90, 100), 2);
             renderRoomLinks(&painter, var, normal, oneWay);
@@ -524,12 +583,54 @@ namespace ts
         for (auto& var : objMap)
         {
             if (var.Z != this->offsetZ) continue;
+            auto rm = roomMap[var.vnum];
+            if (rm->hasExit(EXIT_DIRECTION_NORTH) && rm->exit(EXIT_DIRECTION_NORTH).hasDoor()) {
+                drawDoorAt(&painter, (var.aX + var.bX) / 2, var.bY + 10, 0.2f, rm->exit(EXIT_DIRECTION_NORTH).isLocked());
+            }
+            if (rm->hasExit(EXIT_DIRECTION_SOUTH) && rm->exit(EXIT_DIRECTION_SOUTH).hasDoor()) {
+                drawDoorAt(&painter, (var.aX + var.bX) / 2, var.aY - 10, 0.2f, rm->exit(EXIT_DIRECTION_SOUTH).isLocked());
+            }
+            if (rm->hasExit(EXIT_DIRECTION_EAST) && rm->exit(EXIT_DIRECTION_EAST).hasDoor()) {
+                drawDoorAt(&painter, var.bX + 10, (var.aY + var.bY) / 2, 0.2f, rm->exit(EXIT_DIRECTION_EAST).isLocked());
+            }
+            if (rm->hasExit(EXIT_DIRECTION_WEST) && rm->exit(EXIT_DIRECTION_WEST).hasDoor()) {
+                drawDoorAt(&painter, var.aX - 10, (var.aY + var.bY) / 2, 0.2f, rm->exit(EXIT_DIRECTION_WEST).isLocked());
+            }
             renderRoom(&painter, var);
             any++;
         }
+        GLdouble x, y, z;
+        transformScreenToModel(mouseMoveX, mouseMoveY, 0, x, y, z);
+        x = ceil((x - 50) / 100);
+        y = ceil((y - 50) / 100);
 
+        double multi = 1.0;
+        auto scr = ScreenRect((QWidget*)this->parent());
+        multi = scr.width()/1920.0;
+        font3.setPixelSize(14*multi);
         painter.setFont(font3);
         painter.setPen(Qt::black);
+        QStringList str;
+        str.append(QString("Livello (PgUp/Down): %1").arg(QString::number(offsetZ)));
+        str.append(QString("Rooms: %1").arg(QString::number(any)));
+        str.append(QString("Offset: %1, %2").arg(QString::number((int)offsetX)).arg(QString::number((int)offsetY)));
+        str.append(QString("Sectors (S): %1").arg(bImages ? bImages == 1 ? "On" : "Color" : "Off"));
+        str.append(QString("Vnums (V): %1").arg(bVnums ? "On" : "Off"));
+        str.append(QString("Coord: %1,%2").arg(QString::number(x)).arg(QString::number(y)));
+
+        int offY = 10;
+        for (auto s : str)
+        {
+            QFontMetrics fm(font3);
+            int pixelsWide = fm.width(s);
+            int pixelsHigh = fm.height();
+            QRect r(10, offY, pixelsWide + 6, pixelsHigh + 6);
+            painter.fillRect(r, QColor(255, 255, 255, 255));
+            painter.drawRect(r);
+            painter.drawText(10 + 3, offY + pixelsHigh - 3, s);
+            offY += pixelsHigh + 9;
+        }
+        /*
         painter.fillRect(QRect(10, 10, 175, 30), QColor(255, 255, 255, 127));
         painter.drawText(15, 30, QString("Livello (PgUp/Down): %1").arg(QString::number(offsetZ)));
         painter.fillRect(QRect(10, 10 + 1 * 35, 120, 30), QColor(255, 255, 255, 127));
@@ -537,15 +638,11 @@ namespace ts
         painter.fillRect(QRect(10, 10 + 2 * 35, 150, 30), QColor(255, 255, 255, 127));
         painter.drawText(15, 30 + 2 * 35, QString("Offset: %1, %2").arg(QString::number((int)offsetX)).arg(QString::number((int)offsetY)));
         painter.fillRect(QRect(10, 10 + 4 * 35, 150, 30), QColor(255, 255, 255, 127));
-        painter.drawText(15, 30 + 4 * 35, QString("Sectors (S): %1").arg(bImages?"On":"Off"));
+        painter.drawText(15, 30 + 4 * 35, QString("Sectors (S): %1").arg(bImages?bImages==1?"On":"Color":"Off"));
         painter.fillRect(QRect(10, 10 + 5 * 35, 150, 30), QColor(255, 255, 255, 127));
         painter.drawText(15, 30 + 5 * 35, QString("Vnums (V): %1").arg(bVnums ? "On" : "Off"));
-        GLdouble x, y, z;
-        transformScreenToModel(mouseMoveX, mouseMoveY, 0, x, y, z);
         painter.fillRect(QRect(10, 10 + 3 * 35, 150, 30), QColor(255, 255, 255, 127));
-        x = ceil((x - 50) / 100);
-        y = ceil((y - 50) / 100);
-        painter.drawText(15, 30 + 3 * 35, QString("Coord: %1,%2").arg(QString::number(x)).arg(QString::number(y)));
+        painter.drawText(15, 30 + 3 * 35, QString("Coord: %1,%2").arg(QString::number(x)).arg(QString::number(y)));*/
         if (bMouseDown == Qt::LeftButton) {
             int x = min(mouseDownX, mouseMoveX);
             int y = min(mouseDownY, mouseMoveY);
@@ -559,11 +656,17 @@ namespace ts
             painter.setPen(Qt::black);
             QFontMetrics fm(font3);
             int pixelsWide = fm.width(hovering->text);
+            QString sec = images[roomMap[hovering->vnum]->realSectorType()].replace(".png","");
+            sec = QString::number(hovering->vnum) + " (" + sec + ")";
+            int pixelsWide2 = fm.width(QString::number(hovering->vnum) + " (" + sec + ")");
             int pixelsHigh = fm.height();
-            QRect r(mouseMoveX-3+20, mouseMoveY- pixelsHigh-3+40, pixelsWide+6, pixelsHigh+6);
+            int totW = max(pixelsWide, pixelsWide2);
+            int totH = pixelsHigh * 2;
+            QRect r(mouseMoveX-3+20, mouseMoveY- totH-3+40, totW+6, totH+6);
             painter.fillRect(r, QColor(255, 255, 200, 255));
             painter.drawRect(r);
-            painter.drawText(mouseMoveX+20, mouseMoveY-5+40, hovering->text);
+            painter.drawText(mouseMoveX+20, mouseMoveY-5+40 - pixelsHigh, sec);
+            painter.drawText(mouseMoveX + 20, mouseMoveY - 5 + 40, hovering->text);
         }
         painter.end();
     }
@@ -648,6 +751,21 @@ namespace ts
 
                 CreateRoomGeometry(rm, gC);
 
+                /*if (rm->getZ() == offsetZ) {
+                    if (rm->hasExit(EXIT_DIRECTION_NORTH) && rm->exit(EXIT_DIRECTION_NORTH).hasDoor()) {
+                        drawDoorAt((gC.aX + gC.bX) / 2, gC.bY + 10, 0.2f, rm->exit(EXIT_DIRECTION_NORTH).isLocked());
+                    }
+                    if (rm->hasExit(EXIT_DIRECTION_SOUTH) && rm->exit(EXIT_DIRECTION_SOUTH).hasDoor()) {
+                        drawDoorAt((gC.aX + gC.bX) / 2, gC.aY - 10, 0.2f, rm->exit(EXIT_DIRECTION_SOUTH).isLocked());
+                    }
+                    if (rm->hasExit(EXIT_DIRECTION_EAST) && rm->exit(EXIT_DIRECTION_EAST).hasDoor()) {
+                        drawDoorAt(gC.bX + 10, (gC.aY + gC.bY) / 2, 0.2f, rm->exit(EXIT_DIRECTION_EAST).isLocked());
+                    }
+                    if (rm->hasExit(EXIT_DIRECTION_WEST) && rm->exit(EXIT_DIRECTION_WEST).hasDoor()) {
+                        drawDoorAt(gC.aX - 10, (gC.aY + gC.bY) / 2, 0.2f, rm->exit(EXIT_DIRECTION_WEST).isLocked());
+                    }
+                }*/
+
                 CreateRoomData(gC, rm);
                 
                 //glEnd();
@@ -670,19 +788,22 @@ namespace ts
         glTexCoord2f(1.0, 1.0); glVertex3f((GLfloat)gC.bX, (GLfloat)gC.bY, 0.2f);
         glTexCoord2f(0.0, 1.0); glVertex3f((GLfloat)gC.aX, (GLfloat)gC.bY, 0.2f);
         glEnd();
-        if (bImages && texture[rm->sectorType()] && rm->getZ() == offsetZ) {
-            glBlendFunc(GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA);
-            glEnable(GL_BLEND);
-            glEnable(GL_COLOR_MATERIAL);
-            glEnable(GL_TEXTURE_2D);
-            glBindTexture(GL_TEXTURE_2D, texture[rm->sectorType()]);
-            glColor4f(1.0, 1.0, 1.0, 0.5);
-            glBegin(GL_QUADS);
-            glTexCoord2f(0.0, 0.0); glVertex3f((GLfloat)gC.aX, (GLfloat)gC.aY, 0.21f);
-            glTexCoord2f(1.0, 0.0); glVertex3f((GLfloat)gC.bX, (GLfloat)gC.aY, 0.21f);
-            glTexCoord2f(1.0, 1.0); glVertex3f((GLfloat)gC.bX, (GLfloat)gC.bY, 0.21f);
-            glTexCoord2f(0.0, 1.0); glVertex3f((GLfloat)gC.aX, (GLfloat)gC.bY, 0.21f);
-            glEnd();
+        if (bImages && rm->getZ() == offsetZ) {
+            auto imgs = bImages == 1 ? texture : texture2;
+            if (imgs[rm->sectorType()]) {
+                glBlendFunc(GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA);
+                glEnable(GL_BLEND);
+                glEnable(GL_COLOR_MATERIAL);
+                glEnable(GL_TEXTURE_2D);
+                glBindTexture(GL_TEXTURE_2D, imgs[rm->sectorType()]);
+                glColor4f(1.0, 1.0, 1.0, 0.5);
+                glBegin(GL_QUADS);
+                glTexCoord2f(0.0, 0.0); glVertex3f((GLfloat)gC.aX, (GLfloat)gC.aY, 0.21f);
+                glTexCoord2f(1.0, 0.0); glVertex3f((GLfloat)gC.bX, (GLfloat)gC.aY, 0.21f);
+                glTexCoord2f(1.0, 1.0); glVertex3f((GLfloat)gC.bX, (GLfloat)gC.bY, 0.21f);
+                glTexCoord2f(0.0, 1.0); glVertex3f((GLfloat)gC.aX, (GLfloat)gC.bY, 0.21f);
+                glEnd();
+            }
         }
         
     }
@@ -800,6 +921,12 @@ namespace ts
                 }
             }
         }
+        if (rooms.size()) {
+            this->window()->setWindowTitle("Mappa - usa tastierino numerico per muoverti (o freccette + PgUp/PgDown), mouse pan e scroll per zoom");
+        }
+        else {
+            this->window()->setWindowTitle("Mappa - Nessuna room (La zona deve avere flag HasMap per poter disegnare le room)");
+        }
     }
 
     WndMap::WndMap(Area* ar, WndArea* parent)
@@ -826,14 +953,6 @@ namespace ts
         {
             throw;
         }
-
-        if (rooms.size()) {
-            this->window()->setWindowTitle("Mappa - usa tastierino numerico per muoverti o Freccette + PgUp/PgDown, mouse scroll per zoom");
-        }
-        else {
-            this->window()->setWindowTitle("Mappa - Nessuna room (La zona deve avere flag HasMap per poter disegnare le room)");
-        }
-
     }
 
     void WndMap::wheelEvent(QWheelEvent* ev) {
@@ -1064,7 +1183,10 @@ namespace ts
                 map->setShowVnums(!map->getShowVnums());
             }
             else if (sKey == "S") {
-                map->setShowImages(!map->getShowImages());
+                auto imgs = map->getShowImages();
+                imgs++;
+                if (imgs > 2) imgs = 0;
+                map->setShowImages(imgs);
             }
             map->repaint();
         }

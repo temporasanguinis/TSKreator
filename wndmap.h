@@ -57,12 +57,12 @@ namespace ts
         void doubleClicked(VNumber vnum);
 
         public:
-            bool setShowImages(bool v) {
+            int setShowImages(int v) {
                 bImages = v;
                 ResetObjects();
                 return bImages;
             }
-            bool getShowImages() { return bImages; }
+            int getShowImages() { return bImages; }
             bool setShowVnums(bool v) { return (bVnums = v); }
             bool getShowVnums() { return bVnums; }
             void setRooms(QList<const Room*> rooms) {
@@ -143,6 +143,7 @@ namespace ts
             void GlMap::drawLineAtWorld(QPainter* painter,
                 GLdouble model[4][4], GLdouble proj[4][4],
                 GLint viewport[4], QPoint from, QPoint to, QColor color);
+            void drawDoorAt(QPainter *p, GLfloat x, GLfloat y, GLfloat z, bool isLocked);
     protected:
         void loadGLTextures();
         void mouseDoubleClickEvent(QMouseEvent*) {
@@ -157,6 +158,7 @@ namespace ts
             GLfloat xspeed;                                 // X Rotation Speed
             GLfloat yspeed;                                 // Y Rotation Speed
             GLuint      texture[ROOM_SECTOR_END] = { 0 };
+            GLuint      texture2[ROOM_SECTOR_END] = { 0 };
             GLuint filter;
             GLuint object;
             QMap<VNumber, glCoords> objMap;
@@ -173,7 +175,7 @@ namespace ts
             int mouseMoveX, mouseMoveY;
             int bMouseDown = 0;
             const glCoords* hovering = NULL;
-            bool bImages = FALSE;
+            int bImages = 2;
             bool bVnums = TRUE;
     };
 

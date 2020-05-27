@@ -74,6 +74,25 @@ namespace ts
                 }
                 ResetObjects();
             }
+            void selectRoom(VNumber vnum)
+            {
+                if (roomMap.find(vnum)!=roomMap.end()) {
+                    for (auto& r : objMap)
+                    {
+                        if (r.vnum == vnum) {
+                            r.bSelected = true;
+                            auto rm = roomMap[vnum];
+                            offsetZ = rm->getZ();
+                            offsetY = -rm->getY();
+                            offsetX = -rm->getX();
+                        }
+                        else {
+                            r.bSelected = false;
+                        }
+                    }
+                    repaint();
+                }
+            }
             void ResetObjects();
             void setPos(GLfloat x, GLfloat y, GLfloat z) {
                 offsetX = x;
@@ -162,7 +181,7 @@ namespace ts
             GLuint filter;
             GLuint object;
             QMap<VNumber, glCoords> objMap;
-            QMap<VNumber, const Room*> roomMap;
+            std::map<VNumber, const Room*> roomMap;
             QList<const Room*> m_rooms;
             GLfloat offsetY = 0;
             GLfloat offsetX = 0;
@@ -191,6 +210,10 @@ namespace ts
                 QList<const Room*> rooms;
                 CreateRooms(rooms);
                 map->setRooms(rooms);
+            }
+            void selectRoom(VNumber vnum)
+            {
+                map->selectRoom(vnum);
             }
         public slots:
             void doubleClicked(VNumber vnum);

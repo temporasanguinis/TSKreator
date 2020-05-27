@@ -33,8 +33,9 @@ class WndArea : public QMainWindow, private Ui::GuiArea
     void refreshRoomsView();
     void somethingChanged();
     void changeView(int);
-
+    void selectRoom(VNumber room);
   protected slots:
+    void listItemClicked();
     void showEditDialog( QTreeWidgetItem*, int );
     void showEditDialog();
     void changeFileName();
@@ -56,6 +57,8 @@ class WndArea : public QMainWindow, private Ui::GuiArea
 	void showTester();
     void showMultipleModify();
     void showMap();
+
+    void FindMapWindow(void** pWnd);
 
   protected:
     void init();

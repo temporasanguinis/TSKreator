@@ -13,6 +13,21 @@
 
 namespace ts
 {
+    template <typename F>
+    struct FinalAction {
+        FinalAction(F f) : clean_{ f } {}
+        ~FinalAction() { if (enabled_) clean_(); }
+        void disable() { enabled_ = false; };
+    private:
+        F clean_;
+        bool enabled_{ true };
+    };
+
+
+template <typename F>
+ts::FinalAction<F> finally(F f) {
+    return ts::FinalAction<F>(f);
+}
 
 class Utils
 {

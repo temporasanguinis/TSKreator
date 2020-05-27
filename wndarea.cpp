@@ -122,11 +122,28 @@ void WndArea::init()
   if (!connect(mp_bgViews, SIGNAL(buttonClicked(int)), this, SLOT(changeView(int))))
       throw Exception(ts::Exception::Type::Runtime, "Cannot connect signal");
   connect( mp_twObjectList, SIGNAL( itemDoubleClicked( QTreeWidgetItem *, int ) ), this, SLOT( showEditDialog( QTreeWidgetItem*, int ) ) );
+  connect( mp_twObjectList, SIGNAL(itemSelectionChanged()), this, SLOT( listItemClicked()));
   connect( mp_pbEdit, SIGNAL( clicked() ), this, SLOT( showEditDialog() ) );
   connect( mp_pbRemove, SIGNAL( clicked() ), this, SLOT( removeObject() ) );
   connect( mp_pbClone, SIGNAL( clicked() ), this, SLOT( cloneObject() ) );
   connect( mp_pbNew, SIGNAL( clicked() ), this, SLOT( createObject() ) );
   connect( mp_tbChangeFile, SIGNAL( clicked() ), this, SLOT( changeFileName() ) );
+}
+
+bool bSelecting = false;
+void WndArea::listItemClicked() {
+    if (bSelecting) return;
+    bSelecting = true;
+    auto endSelecting = finally([&] {bSelecting = false; });
+    if (m_currentObjectTypeList == ObjectData::Object_Room) {
+        VNumber vnum = -1;
+        if (mp_twObjectList->selectedItems().size()) {
+            auto item = *(mp_twObjectList->selectedItems().begin());
+            select(item);
+            vnum = item->text(0).toLong();
+        }
+        selectRoom(vnum);
+    }
 }
 
 void WndArea::initMenuArea()
@@ -1039,6 +1056,10 @@ void WndArea::somethingChanged()
 #endif
   mp_actSaveArea->setEnabled( true );
   refreshTitle();
+  WndMap* pWnd = NULL;
+  FindMapWindow((void**)&pWnd);
+  if (pWnd) 
+      pWnd->Refresh();
 }
 
 void WndArea::removeObject()
@@ -1176,6 +1197,20 @@ void WndArea::cloneObject()
   else
     qWarning( "WndArea::cloneObject() : unknown object_type." );
 
+}
+
+void WndArea::selectRoom(VNumber vnum)
+{
+#if defined( KREATOR_DEBUG )
+    qDebug("WndArea::selectRoom() called.");
+#endif
+    if (m_currentObjectTypeList == ObjectData::Object_Room) {
+        m_selectedVNum = vnum;
+        WndMap* pWnd = NULL;
+        FindMapWindow((void**)&pWnd);
+        if (pWnd)
+            pWnd->selectRoom(vnum);
+    }
 }
 
 void WndArea::createObject()
@@ -1364,13 +1399,7 @@ void WndArea::showMap()
     try
     {
         WndMap* pWnd = NULL;
-        for (size_t i = 0; i < m_childs.size(); i++)
-        {
-            if (m_childs.at(i)->objectName() == "Mappa") {
-                pWnd = (WndMap*)m_childs.at(i);
-                break;
-            }
-        }
+        FindMapWindow((void**)&pWnd);
         if (!pWnd) {
             pWnd = new WndMap(&m_area, this);
             pWnd->setObjectName("Mappa");
@@ -1389,6 +1418,17 @@ void WndArea::showMap()
     catch (const std::exception &ex)
     {
         printf(ex.what());
+    }
+}
+
+void WndArea::FindMapWindow(void** pWnd)
+{
+    for (size_t i = 0; i < m_childs.size(); i++)
+    {
+        if (m_childs.at(i)->objectName() == "Mappa") {
+            *pWnd = (WndMap*)m_childs.at(i);
+            break;
+        }
     }
 }
 

@@ -583,6 +583,13 @@ namespace ts
         for (auto& var : objMap)
         {
             if (var.Z != this->offsetZ) continue;
+            if (!roomMap.count(var.vnum)) {
+                auto srch = std::find_if(m_rooms.begin(), m_rooms.end(), [&](const Room *r) {return r->vnumber() == var.vnum; });
+                if (m_rooms.end() != srch) {
+                    const Room* r = *srch;
+                    roomMap[var.vnum] = r;
+                }
+            }
             auto rm = roomMap[var.vnum];
             if (rm->hasExit(EXIT_DIRECTION_NORTH) && rm->exit(EXIT_DIRECTION_NORTH).hasDoor()) {
                 drawDoorAt(&painter, (var.aX + var.bX) / 2, var.bY + 10, 0.2f, rm->exit(EXIT_DIRECTION_NORTH).isLocked());
@@ -821,7 +828,7 @@ namespace ts
     {
         for (auto& re : rm->exits()) {
             float addX1 = 0, addX2 = 0, addY1 = 0, addY2 = 0;
-            if (roomMap.contains(re.toRoom())) {
+            if (roomMap.count(re.toRoom())) {
                 class QRect* rect = NULL;
                 auto r = roomMap[re.toRoom()];
                 const Exit* other = NULL;
@@ -1089,16 +1096,20 @@ namespace ts
             QMessageBox::warning(this, "Conflitto", "Lo spostamento non e' possibile perche alcune locazioni si sovraporrebbero!");
             return ok;
         }
+        bool changed = false;
         for (auto& r : objMap)
         {
             if (r.bSelected) {
                 Room* rm = const_cast<Room*>(roomMap[r.vnum]);
                 rm->setPos(rm->getX() + x, rm->getY() + y, rm->getZ() + z);
-                WndMap* wndMap = (WndMap*)this->parent();
-                WndArea* wndArea = (WndArea*)((wndMap)->getWndArea());
-                wndMap->setRoomsChanged();
-                wndArea->somethingChanged();
+                changed = true;
             }
+        }
+        if (changed) {
+            WndMap* wndMap = (WndMap*)this->parent();
+            WndArea* wndArea = (WndArea*)((wndMap)->getWndArea());
+            wndMap->setRoomsChanged();
+            wndArea->somethingChanged();
         }
         if (x || y) ResetObjects();
         return ok;

@@ -174,6 +174,7 @@ void WndTester::go(VNumber vnum)
             }
         }
         textBrowser->append(ParseAnsiColors("$c0015-----------------"));
+        parentwnd->selectRoom(vnum);
     } else
         textBrowser->append(QString("<font color=\"red\" size=4>").append("Quella stanza non esiste").append("</font>"));
 }

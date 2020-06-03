@@ -259,8 +259,8 @@ void WndMob::saveData()
   m_mob.setRace( mp_comboRace->currentIndex() );
   m_mob.setMobLevel( mp_sbLevel->value() );
   m_mob.setAlignment( mp_leAlignment->text().toInt() );
+  m_mob.setHitPointsBonus(mp_leHPBonus->text().toInt());
   m_mob.setXpBonus( mp_leXPBonus->text().toLong() );
-  m_mob.setHitPointsBonus( mp_leHPBonus->text().toInt() );
   m_mob.setGender( mp_comboGender->currentIndex() );
   m_mob.setAttacks( mp_sbAttacks->value() );
   m_mob.setArmor( mp_sbArmor->value() * 10 );

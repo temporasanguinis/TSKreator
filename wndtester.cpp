@@ -121,8 +121,12 @@ void WndTester::go(VNumber vnum)
         cr = vnum;
         QString buf;
         Room rp = m_area.room(vnum);
-        auto &zn = m_area.zone(floor(vnum / 100));
-        if (zn.hasNewFlag(19)) {
+        bool hasZone = m_area.hasZone(floor(vnum / 100));
+        const Zone* zn = (Zone*)nullptr;
+        if (hasZone) {
+            zn = &m_area.zone(floor(vnum / 100));
+        }
+        if (hasZone && zn->hasNewFlag(19)) {
             int x, y, z;
             x = rp.getX();
             y = rp.getY();

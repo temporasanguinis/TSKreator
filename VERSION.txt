@@ -1,4 +1,8 @@
-﻿1.52
+﻿1.53
+- corretto un bug che crashava se l'area aveva locazioni con zona non in area
+- corretto un bug di calcolo hp del mob che non andava in real time
+__________________________________
+1.52
 - corretto dei bug che crashavano
 - interazione tra tester e mappa
 - migliorato funzonalita della mappa

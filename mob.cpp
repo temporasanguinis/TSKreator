@@ -518,7 +518,7 @@ namespace ts
         if (iLevel > 51)
             iLevel = 51;
 
-        int iExp = aiBase[ iLevel ] + ((aiHit[ iLevel ] / 2) * hitPoints()) + (aiFlags[ iLevel ] * m_xpBonus);
+        int iExp = aiBase[ iLevel ] + ((aiHit[ iLevel ] / 2) * this->maxHitPoints()) + (aiFlags[ iLevel ] * m_xpBonus);
 
         setExperience(iExp);
     }

@@ -257,7 +257,7 @@ void WndRoom::loadData()
   mp_PosY->setText(QString::number(m_room.getY()));
   mp_PosZ->setText(QString::number(m_room.getZ()));
   mp_pbSave->setEnabled( false );
-  if (!m_area.zone(this->m_room.zone()).hasNewFlag(19)) {
+  if (!m_area.hasZone(this->m_room.zone()) || !m_area.zone(this->m_room.zone()).hasNewFlag(19)) {
       mp_PosX->setToolTip("La zona deve avere flag HasMap");
       mp_PosY->setToolTip("La zona deve avere flag HasMap");
       mp_PosZ->setToolTip("La zona deve avere flag HasMap");

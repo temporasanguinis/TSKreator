@@ -5,11 +5,57 @@
 #include <QTextStream>
 #include <stdio.h>
 #include "characterdata.h"
-
+#include <vector>
 
 
 namespace ts
 {
+    enum MobBehaviourCondition {
+        mc_HasObject, /* solo se il mob ha in inventario l'oggetto, usare piu di una volta se necessario (usa AND) */
+        mc_NotHasObject, /* solo se il mob NON ha in inventario l'oggetto, usare piu di una volta se necessario (usa AND) */
+        mc_MobDead,  /* se il mob con il vnum specificato non esiste, usare piu di una volta se necessario */
+        mc_MobAlive,  /* se il mob con il vnum specificato non esiste, usare piu di una volta se necessario */
+        mc_UnaVolta, /* Dare siggilli, xp o elementi puo avvenire una volta sola per un pg */
+        mc_SIZE
+    };
+
+    enum MobEvents {
+        me_Talk, /* reagisce a tell ed ask; e.mb_String contiene la lista di parole chiave, separate da spazi */
+        me_Give,  /* reagisce al give; e.mb_Long contiene il vnum dell'oggetto riconosciuto */
+        me_SIZE
+    };
+
+    enum MobReactions {
+        mr_Talk,  /* risponde al pc; r.mb_String contiene la frase da dire */
+        mr_Give,  /* da' un oggetto al pc; r.mb_Long contiene il vnum dell'oggetto da dare al pc (deve trovarsi nell'inv del mob) */
+        mr_Emote, /* effettua un free emote; r.mb_String contiene il testo dell'emote */
+        mr_Xp,     /* assegna degli xp al pc; r.mb_Long contiene il numero di xp */
+        mr_Elementi, /* dai un tot di sigilli elementali al pg */
+        mr_Divini, /* dai un tot di sigilli divini al pg */
+        mr_RangeGive, /* Carica un oggetto random da un vnum + range di X e lo da al PG */
+        mr_DestroyObject, /* Distrugge un oggetto in inventario con vnum specificato se lo ha */
+        mr_Break, /* stoppa il loop di behaviors */
+        mr_SIZE
+    };
+
+#define MAX_BEHAVIOUR_CONDITIONS 10
+    typedef struct BehaviourCondition {
+        bool active;
+        enum MobBehaviourCondition conditionType;
+        long condition;
+    } BehaviourCondition;
+
+    typedef struct MobBehaviour_Struct
+    {
+        enum MobEvents mb_Event;
+        char e_mb_String[2048];
+        long e_mb_Long;
+        enum MobReactions mb_Reaction;
+        char r_mb_String[2048];
+        long r_mb_Long[MAX_BEHAVIOUR_CONDITIONS];
+        short int r_mb_Range;
+        struct BehaviourCondition conditions[MAX_BEHAVIOUR_CONDITIONS];
+    } MobBehaviour;
 
   class Mob : public CharacterData
   {
@@ -29,6 +75,7 @@ namespace ts
     const QString& nearSound() const { return m_nearSound; }
     BitVector acts() const { return m_acts; }
     bool hasAct( int flag ) const { return Bit::has( m_acts, flag ); }
+    bool hasBehaviors() const { return m_mobBehaviours.size(); }
     int mobType() const { return m_mobType; }
     int mobLevel() const { return m_mobLevel; }
     int hitPointsBonus() const { return m_hitPointsBonus; }
@@ -48,8 +95,8 @@ namespace ts
 
     void load( FILE* );
     void save( QTextStream& );
-
-    void readMobBehaviours(FILE *fp);
+    std::vector<MobBehaviour>& getBehaviors() { return m_mobBehaviours; }
+    bool readMobBehaviours(FILE *fp);
 
   private:
     void generateExperience();
@@ -64,7 +111,7 @@ namespace ts
     int m_hitPointsBonus;
     long m_xpBonus;
     int m_mobDefaultPosition;
-    QString m_mobBehaviours;
+    std::vector<MobBehaviour> m_mobBehaviours;
   };
 
 } // namespace ts

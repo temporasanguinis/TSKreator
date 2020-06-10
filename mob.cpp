@@ -25,7 +25,7 @@ namespace ts
         m_hitPointsBonus = 0;
         m_xpBonus = 0;
         m_mobDefaultPosition = CHARACTER_POSITION_STANDING;
-        m_mobBehaviours = "";
+        m_mobBehaviours.clear();
     }
 
 
@@ -368,7 +368,9 @@ namespace ts
             //  points.hitroll = MAX( 1, Level( WARRIOR_LEVEL_IND ) - 3 );
         }
 
-        readMobBehaviours(pFile);
+        if (readMobBehaviours(pFile)) {
+            qDebug("Mob %d ha behavior", vnumber());
+        }
 
         qDebug("%s loading completed.", dumpObject().toUtf8().data());
         /*
@@ -413,6 +415,87 @@ namespace ts
 
           return bc;
             */
+    }
+
+    QString BehaviorToString(MobBehaviour &beh) {
+        QString ret = "E" + QString::number((int)beh.mb_Event) + "\n";
+        switch (beh.mb_Event) {
+
+        case me_Talk:
+            ret += QString(beh.e_mb_String).replace("\r\n", "").replace("\r", "").replace("\n","") + " ~\n";
+            break;
+
+        case me_Give:
+
+            ret += QString::number(beh.e_mb_Long) + "\n";
+
+            break;
+
+        default:
+            qWarning("Tipo evento per behavior sconosciuto");
+            throw std::exception("Tipo evento non riconosciuto");
+            return "";
+        }
+
+        for (size_t i = 0; i < MAX_BEHAVIOUR_CONDITIONS; i++)
+        {
+            if (beh.conditions[i].active) {
+                ret += "C" + QString::number((int)beh.conditions[i].conditionType) + "\n";
+                ret += QString::number(beh.conditions[i].condition) + "\n";
+            }
+        }
+
+        ret += "R" + QString::number((int)beh.mb_Reaction) + "\n";
+
+        switch (beh.mb_Reaction) {
+
+        case mr_Talk:
+
+        case mr_Emote:
+            ret += QString(beh.r_mb_String) + "\n~\n";
+            break;
+
+        case mr_RangeGive:
+
+            ret += QString::number(beh.r_mb_Long[0]) + " " + QString::number(beh.r_mb_Range) + "\n";
+            break;
+
+        case mr_Give:
+        case mr_Elementi:
+        case mr_Divini:
+        case mr_Xp:
+            ret += QString::number(beh.r_mb_Long[0]) + "\n";
+            break;
+        case mr_DestroyObject:
+        {
+            QString buffer = "";
+            for (size_t i = 0; i < MAX_BEHAVIOUR_CONDITIONS; i++)
+            {
+                if (beh.r_mb_Long[i])
+                buffer += QString::number(beh.r_mb_Long[i]) + " ";
+            }
+            buffer = buffer.trimmed();
+            ret += buffer + "\n";
+        }
+            break;
+        case mr_Break:
+            break;
+        default:
+            qWarning("Mob condition sconosciuto");
+            throw std::exception("MOb reaction sconosciuto");
+            return "";
+        }
+
+        return ret;
+    }
+
+    QString BehaviorsToString(vector<MobBehaviour> &beh) {
+        QString ret;
+        for (size_t i = 0; i < beh.size(); i++)
+        {
+            ret += BehaviorToString(beh[i]);
+        }
+        return ret;
     }
 
     void Mob::save(QTextStream& stream)
@@ -466,7 +549,8 @@ namespace ts
             stream << m_nearSound << endl << "~" << endl << flush;
         }
 
-        stream << m_mobBehaviours;
+        QString behaviorsString = BehaviorsToString(m_mobBehaviours);
+        stream << behaviorsString;
 
         stream << flush;
 
@@ -550,53 +634,185 @@ namespace ts
         setMaxHitPoints(iHp);
     }
 
-
-    void Mob::readMobBehaviours(FILE *fp)
+    static void FreeMobBehaviour(MobBehaviour& mb)
     {
-        char buf[256];
+        if (mb.mb_Event == me_Talk && mb.e_mb_String)
+            free(mb.e_mb_String);
+
+        if ((mb.mb_Reaction == mr_Talk || mb.mb_Reaction ==
+            mr_Emote) && mb.r_mb_String)
+            free(mb.r_mb_String);
+    }
+
+    bool Mob::readMobBehaviours(FILE *fp)
+    {
         long cur = ftell(fp);
-        QString tmp;
-        while (fscanf(fp, "%s", buf) && *buf=='E') {
-            m_mobBehaviours += buf;
-            m_mobBehaviours += '\n';
+        char TmpBuf[4096];
+        bool any = FALSE;
+        while (fscanf(fp, "%s", TmpBuf) && *TmpBuf == 'E') {
+            any = true;
+            MobBehaviour mb;
+            mb.mb_Event = MobEvents::me_SIZE;
+            mb.e_mb_Long = 0;
+            strcpy(mb.e_mb_String, "");
+            for (size_t i = 0; i < MAX_BEHAVIOUR_CONDITIONS; i++)
+            {
+                mb.conditions[i].active = false;
+                mb.r_mb_Long[i] = 0;
+            }
+            mb.r_mb_Range = 0;
+            strcpy(mb.r_mb_String, "");
 
-            if(buf[1] == '0') {
-                tmp = Utils::readString(fp) + "~\n";
-                tmp.remove(QRegExp("^(\n\r|\n)"));
-                m_mobBehaviours += qPrintable(tmp);
-            } else if(buf[1] == '1') {
-                fscanf(fp, "%s", buf);
-                m_mobBehaviours += buf;
-                m_mobBehaviours += '\n';
+            switch (mb.mb_Event = (MobEvents)atoi(TmpBuf + 1)) {
+
+            case me_Talk:
+            {
+                auto val = (Utils::readString(fp).toLower().trimmed());
+                strcpy(mb.e_mb_String, val.toAscii());
+            }
+                break;
+
+            case me_Give:
+
+                if (!fscanf(fp, "%s", TmpBuf)) {
+                    qWarning("ReadMobBehaviours(%ld): syntax error");
+                    FreeMobBehaviour(mb);
+                    return any;
+                }
+
+                mb.e_mb_Long = atol(TmpBuf);
+
+                break;
+
+            default:
+                qWarning("ReadMobBehaviours(%ld): syntax error");
+                FreeMobBehaviour(mb);
+                return any;
+            }
+            int numCondizioni = 0;
+        again:
+            if (!(fscanf(fp, "%s", TmpBuf))) {
+                qWarning("ReadMobBehaviours(%ld): syntax error");
+                FreeMobBehaviour(mb);
+                return any;
+            }
+            if (*TmpBuf != 'R' && *TmpBuf != 'C') {
+                qWarning("ReadMobBehaviours(%ld): syntax error");
+                FreeMobBehaviour(mb);
+                return any;
             }
 
-            fscanf(fp, "%s", buf);
-            if(*buf !='R')
-                return;
-            m_mobBehaviours += buf;
-            m_mobBehaviours += '\n';
-
-            switch(buf[1]) {
-                case '0':
-                case '2':
-                    tmp = Utils::readString(fp) + "~\n";
-                    tmp.remove(QRegExp("^(\n\r|\n)"));
-                    m_mobBehaviours += qPrintable(tmp);
-                    break;
-                case '1':
-                case '3':
-                case '4':
-                case '5':
-                case '6':
-                    fscanf(fp, "%s", buf);
-                    m_mobBehaviours += buf;
-                    m_mobBehaviours += '\n';
-                    break;
+            if (*TmpBuf == 'C') {
+                int tipoCondizione = atoi(TmpBuf + 1);
+                if (!(fscanf(fp, "%s", TmpBuf)))
+                {
+                    qWarning("ReadMobBehaviours(%ld): syntax error");
+                    FreeMobBehaviour(mb);
+                    return any;
+                }
+                long condizione = atol(TmpBuf);
+                mb.conditions[numCondizioni].active = TRUE;
+                mb.conditions[numCondizioni].conditionType = (MobBehaviourCondition)tipoCondizione;
+                mb.conditions[numCondizioni].condition = condizione;
+                numCondizioni++;
+                goto again;
             }
 
+            switch (mb.mb_Reaction = (MobReactions)atoi(TmpBuf + 1)) {
+
+            case mr_Talk:
+
+            case mr_Emote:
+            {
+                auto val = (Utils::readString(fp).trimmed());
+                strcpy(mb.r_mb_String, val.toAscii());
+            }
+                
+                break;
+
+            case mr_RangeGive:
+                if (fgets(TmpBuf, 4096, fp) == NULL) {
+                    qWarning("ReadMobBehaviours(%ld): syntax error");
+                    FreeMobBehaviour(mb);
+                    return any;
+                }
+                if (fgets(TmpBuf, 4096, fp) == NULL) {
+                    qWarning("ReadMobBehaviours(%ld): syntax error");
+                    FreeMobBehaviour(mb);
+                    return any;
+                }
+                {
+                    QString tmp(TmpBuf);
+                    tmp = tmp.trimmed();
+                    auto split = tmp.split(' ', QString::SkipEmptyParts, Qt::CaseInsensitive);
+                    if (split.length() != 2) {
+                        qWarning("ReadMobBehaviours(%ld): syntax error");
+                        FreeMobBehaviour(mb);
+                        return any;
+                    }
+                    long n1 = split.at(0).toLong(0, 10);
+                    long n2 = split.at(1).toLong(0, 10);
+                    mb.r_mb_Long[0] = n1;
+                    mb.r_mb_Range = n2;
+                }
+                break;
+
+            case mr_Give:
+            case mr_Elementi:
+            case mr_Divini:
+            case mr_Xp:
+
+                if (!fscanf(fp, "%s", TmpBuf)) {
+                    qWarning("ReadMobBehaviours(%ld): syntax error");
+                    FreeMobBehaviour(mb);
+                    return any;
+                }
+
+                mb.r_mb_Long[0] = atol(TmpBuf);
+                if (mb.mb_Reaction == mr_Divini && mb.r_mb_Long[0] > 10) {
+                    qWarning("Caricato Mob %d che ha Behavior di pagare divini: %d", vnumber(), mb.r_mb_Long[0]);
+                }
+                if (mb.mb_Reaction == mr_Elementi && mb.r_mb_Long[0] > 100) {
+                    qWarning("Caricato Mob %d che ha Behavior di pagare elementi: %d", vnumber(), mb.r_mb_Long[0]);
+                }
+                break;
+            case mr_DestroyObject:
+                if(fgets(TmpBuf, 4096, fp) == NULL) {
+                    qWarning("ReadMobBehaviours(%ld): syntax error");
+                    FreeMobBehaviour(mb);
+                    return any;
+                }
+                if (fgets(TmpBuf, 4096, fp) == NULL) {
+                    qWarning("ReadMobBehaviours(%ld): syntax error");
+                    FreeMobBehaviour(mb);
+                    return any;
+                }
+                {
+                    QString tmp(TmpBuf);
+                    tmp = tmp.trimmed();
+                    auto valori = tmp.split(' ', QString::SkipEmptyParts, Qt::CaseInsensitive);
+                    for (size_t i = 0; i < MAX_BEHAVIOUR_CONDITIONS; i++)
+                    {
+                        if (valori.length()>i) {
+                            mb.r_mb_Long[i] = valori.at(i).toLong();
+                        }
+                    }
+                }
+                break;
+            case mr_Break:
+                mb.r_mb_Long[0] = 0;
+                break;
+            default:
+                qWarning("ReadMobBehaviours(%ld): syntax error");
+                FreeMobBehaviour(mb);
+                return any;
+            }
+
+            m_mobBehaviours.push_back(mb);
             cur = ftell(fp);
         }
         fseek(fp, cur, SEEK_SET);
+        return any;
     }
 
 } // namespace ts

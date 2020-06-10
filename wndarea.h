@@ -57,7 +57,6 @@ class WndArea : public QMainWindow, private Ui::GuiArea
 	void showTester();
     void showMultipleModify();
     void showMap();
-
     void FindMapWindow(void** pWnd);
 
   protected:

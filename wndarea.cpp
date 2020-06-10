@@ -910,6 +910,9 @@ void WndArea::refreshMobsView()
     item->setText( 3, QString::number((*it).maxHitPoints()));
     item->setText( 4, (*it).damage().toString());
     item->setText( 5, Utils::bitvector2string( (*it).acts(), Eleuconf::getAllFlagsCaption(Eleuconf::mobActionsFlags) ).toLower() );
+    if ((*it).hasBehaviors()) {
+        item->setBackgroundColor(1, Qt::yellow);
+    }
     ++it;
   }
 

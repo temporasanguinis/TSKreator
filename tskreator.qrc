@@ -45,6 +45,8 @@
         <file>conf/trapflags.ini</file>
         <file>conf/zoneflags.ini</file>
         <file>conf/drinkcontainerflags.ini</file>
+        <file>images/downarrow.png</file>
+        <file>images/uparrow.png</file>
     </qresource>
     <qresource prefix="/sector">
         <file>images/field.png</file>

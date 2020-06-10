@@ -9,6 +9,8 @@
 #include <QSpinBox>
 #include <QCheckBox>
 #include <QToolButton>
+#include <QStandardItemModel>
+#include <QTableView>
 #pragma warning(pop)
 #include "validator.h"
 #include "config.h"
@@ -39,6 +41,8 @@ WndMob::~WndMob()
   qDebug( "WndMob::~WndMob() called." );
 #endif
   delete highLighter;
+  delete m_ConditionModel;
+  delete m_BehaviorModel;
 }
 
 void WndMob::init()
@@ -47,10 +51,35 @@ void WndMob::init()
   qDebug( "WndMob::init() called." );
 #endif
   setupUi( this );
+  m_BehaviorModel = new QStandardItemModel(mp_Behaviors);
+  m_ConditionModel = new QStandardItemModel(mp_Conditions);
+  if (!connect(m_BehaviorModel, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(somethingChanged()))) {
+      qWarning("Cannot connect signal!");
+  }
+  if (!connect(m_ConditionModel, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(somethingChanged()))) {
+      qWarning("Cannot connect signal!");
+  }
   KreatorSettings::instance().loadGuiStatus( "MobWindow", this );
   highLighter = new Syntax(mp_teDescription->document());
   mp_teDescription->setFont( TS::GetFixedFont() );
-
+  
+  mp_tbAddBehavior->setIcon(TS::GetAddIcon());
+  mp_tbDelBehavior->setIcon(TS::GetRemoveIcon());
+  TS::SetUpArrow(mp_tbMoveUpBehavior);
+  TS::SetDownArrow(mp_tbMoveDownBehavior);
+  mp_tbAddCondition->setIcon(TS::GetAddIcon());
+  mp_tbDelCondition->setIcon(TS::GetRemoveIcon());
+  TS::SetUpArrow(mp_tbMoveUpCondition);
+  TS::SetDownArrow(mp_tbMoveDownCondition);
+  connect(mp_tbAddBehavior, SIGNAL(clicked()), this, SLOT(addBehavior()));
+  connect(mp_tbDelBehavior, SIGNAL(clicked()), this, SLOT(removeBehavior()));
+  connect(mp_tbMoveUpBehavior, SIGNAL(clicked()), this, SLOT(moveUpBehavior()));
+  connect(mp_tbMoveDownBehavior, SIGNAL(clicked()), this, SLOT(moveDownBehavior()));
+  connect(mp_tbAddCondition, SIGNAL(clicked()), this, SLOT(addCondition()));
+  connect(mp_tbDelCondition, SIGNAL(clicked()), this, SLOT(removeCondition()));
+  connect(mp_tbMoveUpCondition, SIGNAL(clicked()), this, SLOT(moveUpCondition()));
+  connect(mp_tbMoveDownCondition, SIGNAL(clicked()), this, SLOT(moveDownCondition()));
+  
   mp_tbActs->setIcon( TS::GetEditIcon() );
   mp_tbNewActs->setIcon( TS::GetEditIcon() );
   mp_tbAffects->setIcon( TS::GetEditIcon() );
@@ -131,6 +160,68 @@ void WndMob::init()
   connect( mp_pbRestore, SIGNAL( clicked() ), this, SLOT( restoreData() ) );
   connect( mp_pbOk, SIGNAL( clicked() ), this, SLOT( saveAndClose() ) );
   connect( mp_pbCancel, SIGNAL( clicked() ), this, SLOT( close() ) );
+  m_ConditionModel->clear();
+  m_ConditionModel->setColumnCount(2);
+  mp_Conditions->horizontalHeader()->setStretchLastSection(true);
+  m_ConditionModel->setHeaderData(0, Qt::Orientation::Horizontal, "Condizione");
+  m_ConditionModel->setHeaderData(1, Qt::Orientation::Horizontal, "Valore");
+  mp_Conditions->setItemDelegate(new ConditionComboBoxDelegate(mp_Conditions));
+  mp_Conditions->setModel(m_ConditionModel);
+
+  m_BehaviorModel->clear();
+  m_BehaviorModel->setColumnCount(4);
+
+  //mp_Behaviors->verticalHeader()->setResizeMode(QHeaderView::ResizeToContents);
+  mp_Behaviors->verticalHeader()->setResizeMode(QHeaderView::Fixed);
+  mp_Behaviors->verticalHeader()->setDefaultSectionSize(48);
+  mp_Behaviors->horizontalHeader()->setStretchLastSection(true);
+  m_BehaviorModel->setHeaderData(0, Qt::Orientation::Horizontal, "Tipo Evento");
+  m_BehaviorModel->setHeaderData(1, Qt::Orientation::Horizontal, "Evento");
+  m_BehaviorModel->setHeaderData(2, Qt::Orientation::Horizontal, "Tipo reazione");
+  m_BehaviorModel->setHeaderData(3, Qt::Orientation::Horizontal, "Reazione");
+  mp_Behaviors->setItemDelegate(new BehaviorComboBoxDelegate(mp_Behaviors));
+  mp_Behaviors->setModel(m_BehaviorModel);
+  
+  mp_Behaviors->setColumnWidth(0, 190);
+  mp_Behaviors->setColumnWidth(1, 190);
+  mp_Behaviors->setColumnWidth(2, 270);
+  mp_Conditions->setColumnWidth(0, 270);
+  mp_Behaviors->setSelectionBehavior(QAbstractItemView::SelectRows);
+  mp_Behaviors->setSelectionMode(QAbstractItemView::SingleSelection);
+  mp_Conditions->setSelectionBehavior(QAbstractItemView::SelectRows);
+  mp_Conditions->setSelectionMode(QAbstractItemView::SingleSelection);
+
+  QItemSelectionModel* sm = mp_Conditions->selectionModel();
+  connect(sm, SIGNAL(currentRowChanged(QModelIndex, QModelIndex)),
+      this, SLOT(mp_Conditions_currentRowChanged(QModelIndex, QModelIndex)));
+
+  QItemSelectionModel* sm2 = mp_Behaviors->selectionModel();
+  if (!connect(sm2, SIGNAL(currentRowChanged(QModelIndex, QModelIndex)),
+      this, SLOT(mp_Behaviors_currentRowChanged(QModelIndex, QModelIndex)))) {
+
+  }
+
+  //for (int row = 0; row < 4; ++row) {
+  //    QList<QStandardItem*> rowData;
+  //    rowData << (new QStandardItem(QString("%0").arg(row)));
+  //    rowData << new QStandardItem(QString("%0").arg(row));
+  //    rowData << new QStandardItem(QString("%0").arg(row));
+  //    rowData << new QStandardItem(QString("%0").arg(row));
+  //    m_BehaviorModel->appendRow(rowData);
+  //    mp_Behaviors->openPersistentEditor(m_BehaviorModel->index(row, 0));
+  //    mp_Behaviors->openPersistentEditor(m_BehaviorModel->index(row, 1));
+  //    mp_Behaviors->openPersistentEditor(m_BehaviorModel->index(row, 2));
+  //    mp_Behaviors->openPersistentEditor(m_BehaviorModel->index(row, 3));
+  //}
+
+  //for (int row = 0; row < 4; ++row) {
+  //    QList<QStandardItem*> rowData;
+  //    rowData << new QStandardItem(QString("%0").arg(row));
+  //    rowData << new QStandardItem(QString("%0").arg(row));
+  //    m_ConditionModel->appendRow(rowData);
+  //    mp_Conditions->openPersistentEditor(m_ConditionModel->index(row, 0));
+  //    mp_Conditions->openPersistentEditor(m_ConditionModel->index(row, 1));
+  //}
 }
 
 void WndMob::refreshPanel()
@@ -222,6 +313,7 @@ void WndMob::loadData()
   refreshResistances();
   refreshImmunities();
   refreshSusceptibilities();
+  showBehaviors();
   mp_pbSave->setEnabled( false );
   refreshTitle();
 }
@@ -233,6 +325,15 @@ void WndMob::saveData()
 #endif
   VNumber old_vnum = m_mob.vnumber();
   VNumber new_vnum = mp_leVNumber->text().toLong();
+
+  QString valid = validateBehaviors();
+  if (valid!="") {
+      QMessageBox::critical(this, "Errore", QString("Ci sono errori nei behavior del mob.\nRivedere e coreggere.\n\n%0").arg(valid));
+      return;
+  }
+  else {
+      applyBehaviors();
+  }
 
   if( old_vnum != new_vnum )
   {
@@ -562,4 +663,637 @@ void WndMob::refreshAverageHpAndXP()
 #endif
   mp_leXP->setText( QString::number( m_mob.experience() ) );
   mp_leHP->setText( QString::number( m_mob.maxHitPoints() ) );
+}
+
+void addItem(QStandardItemModel* model, QString display, QString value, int index) {
+    QStandardItem* item2 = new QStandardItem();
+    item2->setData(display, Qt::DisplayRole);
+    item2->setData(value, Qt::UserRole);
+    model->setItem(index, item2);
+}
+
+ConditionComboBoxDelegate::ConditionComboBoxDelegate(QObject* parent)
+    : QItemDelegate(parent)
+{
+}
+
+QWidget* ConditionComboBoxDelegate::createEditor(QWidget* parent,
+    const QStyleOptionViewItem& option,
+    const QModelIndex& index) const
+{
+    if (index.column() != 0) {
+        return QItemDelegate::createEditor(parent, option, index);
+    }
+    QComboBox* editor = new QComboBox(parent);
+    QStandardItemModel* model = new QStandardItemModel(editor);
+    addItem(model, "<nessuna>", "", 0);
+    addItem(model, "Mob ha oggetto", "0", 1);
+    addItem(model, "Mob non ha oggetto", "1", 2);
+    addItem(model, "Mob VNUM e' vivo", "2", 3);
+    addItem(model, "Mob VNUM non e' vivo", "3", 4);
+    addItem(model, "Check persistenza", "4", 5);
+    editor->setModel(model);
+    if (index.column() == 0) {
+        editor->setItemData(0, "Scegliendo <nessuno> e' come cancellare la condizione", Qt::ToolTipRole);
+        editor->setItemData(1, "La condizione riesce se il mob ha un oggetto in inventario\nIl valore e' il VNUM dell'oggetto", Qt::ToolTipRole);
+        editor->setItemData(2, "La condizione riesce se il mob NON ha un oggetto in inventario\nIl valore e' il VNUM dell'oggetto", Qt::ToolTipRole);
+        editor->setItemData(3, "La condizione riesce se il mob con VNUM e' stato trovato nel Mud\nIl valore e' il VNUM del Mob", Qt::ToolTipRole);
+        editor->setItemData(4, "La condizione riesce se il mob con VNUM NON e' stato trovato nel MUD\nIl valore e' il VNUM del Mob", Qt::ToolTipRole);
+        editor->setItemData(5, "Per mob che danno XP, Elementi o Divini\nValori possibili:\n"
+            "  3 : Mob non ha ancora dato Elementali al PG\n"
+            "  2 : Mob non ha ancora dato Divini al PG\n"
+            "  1 : Mob non ha ancora dato XP al PG\n"
+            " -1 : Mob ha gia' dato XP al PG\n"
+            " -2 : Mob ha gia' dato Divini al PG\n"
+            " -3 : Mob ha gia' dato Elementali al PG\n\n"
+            "Es: La reazione darebbe divini al PG ma il pg ha gia avuto divini da questo mob.\n"
+            "In questo caso la condizione con il valore 3 lo preverrebbe.\n"
+            "E per dire al pg in reazione tell o reazione Interrompi si userebbe -3.", Qt::ToolTipRole);
+    }
+    return editor;
+}
+
+void ConditionComboBoxDelegate::setEditorData(QWidget* editor,
+    const QModelIndex& index) const
+{
+    QString value = index.model()->data(index, Qt::EditRole).toString();
+    if (index.column() == 0) {
+        QComboBox* cBox = static_cast<QComboBox*>(editor);
+        cBox->setCurrentIndex(cBox->findData(value));
+    }
+    else {
+        QLineEdit* qL = static_cast<QLineEdit*>(editor);
+        qL->setText(value);
+    }
+}
+
+void ConditionComboBoxDelegate::setModelData(QWidget* editor, QAbstractItemModel* model,
+    const QModelIndex& index) const
+{
+    if (index.column() == 0) {
+        QComboBox* cBox = static_cast<QComboBox*>(editor);
+        QVariant value = cBox->itemData(cBox->currentIndex());
+
+        model->setData(index, value, Qt::EditRole);
+    }
+    else {
+        QLineEdit* qL = static_cast<QLineEdit*>(editor);
+        model->setData(index, qL->text(), Qt::EditRole);
+    }
+}
+
+void ConditionComboBoxDelegate::updateEditorGeometry(QWidget* editor,
+    const QStyleOptionViewItem& option, const QModelIndex&/* index */) const
+{
+    editor->setGeometry(option.rect);
+}
+
+
+BehaviorComboBoxDelegate::BehaviorComboBoxDelegate(QObject* parent)
+    : QItemDelegate(parent)
+{
+}
+
+QWidget* BehaviorComboBoxDelegate::createEditor(QWidget* parent,
+    const QStyleOptionViewItem& option,
+    const QModelIndex& index) const
+{
+    if (index.column() != 0 && index.column() != 2) {
+        if (index.column() == 3) {
+            auto ret = new QTextEdit(parent);
+            ret->setToolTip("Parametri alla reazione (es. se parla quello che dice)");
+            return ret;
+        }
+        else {
+            return QItemDelegate::createEditor(parent, option, index);
+        }
+    }
+    QComboBox* editor = new QComboBox(parent);
+    QStandardItemModel* model = new QStandardItemModel(editor);
+    if (index.column() == 0) {
+        addItem(model, "<nessuno>", "", 0);
+        addItem(model, "PG dice", "0", 1);
+        addItem(model, "PG da oggetto", "1", 2);
+    }
+    else if (index.column() == 2) {
+        addItem(model, "<nessuno>", "", 0);
+        addItem(model, "Parla", "0", 1);
+        addItem(model, "Dai oggetto", "1", 2);
+        addItem(model, "Echo in stanza", "2", 3);
+        addItem(model, "Dai XP", "3", 4);
+        addItem(model, "Dai Elementi", "4", 5);
+        addItem(model, "Dai Divini", "5", 6);
+        addItem(model, "Carica e dai random da range", "6", 7);
+        addItem(model, "Distruggi oggetti", "7", 8);
+        addItem(model, "Interrompi parsing", "8", 9);
+    }
+    editor->setModel(model);
+    if (index.column() == 0) {
+        editor->setItemData(0, "Scegliendo <nessuno> e' come cancellare l'evento o la reazione", Qt::ToolTipRole);
+        editor->setItemData(1, "Scatta quando il pg parla al mob di tell o ask\nIn questo caso l'evento sono le parola chiavi\nStringa vuota scatta per ogni talk", Qt::ToolTipRole);
+        editor->setItemData(2, "Scatta quando il pg da un oggetto al mob\nIn questo caso l'evento e' il VNUM dell'oggetto\n-1 scatta su tutti gli oggetti\nL'oggetto dato viene cancellato", Qt::ToolTipRole);
+    }
+    if (index.column() == 2) {
+        editor->setItemData(0, "Scegliendo <nessuno> e' come cancellare l'evento o la reazione", Qt::ToolTipRole);
+        editor->setItemData(1, "Il mob reagira' parlarndo al PG\nIn questo caso l'evento e' la frase da dire", Qt::ToolTipRole);
+        editor->setItemData(2, "Il mob reagira' dando un oggetto che ha in inventario\nIn questo caso l'evento e' il VNUM dell'oggetto", Qt::ToolTipRole);
+        editor->setItemData(3, "Il mob reagira' facendo un echo nella stanza\nIn questo caso l'evento e' l' echo da fare\n(Shift+Enter per multilinea)", Qt::ToolTipRole);
+        editor->setItemData(4, "Il mob reagira' dando XP al PG\nIn questo caso l'evento e' la quantita di XP", Qt::ToolTipRole);
+        editor->setItemData(5, "Il mob reagira' dando sigilli Elementali al PG\nIn questo caso l'evento e' la quantita di sigilli Elementali", Qt::ToolTipRole);
+        editor->setItemData(6, "Il mob reagira' dando sigilli Divini al PG\nIn questo caso l'evento e' la quantita di sigilli Divini", Qt::ToolTipRole);
+        editor->setItemData(7, "Il mob reagira' loadando un oggetto random da un range di VNUM e dandolo al PG\nIn questo caso l'evento e': VNUM RANGE\nEs.:\n10200 5\nIl che vuol dire loada un oggetto random da 10200 a 10205.", Qt::ToolTipRole);
+        editor->setItemData(8, "Il mob reagira' distruggendo oggetti che ha in inventario\nIn questo caso l'evento sono i VNUM degli oggetti separati da spazio (massimo 5)", Qt::ToolTipRole);
+        editor->setItemData(9, "Il mob reagira' interrompendo il parsing di sucessivi Behavior\nche altrimenti potrebbero matchare piu avanti (sotto)", Qt::ToolTipRole);
+    }
+    return editor;
+}
+
+void BehaviorComboBoxDelegate::setEditorData(QWidget* editor,
+    const QModelIndex& index) const
+{
+    QString value = index.model()->data(index, Qt::EditRole).toString();
+    if (index.column() == 0 || index.column() == 2) {
+        QComboBox* cBox = static_cast<QComboBox*>(editor);
+        cBox->setCurrentIndex(cBox->findData(value));
+    }
+    else {
+        QString className = editor->metaObject()->className();
+        if (className == "QTextEdit") {
+            QTextEdit* qL = static_cast<QTextEdit*>(editor);
+            qL->setText(value);
+        }
+        else {
+            QLineEdit* qL = static_cast<QLineEdit*>(editor);
+            qL->setText(value);
+        }
+    }
+}
+
+void BehaviorComboBoxDelegate::setModelData(QWidget* editor, QAbstractItemModel* model,
+    const QModelIndex& index) const
+{
+    if (index.column() == 0 || index.column() == 2) {
+        QComboBox* cBox = static_cast<QComboBox*>(editor);
+        QVariant value = cBox->itemData(cBox->currentIndex());
+
+        model->setData(index, value, Qt::EditRole);
+    }
+    else {
+        QString className = editor->metaObject()->className();
+        QString text;
+        if (className == "QTextEdit") {
+            QTextEdit* qL = static_cast<QTextEdit*>(editor);
+            text = qL->toPlainText();
+        }
+        else {
+            QLineEdit* qL = static_cast<QLineEdit*>(editor);
+            text = qL->text();
+        }
+        model->setData(index, text, Qt::EditRole);
+    }
+}
+
+void BehaviorComboBoxDelegate::updateEditorGeometry(QWidget* editor,
+    const QStyleOptionViewItem& option, const QModelIndex&/* index */) const
+{
+    editor->setGeometry(option.rect);
+}
+
+void WndMob::addBehavior() {
+    QList<QStandardItem*> rowData;
+    rowData << (new QStandardItem(QString("")));
+    rowData << new QStandardItem(QString(""));
+    rowData << new QStandardItem(QString(""));
+    rowData << new QStandardItem(QString(""));
+    m_BehaviorModel->appendRow(rowData);
+    int rowIndex = m_BehaviorModel->rowCount() - 1;
+    mp_Behaviors->openPersistentEditor(m_BehaviorModel->index(rowIndex, 0));
+    //mp_Behaviors->openPersistentEditor(m_BehaviorModel->index(rowIndex, 1));
+    mp_Behaviors->openPersistentEditor(m_BehaviorModel->index(rowIndex, 2));
+    //mp_Behaviors->openPersistentEditor(m_BehaviorModel->index(rowIndex, 3));
+    mp_Behaviors->selectRow(rowIndex);
+    std::vector<std::vector<QString>> stv;
+    behaviorConditionMap[rowIndex] = stv;
+    somethingChanged();
+}
+void WndMob::removeBehavior() {
+    int rowIndex = -1;
+    if (mp_Behaviors->selectionModel()->currentIndex().isValid()) {
+        rowIndex = mp_Behaviors->selectionModel()->currentIndex().row();
+    }
+    if (rowIndex != -1) {
+        behaviorConditionMap.erase(currentBehaviorRow);
+        m_BehaviorModel->removeRow(rowIndex);
+        somethingChanged();
+    }
+}
+void WndMob::moveUpBehavior() {
+    int rowIndex = -1;
+    if (mp_Behaviors->selectionModel()->currentIndex().isValid()) {
+        rowIndex = mp_Behaviors->selectionModel()->currentIndex().row();
+    }
+    if (rowIndex > 0) {
+        auto tmp = behaviorConditionMap[rowIndex-1];
+        behaviorConditionMap[rowIndex - 1] = behaviorConditionMap[rowIndex];
+        behaviorConditionMap[rowIndex] = tmp;
+        auto rw = m_BehaviorModel->takeRow(rowIndex);
+        m_BehaviorModel->insertRow(rowIndex - 1, rw);
+        mp_Behaviors->openPersistentEditor(m_BehaviorModel->index(rowIndex - 1, 0));
+        mp_Behaviors->openPersistentEditor(m_BehaviorModel->index(rowIndex - 1, 2));
+        mp_Behaviors->selectRow(rowIndex - 1);
+        somethingChanged();
+    }
+}
+void WndMob::moveDownBehavior() {
+    int rowIndex = -1;
+    if (mp_Behaviors->selectionModel()->currentIndex().isValid()) {
+        rowIndex = mp_Behaviors->selectionModel()->currentIndex().row();
+    }
+    if (rowIndex > -1 && rowIndex < m_BehaviorModel->rowCount() - 1) {
+        auto tmp = behaviorConditionMap[rowIndex + 1];
+        behaviorConditionMap[rowIndex + 1] = behaviorConditionMap[rowIndex];
+        behaviorConditionMap[rowIndex] = tmp;
+        auto rw = m_BehaviorModel->takeRow(rowIndex);
+        m_BehaviorModel->insertRow(rowIndex + 1, rw);
+        mp_Behaviors->openPersistentEditor(m_BehaviorModel->index(rowIndex + 1, 0));
+        mp_Behaviors->openPersistentEditor(m_BehaviorModel->index(rowIndex + 1, 2));
+        mp_Behaviors->selectRow(rowIndex + 1);
+        somethingChanged();
+    }
+}
+void WndMob::addCondition() {
+    if (currentBehaviorRow == -1) {
+        QMessageBox::critical(this, "Errore", "Serve selezionare prima un behavior.");
+        return;
+    }
+    QList<QStandardItem*> rowData;
+    rowData << (new QStandardItem(QString("")));
+    rowData << new QStandardItem(QString(""));
+    m_ConditionModel->appendRow(rowData);
+    int rowIndex = m_ConditionModel->rowCount() - 1;
+    mp_Conditions->openPersistentEditor(m_ConditionModel->index(rowIndex, 0));
+    //mp_Conditions->openPersistentEditor(m_ConditionModel->index(rowIndex, 1));
+    mp_Conditions->selectRow(rowIndex);
+    std::vector<QString> qsl = { "","" };
+    behaviorConditionMap[currentBehaviorRow].push_back(qsl);
+    somethingChanged();
+}
+void WndMob::removeCondition() {
+    if (currentBehaviorRow == -1) {
+        QMessageBox::critical(this, "Errore", "Serve selezionare prima un behavior.");
+        return;
+    }
+    int rowIndex = -1;
+    if (mp_Conditions->selectionModel()->currentIndex().isValid()) {
+        rowIndex = mp_Conditions->selectionModel()->currentIndex().row();
+    }
+    if (rowIndex == -1) {
+        QMessageBox::critical(this, "Errore", "Serve selezionare prima una condizione.");
+        return;
+    }
+    if (rowIndex != -1) {
+        m_ConditionModel->takeRow(rowIndex);
+        auto &vec = behaviorConditionMap[currentBehaviorRow];
+        vec.erase(vec.begin() + rowIndex);
+        somethingChanged();
+    }
+}
+
+void WndMob::moveUpCondition() {
+    if (currentBehaviorRow == -1) {
+        QMessageBox::critical(this, "Errore", "Serve selezionare prima un behavior.");
+        return;
+    }
+    int rowIndex = -1;
+    if (mp_Conditions->selectionModel()->currentIndex().isValid()) {
+        rowIndex = mp_Conditions->selectionModel()->currentIndex().row();
+    }
+    if (rowIndex == -1) {
+        QMessageBox::critical(this, "Errore", "Serve selezionare prima una condizione.");
+        return;
+    }
+    if (rowIndex > 0) {
+        auto tmp = behaviorConditionMap[currentBehaviorRow][rowIndex-1];
+        behaviorConditionMap[currentBehaviorRow][rowIndex - 1] = behaviorConditionMap[currentBehaviorRow][rowIndex];
+        behaviorConditionMap[currentBehaviorRow][rowIndex] = tmp;
+
+        auto rw = m_ConditionModel->takeRow(rowIndex);
+        m_ConditionModel->insertRow(rowIndex-1, rw);
+        mp_Conditions->openPersistentEditor(m_ConditionModel->index(rowIndex - 1, 0));
+        mp_Conditions->selectRow(rowIndex - 1);
+    }
+}
+void WndMob::moveDownCondition() {
+    if (currentBehaviorRow == -1) {
+        QMessageBox::critical(this, "Errore", "Serve selezionare prima un behavior.");
+        return;
+    }
+    int rowIndex = -1;
+    if (mp_Conditions->selectionModel()->currentIndex().isValid()) {
+        rowIndex = mp_Conditions->selectionModel()->currentIndex().row();
+    }
+    if (rowIndex == -1) {
+        QMessageBox::critical(this, "Errore", "Serve selezionare prima una condizione.");
+        return;
+    }
+    if (rowIndex > -1 && rowIndex < m_ConditionModel->rowCount()-1) {
+        auto tmp = behaviorConditionMap[currentBehaviorRow][rowIndex + 1];
+        behaviorConditionMap[currentBehaviorRow][rowIndex + 1] = behaviorConditionMap[currentBehaviorRow][rowIndex];
+        behaviorConditionMap[currentBehaviorRow][rowIndex] = tmp;
+
+        auto rw = m_ConditionModel->takeRow(rowIndex);
+        m_ConditionModel->insertRow(rowIndex+1, rw);
+        mp_Conditions->openPersistentEditor(m_ConditionModel->index(rowIndex+1, 0));
+        mp_Conditions->selectRow(rowIndex + 1);
+    }
+}
+
+void WndMob::mp_Behaviors_currentRowChanged(const QModelIndex& current, const QModelIndex& previous) {
+    if (current.isValid()) {
+        currentBehaviorRow = current.row();
+        showConditionsForBehavior(currentBehaviorRow);
+    }
+    else {
+        currentBehaviorRow = -1;
+        m_ConditionModel->clear();
+    }
+}
+
+void WndMob::mp_Conditions_currentRowChanged(const QModelIndex& current, const QModelIndex& previous) {
+    if (current.isValid()) {
+        currentConditionRow = current.row();
+    }
+    else {
+        currentConditionRow = -1;
+    }
+}
+
+void WndMob::showBehaviors() {
+    behaviorConditionMap.clear();
+    int counter = 0;
+    for each (auto &b in m_mob.getBehaviors())
+    {
+        QString evType;
+        QString ev;
+        QString reactType;
+        QString react;
+        evType = QString::number(b.mb_Event);
+        reactType = QString::number(b.mb_Reaction);
+        switch (b.mb_Event)
+        {
+        case me_Talk:
+            ev = QString(b.e_mb_String);
+            break;
+        case me_Give:
+            ev = QString::number(b.e_mb_Long);
+            break;
+        default:
+            break;
+        }
+
+        switch (b.mb_Reaction)
+        {
+        case mr_Talk:
+        case mr_Emote:
+            react = QString(b.r_mb_String);
+            break;
+        case mr_Give:
+        case mr_Xp:
+        case mr_Elementi:
+            react = QString::number(b.r_mb_Long[0]);
+            break;
+        case mr_DestroyObject:
+            for (size_t i = 0; i < MAX_BEHAVIOUR_CONDITIONS; i++)
+            {
+                if (b.r_mb_Long[i]>0) react += QString::number(b.r_mb_Long[i]) + " ";
+            }
+            react = react.trimmed();
+            break;
+        case mr_RangeGive:
+            react = QString::number(b.r_mb_Long[0]) + " " + QString::number(b.r_mb_Range);
+            break;
+        case mr_Break:
+            react = "";
+            break;
+        default:
+            break;
+        }
+        behaviorConditionMap[counter] = std::vector<std::vector<QString>>();
+        for each (auto &cond in b.conditions)
+        {
+            if (cond.active) {
+                QString condType = QString::number(cond.conditionType);
+                QString condVal = QString::number(cond.condition);
+                behaviorConditionMap[counter].push_back(std::vector<QString>{
+                    condType,
+                    condVal
+                });
+            }
+        }
+        QList<QStandardItem*> rowData;
+        rowData << (new QStandardItem(evType));
+        rowData << new QStandardItem(ev);
+        rowData << new QStandardItem(reactType);
+        rowData << new QStandardItem(react);
+        m_BehaviorModel->appendRow(rowData);
+        int rowIndex = m_BehaviorModel->rowCount() - 1;
+        mp_Behaviors->openPersistentEditor(m_BehaviorModel->index(rowIndex, 0));
+        //mp_Behaviors->openPersistentEditor(m_BehaviorModel->index(rowIndex, 1));
+        mp_Behaviors->openPersistentEditor(m_BehaviorModel->index(rowIndex, 2));
+        //mp_Behaviors->openPersistentEditor(m_BehaviorModel->index(rowIndex, 3));
+        counter++;
+    }
+    //mp_Behaviors->resizeRowsToContents();
+}
+void WndMob::showConditionsForBehavior(int behIndex) {
+    //m_ConditionModel->clear();
+    while (m_ConditionModel->rowCount())
+    {
+        m_ConditionModel->takeRow(0);
+    }
+    /*mp_Conditions->horizontalHeader()->setStretchLastSection(true);
+    m_ConditionModel->setHeaderData(0, Qt::Orientation::Horizontal, "Condizione");
+    m_ConditionModel->setHeaderData(1, Qt::Orientation::Horizontal, "Valore");
+    mp_Conditions->setColumnWidth(0, 270);*/
+    if (behaviorConditionMap.find(behIndex) != behaviorConditionMap.end()) {
+        for each (auto &cond in behaviorConditionMap[behIndex])
+        {
+            QList<QStandardItem*> rowData;
+            rowData << (new QStandardItem(cond[0]));
+            rowData << new QStandardItem(cond[1]);
+            m_ConditionModel->appendRow(rowData);
+            int rowIndex = m_ConditionModel->rowCount() - 1;
+            mp_Conditions->openPersistentEditor(m_ConditionModel->index(rowIndex, 0));
+            //mp_Conditions->openPersistentEditor(m_ConditionModel->index(rowIndex, 1));
+        }
+    }
+}
+
+QString err(int behIndex, QString err, int condIndex = -1) {
+    if (condIndex == -1)
+        return QString("Behavior %0: %1").arg(behIndex).arg(err);
+    else 
+        return QString("Behavior %0: Condizione %1, Errore: %2").arg(behIndex).arg(condIndex).arg(err);
+}
+
+QString WndMob::validateBehaviors() {
+    for (size_t i = 0; i < m_BehaviorModel->rowCount(); i++)
+    {
+        QString v1 = m_BehaviorModel->item(i, 0)->data(Qt::EditRole).toString();
+        QString v2 = m_BehaviorModel->item(i, 1)->data(Qt::EditRole).toString();
+        QString v3 = m_BehaviorModel->item(i, 2)->data(Qt::EditRole).toString();
+        QString v4 = m_BehaviorModel->item(i, 3)->data(Qt::EditRole).toString();
+        if (v1 != "" && (v2 == "" || v3 == "")) return err(i, "Campi mancanti");
+        if ((v3 != "" && v3 != "8") && v4 == "") return err(i, "Campi mancanti");
+
+        MobEvents ev = (MobEvents)v1.toInt();
+        MobReactions re = (MobReactions)v3.toInt();
+        if (ev >= ts::me_SIZE) return err(i, "Evento sconosciuto");
+        if (re >= ts::mr_SIZE) return err(i, "Reazione sconosciuta");;
+        bool ok;
+        switch (ev)
+        {
+        case ts::me_Talk:
+            if (v2 == "") return err(i, "Mancano parole chiavi per l'evento");
+            break;
+        case ts::me_Give:
+            v2.toInt(&ok);
+            if (!ok) return err(i, "Evento richiede un numero");
+            break;
+        }
+        switch (re)
+        {
+        case ts::mr_Talk:
+            if (v4 == "") return err(i, "Manca testo da parlare per la reazione talk");
+            break;
+        case ts::mr_Give:
+            v4.toInt(&ok);
+            if (!ok) return err(i, "Reazione richiede un numero");
+            break;
+        case ts::mr_Emote:
+            if (v4 == "") return err(i, "Manca testo per la reazione emote");
+            break;
+        case ts::mr_Xp:
+        case ts::mr_Elementi:
+        case ts::mr_Divini:
+            v4.toInt(&ok);
+            if (!ok) return err(i, "Reazione richiede un numero");
+            break;
+        case ts::mr_RangeGive:
+        {
+            auto sp = v4.split(" ", QString::SkipEmptyParts);
+            if (sp.size() != 2) return  err(i, "Reazione richiede due numeri");
+            sp[0].toInt(&ok);
+            if (!ok) return  err(i, "Prima parola reazione non e' un numero");
+            sp[1].toInt(&ok);
+            if (!ok) return err(i, "Seconda parola reazione non e' un numero");
+        }
+            break;
+        case ts::mr_DestroyObject:
+        {
+            auto sp = v4.split(" ", QString::SkipEmptyParts);
+            if (sp.length() > 10) return err(i, "Reazione ha massimo 10 numeri");
+            for (size_t x = 0; x < sp.length(); x++)
+            {
+                sp[x].toInt(&ok);
+                if (!ok) return err(i, "Reazione: una parola non e' un numero");
+            }
+        }
+            break;
+        case ts::mr_Break:
+            if (v4 != "") return err(i, "Reazione: deve essere vuota");
+            break;
+        }
+        if (behaviorConditionMap.find(i) == behaviorConditionMap.end()) return false;
+        for (size_t x = 0; x < behaviorConditionMap[i].size(); x++)
+        {
+            if (behaviorConditionMap[i][x][0] != "" &&
+                behaviorConditionMap[i][x][1] == "") {
+                return err(i, "Mancano valori", x);
+            }
+            auto zz = (MobBehaviourCondition)behaviorConditionMap[i][x][0].toInt(&ok);
+            if (!ok) return err(i, "Deve essere un numero", x);
+            if (zz < 0 || zz >= ts::MobBehaviourCondition::mc_SIZE) return err(i, "Condizione sconosciuta", x);
+            behaviorConditionMap[i][x][1].toInt(&ok);
+            if (!ok) return err(i, "Deve essere un numero", x);
+        }
+    }
+    return "";
+}
+void WndMob::applyBehaviors() {
+    auto& beh = m_mob.getBehaviors();
+    beh.clear();
+    for (size_t i = 0; i < m_BehaviorModel->rowCount(); i++)
+    {
+        MobBehaviour b;
+        memset(&b, 0, sizeof(MobBehaviour));
+        QString v1 = m_BehaviorModel->item(i, 0)->data(Qt::EditRole).toString();
+        QString v2 = m_BehaviorModel->item(i, 1)->data(Qt::EditRole).toString();
+        QString v3 = m_BehaviorModel->item(i, 2)->data(Qt::EditRole).toString();
+        QString v4 = m_BehaviorModel->item(i, 3)->data(Qt::EditRole).toString();
+
+        MobEvents ev = (MobEvents)v1.toInt();
+        b.mb_Event = ev;
+        MobReactions re = (MobReactions)v3.toInt();
+        b.mb_Reaction = re;
+        switch (ev)
+        {
+        case ts::me_Talk:
+            strcpy(b.e_mb_String, v2.toAscii());
+            break;
+        case ts::me_Give:
+            b.e_mb_Long = v2.toInt();
+            break;
+        }
+        switch (re)
+        {
+        case ts::mr_Talk:
+            strcpy(b.r_mb_String, v4.toAscii());
+            break;
+        case ts::mr_Give:
+            b.r_mb_Long[0] = v4.toInt();
+            break;
+        case ts::mr_Emote:
+            strcpy(b.r_mb_String, v4.toAscii());
+            break;
+        case ts::mr_Xp:
+        case ts::mr_Elementi:
+        case ts::mr_Divini:
+            b.r_mb_Long[0] = v4.toInt();
+            break;
+        case ts::mr_RangeGive:
+        {
+            auto sp = v4.split(" ", QString::SkipEmptyParts);
+            
+            b.r_mb_Long[0] = sp[0].toInt();
+            b.r_mb_Range = sp[1].toInt();
+            
+        }
+            break;
+        case ts::mr_DestroyObject:
+        {
+            auto sp = v4.split(" ", QString::SkipEmptyParts);
+            for (size_t i = 0; i < sp.length(); i++)
+            {
+                b.r_mb_Long[i] = sp[i].toInt();
+            }
+        }
+            break;
+        case ts::mr_Break:
+            break;
+        }
+        int activeC = 0;
+        if (behaviorConditionMap.find(i) == behaviorConditionMap.end()) continue;
+        for (size_t x = 0; x < behaviorConditionMap[i].size(); x++)
+        {
+            if (behaviorConditionMap[i][x][0] != "" &&
+                behaviorConditionMap[i][x][1] != "") {
+                b.conditions[activeC].active = true;
+                b.conditions[activeC].conditionType = (MobBehaviourCondition)behaviorConditionMap[i][x][0].toInt();
+                b.conditions[activeC].condition = behaviorConditionMap[i][x][1].toLong();
+                activeC++;
+            }
+        }
+        beh.push_back(b);
+    }
 }

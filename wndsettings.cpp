@@ -142,7 +142,11 @@ void WndSettings::saveData()
   KreatorSettings::instance().save();
 
   refreshPanel();
-  QApplication::setStyle(QStyleFactory::create(QStyleFactory::keys().at(KreatorSettings::instance().kreatorTheme())));
+  auto keys = QStyleFactory::keys();
+  auto theme = KreatorSettings::instance().kreatorTheme();
+  if (theme != -1) {
+      QApplication::setStyle(QStyleFactory::create(keys.at(theme)));
+  }
   mp_pbSave->setEnabled( false );
 }
 

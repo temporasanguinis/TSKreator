@@ -80,6 +80,28 @@ namespace TS
     }
   }
 
+  void SetUpArrow(QAbstractButton* pab)
+  {
+      QAbstractButton* ppb = qobject_cast<QAbstractButton*>(pab);
+      if (ppb)
+      {
+          //ppb->setFlat(USE_FLAT_BUTTON_WITH_IMAGE);
+          ppb->setText("");
+          ppb->setIcon(QIcon(":/images/uparrow.png"));
+      }
+  }
+
+  void SetDownArrow(QAbstractButton* pab)
+  {
+      QAbstractButton* ppb = qobject_cast<QAbstractButton*>(pab);
+      if (ppb)
+      {
+          //ppb->setFlat(USE_FLAT_BUTTON_WITH_IMAGE);
+          ppb->setText("");
+          ppb->setIcon(QIcon(":/images/downarrow.png"));
+      }
+  }
+
   void SetRightArrow( QAbstractButton* pab )
   {
     QPushButton* ppb = qobject_cast< QPushButton* >( pab );

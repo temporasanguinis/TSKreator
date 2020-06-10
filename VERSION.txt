@@ -1,4 +1,8 @@
-﻿1.53
+﻿1.54b
+- Implementato i behavior per i mob
+- corretto un bug da crash sui mob
+__________________________________
+1.53
 - corretto un bug che crashava se l'area aveva locazioni con zona non in area
 - corretto un bug di calcolo hp del mob che non andava in real time
 __________________________________

@@ -23,6 +23,8 @@ namespace TS
   void SetKreatorLogo( QWidget* );
   void SetLeftArrow( QAbstractButton* );
   void SetRightArrow( QAbstractButton* );
+  void SetUpArrow(QAbstractButton*);
+  void SetDownArrow(QAbstractButton*);
   void SetIOAreaIcon( QAbstractButton* );
 
   /* Misc Functions */

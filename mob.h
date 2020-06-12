@@ -16,6 +16,12 @@ namespace ts
         mc_MobDead,  /* se il mob con il vnum specificato non esiste, usare piu di una volta se necessario */
         mc_MobAlive,  /* se il mob con il vnum specificato non esiste, usare piu di una volta se necessario */
         mc_UnaVolta, /* Dare siggilli, xp o elementi puo avvenire una volta sola per un pg */
+        mc_HaAward,
+        mc_NonHaAward,
+        mc_Ricordo1,
+        mc_Ricordo2,
+        mc_PgHaSoldi,
+        mc_PgNonHaSoldi,
         mc_SIZE
     };
 
@@ -35,6 +41,12 @@ namespace ts
         mr_RangeGive, /* Carica un oggetto random da un vnum + range di X e lo da al PG */
         mr_DestroyObject, /* Distrugge un oggetto in inventario con vnum specificato se lo ha */
         mr_Break, /* stoppa il loop di behaviors */
+        mr_GiveAward,
+        mr_TakeAward,
+        mr_GiveGold,
+        mr_TakeGold,
+        mr_Ricorda1,
+        mr_Ricorda2,
         mr_SIZE
     };
 

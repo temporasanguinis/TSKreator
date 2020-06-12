@@ -56,7 +56,7 @@ void WndMob::init()
   if (!connect(m_BehaviorModel, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(somethingChanged()))) {
       qWarning("Cannot connect signal!");
   }
-  if (!connect(m_ConditionModel, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(somethingChanged()))) {
+  if (!connect(m_ConditionModel, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(conditionChanged(QModelIndex, QModelIndex)))) {
       qWarning("Cannot connect signal!");
   }
   KreatorSettings::instance().loadGuiStatus( "MobWindow", this );
@@ -222,6 +222,15 @@ void WndMob::init()
   //    mp_Conditions->openPersistentEditor(m_ConditionModel->index(row, 0));
   //    mp_Conditions->openPersistentEditor(m_ConditionModel->index(row, 1));
   //}
+}
+
+void WndMob::conditionChanged(const QModelIndex current, QModelIndex previous) {
+    if (current.isValid()) {
+        auto v = m_ConditionModel->item(current.row(), current.column());
+        auto str = v->data(Qt::EditRole).toString();
+        behaviorConditionMap[currentBehaviorRow][current.row()][current.column()] = str;
+    }
+    somethingChanged();
 }
 
 void WndMob::refreshPanel()
@@ -692,6 +701,13 @@ QWidget* ConditionComboBoxDelegate::createEditor(QWidget* parent,
     addItem(model, "Mob VNUM e' vivo", "2", 3);
     addItem(model, "Mob VNUM non e' vivo", "3", 4);
     addItem(model, "Check persistenza", "4", 5);
+    addItem(model, "PG ha Award", "5", 6);
+    addItem(model, "PG Non ha Award", "6", 7);
+    addItem(model, "Confronta ricordo 1", "7", 8);
+    addItem(model, "Confronta ricordo 2", "8", 9);
+    addItem(model, "Pg ha Soldi sopra", "9", 10);
+    addItem(model, "Pg ha Soldi sotto", "10", 11);
+
     editor->setModel(model);
     if (index.column() == 0) {
         editor->setItemData(0, "Scegliendo <nessuno> e' come cancellare la condizione", Qt::ToolTipRole);
@@ -709,6 +725,12 @@ QWidget* ConditionComboBoxDelegate::createEditor(QWidget* parent,
             "Es: La reazione darebbe divini al PG ma il pg ha gia avuto divini da questo mob.\n"
             "In questo caso la condizione con il valore 3 lo preverrebbe.\n"
             "E per dire al pg in reazione tell o reazione Interrompi si userebbe -3.", Qt::ToolTipRole);
+        editor->setItemData(6, "La condizione riesce se il PG ha l'award\nIl valore e' il NUM del Award", Qt::ToolTipRole);
+        editor->setItemData(7, "La condizione riesce se il PG NON ha l'award\nIl valore e' il NUM del Award", Qt::ToolTipRole);
+        editor->setItemData(8, "La condizione riesce se la memoria del mob nel campo 1 combacia\nIl valore e' il valore da confrontare con la memoria", Qt::ToolTipRole);
+        editor->setItemData(9, "La condizione riesce se la memoria del mob nel campo 2 combacia\nIl valore e' il valore da confrontare con la memoria", Qt::ToolTipRole);
+        editor->setItemData(10, "La condizione riesce se il PG ha almeno X soldi\nIl valore e' X da confrontare con i soldi del pg", Qt::ToolTipRole);
+        editor->setItemData(11, "La condizione riesce se il PG NON ha almeno X soldi\nIl valore e' X da confrontare con i soldi del pg", Qt::ToolTipRole);
     }
     return editor;
 }
@@ -786,6 +808,12 @@ QWidget* BehaviorComboBoxDelegate::createEditor(QWidget* parent,
         addItem(model, "Carica e dai random da range", "6", 7);
         addItem(model, "Distruggi oggetti", "7", 8);
         addItem(model, "Interrompi parsing", "8", 9);
+        addItem(model, "Dai award numero al pg", "9", 10);
+        addItem(model, "Togli award al pg", "10", 11);
+        addItem(model, "Dai soldi al pg", "11", 12);
+        addItem(model, "Prendi soldi dal pg", "12", 13);
+        addItem(model, "Ricorda (memoria 1)", "13", 14);
+        addItem(model, "Ricorda (memoria 2)", "14", 15);
     }
     editor->setModel(model);
     if (index.column() == 0) {
@@ -795,15 +823,21 @@ QWidget* BehaviorComboBoxDelegate::createEditor(QWidget* parent,
     }
     if (index.column() == 2) {
         editor->setItemData(0, "Scegliendo <nessuno> e' come cancellare l'evento o la reazione", Qt::ToolTipRole);
-        editor->setItemData(1, "Il mob reagira' parlarndo al PG\nIn questo caso l'evento e' la frase da dire", Qt::ToolTipRole);
+        editor->setItemData(1, "Il mob reagira' parlarndo al PG\nIn questo caso l'evento e' la frase da dire\nPuoi usare %m = nome del mob, %u = nome del pg", Qt::ToolTipRole);
         editor->setItemData(2, "Il mob reagira' dando un oggetto che ha in inventario\nIn questo caso l'evento e' il VNUM dell'oggetto", Qt::ToolTipRole);
-        editor->setItemData(3, "Il mob reagira' facendo un echo nella stanza\nIn questo caso l'evento e' l' echo da fare\n(Shift+Enter per multilinea)", Qt::ToolTipRole);
+        editor->setItemData(3, "Il mob reagira' facendo un echo nella stanza\nIn questo caso l'evento e' l' echo da fare\n(Shift+Enter per multilinea)\nPuoi usare %m = nome del mob, %u = nome del pg", Qt::ToolTipRole);
         editor->setItemData(4, "Il mob reagira' dando XP al PG\nIn questo caso l'evento e' la quantita di XP", Qt::ToolTipRole);
         editor->setItemData(5, "Il mob reagira' dando sigilli Elementali al PG\nIn questo caso l'evento e' la quantita di sigilli Elementali", Qt::ToolTipRole);
         editor->setItemData(6, "Il mob reagira' dando sigilli Divini al PG\nIn questo caso l'evento e' la quantita di sigilli Divini", Qt::ToolTipRole);
         editor->setItemData(7, "Il mob reagira' loadando un oggetto random da un range di VNUM e dandolo al PG\nIn questo caso l'evento e': VNUM RANGE\nEs.:\n10200 5\nIl che vuol dire loada un oggetto random da 10200 a 10205.", Qt::ToolTipRole);
         editor->setItemData(8, "Il mob reagira' distruggendo oggetti che ha in inventario\nIn questo caso l'evento sono i VNUM degli oggetti separati da spazio (massimo 5)", Qt::ToolTipRole);
         editor->setItemData(9, "Il mob reagira' interrompendo il parsing di sucessivi Behavior\nche altrimenti potrebbero matchare piu avanti (sotto)", Qt::ToolTipRole);
+        editor->setItemData(10, "Il mob reagira' dando un award al pg\nIl numero dell'award e' il valore", Qt::ToolTipRole);
+        editor->setItemData(11, "Il mob reagira' togliendo un award al pg\nIl numero dell'award e' il valore", Qt::ToolTipRole);
+        editor->setItemData(12, "Il mob reagira' dando soldi al pg\nIl numero dei soldi e' il valore", Qt::ToolTipRole);
+        editor->setItemData(13, "Il mob reagira' prendendo soldi al pg\nIl numero dei soldi e' il valore", Qt::ToolTipRole);
+        editor->setItemData(14, "Il mob reagira' ricordando nel campo 1 il valore\nPuo' essere usato per poi usare condizioni su altre reazioni.", Qt::ToolTipRole);
+        editor->setItemData(15, "Il mob reagira' ricordando nel campo 2 il valore\nPuo' essere usato per poi usare condizioni su altre reazioni.", Qt::ToolTipRole);
     }
     return editor;
 }
@@ -1060,6 +1094,12 @@ void WndMob::showBehaviors() {
         case mr_Give:
         case mr_Xp:
         case mr_Elementi:
+        case ts::mr_GiveAward:
+        case ts::mr_TakeAward:
+        case ts::mr_GiveGold:
+        case ts::mr_TakeGold:
+        case ts::mr_Ricorda1:
+        case ts::mr_Ricorda2:
             react = QString::number(b.r_mb_Long[0]);
             break;
         case mr_DestroyObject:
@@ -1143,7 +1183,7 @@ QString WndMob::validateBehaviors() {
         QString v2 = m_BehaviorModel->item(i, 1)->data(Qt::EditRole).toString();
         QString v3 = m_BehaviorModel->item(i, 2)->data(Qt::EditRole).toString();
         QString v4 = m_BehaviorModel->item(i, 3)->data(Qt::EditRole).toString();
-        if (v1 != "" && (v2 == "" || v3 == "")) return err(i, "Campi mancanti");
+        if (v1 != "" && (v3 == "")) return err(i, "Campi mancanti");
         if ((v3 != "" && v3 != "8") && v4 == "") return err(i, "Campi mancanti");
 
         MobEvents ev = (MobEvents)v1.toInt();
@@ -1154,7 +1194,7 @@ QString WndMob::validateBehaviors() {
         switch (ev)
         {
         case ts::me_Talk:
-            if (v2 == "") return err(i, "Mancano parole chiavi per l'evento");
+            if (v2 != "" && v2.trimmed()=="") return err(i, "Mancano parole chiavi per l'evento. Se vuoi qualsiasi parola deve essere completamente vuoto.");
             break;
         case ts::me_Give:
             v2.toInt(&ok);
@@ -1176,6 +1216,12 @@ QString WndMob::validateBehaviors() {
         case ts::mr_Xp:
         case ts::mr_Elementi:
         case ts::mr_Divini:
+        case ts::mr_GiveAward:
+        case ts::mr_TakeAward:
+        case ts::mr_GiveGold:
+        case ts::mr_TakeGold:
+        case ts::mr_Ricorda1:
+        case ts::mr_Ricorda2:
             v4.toInt(&ok);
             if (!ok) return err(i, "Reazione richiede un numero");
             break;
@@ -1259,6 +1305,12 @@ void WndMob::applyBehaviors() {
         case ts::mr_Xp:
         case ts::mr_Elementi:
         case ts::mr_Divini:
+        case ts::mr_GiveAward:
+        case ts::mr_TakeAward:
+        case ts::mr_GiveGold:
+        case ts::mr_TakeGold:
+        case ts::mr_Ricorda1:
+        case ts::mr_Ricorda2:
             b.r_mb_Long[0] = v4.toInt();
             break;
         case ts::mr_RangeGive:

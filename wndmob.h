@@ -51,6 +51,7 @@ protected slots:
   void moveDownCondition();
   void mp_Behaviors_currentRowChanged(const QModelIndex& current, const QModelIndex& previous);
   void mp_Conditions_currentRowChanged(const QModelIndex& current, const QModelIndex& previous);
+  void conditionChanged(const QModelIndex current, QModelIndex previous);
 protected:
   void init();
   void closeEvent( QCloseEvent* );

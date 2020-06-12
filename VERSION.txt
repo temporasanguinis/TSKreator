@@ -1,4 +1,7 @@
-﻿1.54b
+﻿1.54
+- Aggiunto altri e finito i behavior
+__________________________________
+1.54b
 - Implementato i behavior per i mob
 - corretto un bug da crash sui mob
 __________________________________

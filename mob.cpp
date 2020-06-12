@@ -422,7 +422,15 @@ namespace ts
         switch (beh.mb_Event) {
 
         case me_Talk:
-            ret += QString(beh.e_mb_String).replace("\r\n", "").replace("\r", "").replace("\n","") + " ~\n";
+        {
+            auto str = QString(beh.e_mb_String).replace("\r\n", "").replace("\r", "").replace("\n", "").trimmed();
+            if (str == "") {
+                ret += str + "~\n";
+            }
+            else {
+                ret += str + " ~\n";
+            }
+        }
             break;
 
         case me_Give:
@@ -463,6 +471,12 @@ namespace ts
         case mr_Give:
         case mr_Elementi:
         case mr_Divini:
+        case mr_GiveAward:
+        case mr_TakeAward:
+        case mr_GiveGold:
+        case mr_TakeGold:
+        case mr_Ricorda1:
+        case mr_Ricorda2:
         case mr_Xp:
             ret += QString::number(beh.r_mb_Long[0]) + "\n";
             break;
@@ -801,6 +815,24 @@ namespace ts
                 break;
             case mr_Break:
                 mb.r_mb_Long[0] = 0;
+                break;
+            case mr_GiveGold:
+            case mr_TakeGold:
+            case mr_GiveAward:
+            case mr_TakeAward:
+            case mr_Ricorda1:
+            case mr_Ricorda2:
+                if (fgets(TmpBuf, 4096, fp) == NULL) {
+                    qWarning("ReadMobBehaviours(%ld): syntax error");
+                    FreeMobBehaviour(mb);
+                    return any;
+                }
+                if (fgets(TmpBuf, 4096, fp) == NULL) {
+                    qWarning("ReadMobBehaviours(%ld): syntax error");
+                    FreeMobBehaviour(mb);
+                    return any;
+                }
+                mb.r_mb_Long[0] = atol(TmpBuf);
                 break;
             default:
                 qWarning("ReadMobBehaviours(%ld): syntax error");

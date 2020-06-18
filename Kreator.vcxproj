@@ -85,6 +85,29 @@
     <ClInclude Include="exception.h" />
     <ClInclude Include="exit.h" />
     <ClInclude Include="extradescription.h" />
+    <ClInclude Include="GeneratedFiles\Debug\ui_guiarea.h" />
+    <ClInclude Include="GeneratedFiles\Debug\ui_guichangevnumbers.h" />
+    <ClInclude Include="GeneratedFiles\Debug\ui_guicreatearea.h" />
+    <ClInclude Include="GeneratedFiles\Debug\ui_guiexit.h" />
+    <ClInclude Include="GeneratedFiles\Debug\ui_guiextradescription.h" />
+    <ClInclude Include="GeneratedFiles\Debug\ui_guifind.h" />
+    <ClInclude Include="GeneratedFiles\Debug\ui_guiinit.h" />
+    <ClInclude Include="GeneratedFiles\Debug\ui_guiitem.h" />
+    <ClInclude Include="GeneratedFiles\Debug\ui_guiitemaffects.h" />
+    <ClInclude Include="GeneratedFiles\Debug\ui_guiitemvalues.h" />
+    <ClInclude Include="GeneratedFiles\Debug\ui_guimainwindow.h" />
+    <ClInclude Include="GeneratedFiles\Debug\ui_guimob.h" />
+    <ClInclude Include="GeneratedFiles\Debug\ui_guimobinit.h" />
+    <ClInclude Include="GeneratedFiles\Debug\ui_guimultiplemodify.h" />
+    <ClInclude Include="GeneratedFiles\Debug\ui_guireport.h" />
+    <ClInclude Include="GeneratedFiles\Debug\ui_guiroom.h" />
+    <ClInclude Include="GeneratedFiles\Debug\ui_guiselectflags.h" />
+    <ClInclude Include="GeneratedFiles\Debug\ui_guisettings.h" />
+    <ClInclude Include="GeneratedFiles\Debug\ui_guishop.h" />
+    <ClInclude Include="GeneratedFiles\Debug\ui_guiteleportroom.h" />
+    <ClInclude Include="GeneratedFiles\Debug\ui_guitester.h" />
+    <ClInclude Include="GeneratedFiles\Debug\ui_guizone.h" />
+    <ClInclude Include="GeneratedFiles\Debug\ui_guizonecommand.h" />
     <ClInclude Include="guiutils.h" />
     <ClInclude Include="guiversion.h" />
     <ClInclude Include="handler.h" />
@@ -281,6 +304,7 @@
     <None Include="conf\teleportflags.ini" />
     <None Include="conf\trapflags.ini" />
     <None Include="conf\zoneflags.ini" />
+    <None Include="qt_globals.targets" />
     <None Include="RuleSet.ruleset" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -351,7 +375,8 @@
       <Generator>cpp</Generator>
     </QtUic>
     <PreBuildEvent>
-      <Command>copy $(ProjectDir)binaries\msvc\$(Configuration)\*.* $(OutDir)</Command>
+      <Command>copy $(ProjectDir)binaries\msvc\$(Configuration)\*.* $(OutDir)
+copy "$(ProjectDir)qt_globals.targets" "$(APPDATA)\..\Local\QtMsBuild\qt_globals.targets"</Command>
     </PreBuildEvent>
     <PostBuildEvent>
       <Command>copy "$(ProjectDir)GeneratedFiles\$(Configuration)\*.h" "$(ProjectDir)"</Command>
@@ -373,7 +398,8 @@
       <Generator>cpp</Generator>
     </QtUic>
     <PreBuildEvent>
-      <Command>copy $(ProjectDir)binaries\msvc\$(Configuration)\*.* $(OutDir)</Command>
+      <Command>copy $(ProjectDir)binaries\msvc\$(Configuration)\*.* $(OutDir)
+copy "$(ProjectDir)qt_globals.targets" "$(APPDATA)\..\Local\QtMsBuild\qt_globals.targets"</Command>
     </PreBuildEvent>
     <PostBuildEvent>
       <Command>copy "$(ProjectDir)GeneratedFiles\$(Configuration)\*.h" "$(ProjectDir)"</Command>

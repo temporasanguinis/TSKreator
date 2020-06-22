@@ -104,7 +104,7 @@ namespace ts
                 break;
 
             case ITEM_AFFECT_ALIGNMENT_SLAYER:
-                sValue = Utils::bitvector2string(m_value, Eleuconf::getAllFlagsCaption(Eleuconf::trapFlags));
+                sValue = Utils::bitvector2string(m_value, Eleuconf::getAllFlagsCaption(Eleuconf::alignmentFlags));
                 break;
 
             case ITEM_AFFECT_RACE_SLAYER:

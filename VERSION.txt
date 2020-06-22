@@ -1,4 +1,7 @@
-﻿1.54
+﻿1.55
+- Corretto un bug sulla visualizazzione dei flag align slayer
+__________________________________
+1.54
 - Aggiunto altri e finito i behavior
 __________________________________
 1.54b

@@ -47,6 +47,7 @@
         <file>conf/drinkcontainerflags.ini</file>
         <file>images/downarrow.png</file>
         <file>images/uparrow.png</file>
+        <file>conf/alignmentflags.ini</file>
     </qresource>
     <qresource prefix="/sector">
         <file>images/field.png</file>

@@ -8,6 +8,7 @@ QList<Applies> Eleuconf::appl;
 QList<Aspells> Eleuconf::aspl;
 QList<Flags> Eleuconf::mobActionsFlags;
 QList<Flags> Eleuconf::mobAffectionsFlags;
+QList<Flags> Eleuconf::alignmentFlags;
 QList<Flags> Eleuconf::roomFlags;
 QList<Flags> Eleuconf::teleportFlags;
 QList<Flags> Eleuconf::containerFlags;
@@ -43,6 +44,7 @@ void Eleuconf::readAll()
 	readFlags(":/conf/trapflags.ini", &trapFlags);
 	readFlags(":/conf/zoneflags.ini", &zoneFlags);
     readFlags(":/conf/drinkcontainerflags.ini", &drinkContainerFlags);
+    readFlags(":/conf/alignmentflags.ini", &alignmentFlags);
      /*
     readFlags("conf/ZoneFlags.ini", zoneFlags);
 

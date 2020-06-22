@@ -287,6 +287,7 @@
     <Natvis Include="NatvisFile.natvis" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="conf\alignmentflags.ini" />
     <None Include="conf\applies.ini">
       <FileType>Text</FileType>
       <DeploymentContent>false</DeploymentContent>

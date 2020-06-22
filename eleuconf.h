@@ -173,7 +173,7 @@ class Eleuconf
 
         static QList<Aspells> aspl;
 
-        static QList<Flags> mobActionsFlags, mobAffectionsFlags, roomFlags, teleportFlags, containerFlags, objFlags, exitFlags, resFlags, objWear, trapFlags, zoneFlags, drinkContainerFlags;
+        static QList<Flags> mobActionsFlags, mobAffectionsFlags, alignmentFlags, roomFlags, teleportFlags, containerFlags, objFlags, exitFlags, resFlags, objWear, trapFlags, zoneFlags, drinkContainerFlags;
         private:
 #if 0
         static QList<Flags> foodFlags, itemAffectFlags, keyFlags, mobActionsFlags, zoneFlags;

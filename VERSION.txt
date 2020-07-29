@@ -1,5 +1,6 @@
 ﻿1.55
 - Corretto un bug sulla visualizazzione dei flag align slayer
+- Aggiunti nuovi flag per room teleport
 __________________________________
 1.54
 - Aggiunto altri e finito i behavior

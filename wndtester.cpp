@@ -601,7 +601,7 @@ QString WndTester::ParseAnsiColors(const QString &text)
 #if defined( KREATOR_DEBUG )
     qDebug("WndTester::ParseAnsiColors(QString txt) called.");
 #endif
-    QString txt = text;
+    QString txt = QString(text).replace(" ", "&nbsp;");
     int i;
 
     for (i = txt.indexOf(QRegExp("\\$c[0-9]{4,4}"));i != -1; i = txt.indexOf(QRegExp("\\$c[0-9]{4,4}"))) {

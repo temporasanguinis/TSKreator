@@ -1200,6 +1200,8 @@ QString WndMob::validateBehaviors() {
             v2.toInt(&ok);
             if (!ok) return err(i, "Evento richiede un numero");
             break;
+        default:
+            return err(i, "Evento sconosciuto");
         }
         switch (re)
         {

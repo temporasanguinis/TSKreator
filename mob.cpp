@@ -650,12 +650,12 @@ namespace ts
 
     static void FreeMobBehaviour(MobBehaviour& mb)
     {
-        if (mb.mb_Event == me_Talk && mb.e_mb_String)
+        /*if (mb.mb_Event == me_Talk && mb.e_mb_String)
             free(mb.e_mb_String);
 
         if ((mb.mb_Reaction == mr_Talk || mb.mb_Reaction ==
             mr_Emote) && mb.r_mb_String)
-            free(mb.r_mb_String);
+            free(mb.r_mb_String);*/
     }
 
     bool Mob::readMobBehaviours(FILE *fp)
@@ -664,7 +664,6 @@ namespace ts
         char TmpBuf[4096];
         bool any = FALSE;
         while (fscanf(fp, "%s", TmpBuf) && *TmpBuf == 'E') {
-            any = true;
             MobBehaviour mb;
             mb.mb_Event = MobEvents::me_SIZE;
             mb.e_mb_Long = 0;
@@ -841,6 +840,7 @@ namespace ts
             }
 
             m_mobBehaviours.push_back(mb);
+            any = true;
             cur = ftell(fp);
         }
         fseek(fp, cur, SEEK_SET);

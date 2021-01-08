@@ -25,6 +25,7 @@ public:
   WndSelectFlags( BitVector bv, QList<Flags> flags, QWidget* parent );
   ~WndSelectFlags();
 
+  void setIndeterminate();
   bool okPressed() { return m_okPressed; }
   bool bitVectorChanged() const { return m_bv != m_oldbv; }
   BitVector bitVertorSelected() const { return m_bv; }

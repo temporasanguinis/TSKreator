@@ -583,7 +583,7 @@ BitVector SelectObject::getFlagsBitVector( BitVector bv, const QList<Flags> &lis
   return bv;
 }
 
-QList<int> SelectObject::getMultipleFlags(const QList<Flags> &list, const QString &title, QWidget* parent )
+QList<int> SelectObject::getMultipleFlags(const QList<Flags> &list, const QString &title, QWidget* parent, bool initTristate)
 {
 #if defined( KREATOR_DEBUG )
     qDebug( "SelectObject::getMultipleFlags( QList<Flags>, QString (*FunctionConstantName)(int), QWidget* ) called." );
@@ -592,6 +592,7 @@ QList<int> SelectObject::getMultipleFlags(const QList<Flags> &list, const QStrin
     QList<int> ls;
     WndSelectFlags *pWnd = new WndSelectFlags( list, parent );
     pWnd->setWindowTitle(title);
+    if (initTristate) pWnd->setIndeterminate();
     pWnd->show();
     pWnd->setFixedSize( pWnd->size() );
     pWnd->exec();

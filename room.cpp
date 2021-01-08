@@ -157,7 +157,7 @@ namespace ts
 
     while( it != m_extraDescriptions.end() )
     {
-      if( (*it).keys() == sKeysToFind )
+      if( (*it).keys() == sKeysToFind.toLower() )
         return *it;
       ++it;
     }
@@ -173,7 +173,7 @@ namespace ts
     extra_description_iterator it = m_extraDescriptions.begin();
     while( it != m_extraDescriptions.end() )
     {
-      if( (*it).keys() == sKeysToFind )
+      if( (*it).keys() == sKeysToFind.toLower() )
       {
         qDebug( "%s removed from %s.", (*it).dumpObject().toUtf8().data(), dumpObject().toUtf8().data() );
         m_extraDescriptions.erase( it );

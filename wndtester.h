@@ -27,6 +27,7 @@ public:
 protected slots:
 	void mudChangeText();
         void roomCreated();
+        void generaMappa();
 
 protected:
 	void init();

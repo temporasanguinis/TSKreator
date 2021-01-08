@@ -91,6 +91,7 @@ void WndTester::init()
     //connect(le_Input, SIGNAL(returnPressed()), pb_Invia, SLOT(animateClick()));
     connect(le_Input, SIGNAL(returnPressed()), le_Input, SLOT(selectAll()));
     connect(pb_Invia, SIGNAL(clicked()), this, SLOT(mudChangeText()));
+    connect(mp_CreateMap, SIGNAL(clicked()), this, SLOT(generaMappa()));
 
     //QTextOption option;
     //option.setFlags(QTextOption::IncludeTrailingSpaces);
@@ -240,6 +241,16 @@ bool WndTester::viewKeyowrd(VNumber room, QString key) {
     }
     return false;
 }
+
+void WndTester::generaMappa()
+{
+    if (QMessageBox::critical(this, "Attenzione", QString("Se hai gia delle coordinate assegnate\nquesta azione sovrascrivera' tutto!\nVuoi continuare?\n"), QMessageBox::StandardButton::Yes, QMessageBox::StandardButton::No) == QMessageBox::StandardButton::Yes) {
+        VNumber zone = m_area_data->zoneReferenced(cr);
+        //m_area_data->zone(zone).setNewFlag(19);
+        QMessageBox::information(this, "Non implementato", "Questa funzione non e' ancora implementata", QMessageBox::StandardButton::Ok);
+    }
+}
+
 void WndTester::mudChangeText()
 {
 #if defined( KREATOR_DEBUG )
@@ -462,37 +473,37 @@ void WndTester::do_move(int cmd)
             return;
         }
         else {
-		// stanza corrente e la nuova da creare
-		Room m_room = m_area_data->room(cr);
-                Room new_room( m_area_data->firstFreeRoomVNumber(cr) );
+		    // stanza corrente e la nuova da creare
+		    Room m_room = m_area_data->room(cr);
+                    Room new_room( m_area_data->firstFreeRoomVNumber(cr) );
 
-		// assegna la zona alla room
-		if( KreatorSettings::instance().assignZoneToRooms() )
-			new_room.setZone( m_area_data->zoneReferenced( new_room.vnumber() ) );
+		    // assegna la zona alla room
+		    if( KreatorSettings::instance().assignZoneToRooms() )
+			    new_room.setZone( m_area_data->zoneReferenced( new_room.vnumber() ) );
 
-		// uscita da qui alla nuova room
-		Exit pToNew(cmd, m_room.vnumber());
-		pToNew.setToRoom(new_room.vnumber());
+		    // uscita da qui alla nuova room
+		    Exit pToNew(cmd, m_room.vnumber());
+		    pToNew.setToRoom(new_room.vnumber());
 
-		// uscita dalla nuova room a qui
-		Exit pFromNew = pToNew.reversed();
+		    // uscita dalla nuova room a qui
+		    Exit pFromNew = pToNew.reversed();
 
-		// aggingi uscite ad ambedue le room (corrente e nuova)
-		m_room.addExit(pToNew);
-		new_room.addExit(pFromNew);
+		    // aggingi uscite ad ambedue le room (corrente e nuova)
+		    m_room.addExit(pToNew);
+		    new_room.addExit(pFromNew);
 
-		// aggiunge la room all area
-		m_area_data->addRoom( new_room );
-		m_area_data->addRoom( m_room );
+		    // aggiunge la room all area
+		    m_area_data->addRoom( new_room );
+		    m_area_data->addRoom( m_room );
 
-		// mostra dialogo per edit della nuova room
-                editRoom( new_room.vnumber() );
+		    // mostra dialogo per edit della nuova room
+                    //editRoom( new_room.vnumber() );
 
-		m_area = *(m_area_data);
-		go(new_room.vnumber());
-		return;
-		// vai nella nuova room
-	}
+		    m_area = *(m_area_data);
+            rp = m_area.room(cr);
+            parentwnd->somethingChanged();
+		    // vai nella nuova room
+	    }
     }
     Exit exitp = rp.exit(cmd);
     if (exitp.hasKeyHole() && exitp.doorKey())

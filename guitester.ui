@@ -214,6 +214,13 @@ p, li { white-space: pre-wrap; }
        </property>
       </widget>
      </item>
+      <item>
+       <widget class="QPushButton" name="mp_CreateMap" >
+        <property name="text" >
+         <string>Genera Mappa</string>
+        </property>
+       </widget>
+      </item>
     </layout>
    </item>
    <item>

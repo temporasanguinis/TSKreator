@@ -90,6 +90,7 @@ namespace ts
                             r.bSelected = false;
                         }
                     }
+                    setPos(offsetX, offsetY, offsetZ);
                     repaint();
                 }
             }

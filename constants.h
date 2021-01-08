@@ -474,6 +474,12 @@ namespace ts
   const int AFFECT2_ELECTRICSHIELD     = 17;
   const int AFFECT2_ENERGYSHIELD       = 18;
   const int AFFECT2_FIRESHIELD         = 19;
+  const int AFFECT2_DEATHGRIP = 20;
+  const int AFFECT2_BLEEDING = 21;
+  const int AFFECT2_BURNING = 22;
+  const int AFFECT2_CHILLED = 23;
+  const int AFFECT2_SHOCKED = 24;
+
 
   /* Weapon Alignment Slayer */
   const QStringList strWeaponAlignmentSlayerName = QStringList() << "NEUTRAL" << "GOOD" << "EVIL";

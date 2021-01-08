@@ -119,6 +119,17 @@ WndSelectFlags::WndSelectFlags(BitVector bv, QList<Flags> flags, QWidget* parent
     loadData();
 }
 
+void WndSelectFlags::setIndeterminate() {
+    for (int i = 0; i < 32; i++) {
+        QAbstractButton* pButton = NULL;
+        pButton = mp_bgFlags->button(i);
+        if (!pButton) {
+            return;
+        }
+        ((QCheckBox*)pButton)->setCheckState(Qt::CheckState::PartiallyChecked);
+    }
+}
+
 WndSelectFlags::~WndSelectFlags()
 {
 #if defined( KREATOR_DEBUG )

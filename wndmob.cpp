@@ -1064,6 +1064,14 @@ void WndMob::mp_Conditions_currentRowChanged(const QModelIndex& current, const Q
 
 void WndMob::showBehaviors() {
     behaviorConditionMap.clear();
+    while (m_BehaviorModel->rowCount())
+    {
+        m_BehaviorModel->takeRow(0);
+    }
+    while (m_ConditionModel->rowCount())
+    {
+        m_ConditionModel->takeRow(0);
+    }
     int counter = 0;
     for each (auto &b in m_mob.getBehaviors())
     {

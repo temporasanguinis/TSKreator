@@ -1211,8 +1211,10 @@ void WndArea::selectRoom(VNumber vnum)
         m_selectedVNum = vnum;
         WndMap* pWnd = NULL;
         FindMapWindow((void**)&pWnd);
-        if (pWnd)
+        if (pWnd) {
+            pWnd->somethingChanged();
             pWnd->selectRoom(vnum);
+        }
     }
 }
 

@@ -54,7 +54,7 @@ public:
   static BitVector mobNewActs( BitVector, QWidget* parent = 0 );
   static BitVector damageImmunityType( BitVector, const QString&, QWidget* parent = 0 );
   static BitVector zoneFlags( BitVector, QWidget* parent = 0 );
-  static QList<int> getMultipleFlags(const QList<Flags> &list, const QString &title, QWidget* parent );
+  static QList<int> getMultipleFlags(const QList<Flags> &list, const QString &title, QWidget* parent, bool initTristate = false);
 
    static void showInits(bool mob, VNumber vnum, Area& ref_area, QWidget* parent);
 protected:

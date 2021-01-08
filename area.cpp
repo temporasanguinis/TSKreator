@@ -2119,6 +2119,7 @@ namespace ts
         for (long i = vStart; i < vEnd; i++) {
             if (!this->hasRoom(i)) {
                 vRet = (VNumber)i;
+                break;
             }
         }
       }

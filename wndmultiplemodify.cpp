@@ -64,13 +64,13 @@ WndMultipleModify::WndMultipleModify(Area  *area, QWidget* parent)
 
 void WndMultipleModify::roomFlagsClicked()
 {
-     QList<int> ls = SelectObject::getMultipleFlags(Eleuconf::roomFlags,"Room Flags",this);
+     QList<int> ls = SelectObject::getMultipleFlags(Eleuconf::roomFlags,"Room Flags",this, true);
      QList<VNumber> vnLst = getTreeCheckedList(listRoom);
      for(int i = 0; i < vnLst.size(); i++) {
          Room rp = m_area->room(vnLst.at(i));
          BitVector flags = rp.flags();
          for(int k = 0; k < ls.size(); k++) {
-             if(ls.at(k) == Qt::PartiallyChecked) {
+             if(ls.at(k) == Qt::Unchecked) {
                  Bit::remove(&flags, k);
              } else if(ls.at(k) ==  Qt::Checked) {
                  Bit::set(&flags, k);
@@ -94,13 +94,13 @@ void WndMultipleModify::actsClicked()
             list.append(Eleuconf::mobActionsFlags.at(i));
         }
     }
-    QList<int> ls = SelectObject::getMultipleFlags(list,"Mob Acts",this);
+    QList<int> ls = SelectObject::getMultipleFlags(list,"Mob Acts",this, true);
     QList<VNumber> vnLst = getTreeCheckedList(listMob);
     for(int i = 0; i < vnLst.size(); i++) {
         Mob mob = m_area->mob(vnLst.at(i));
         BitVector acts = mob.acts();
         for(int k = 0; k < ls.size(); k++) {
-            if(ls.at(k) == Qt::PartiallyChecked) {
+            if(ls.at(k) == Qt::Unchecked) {
                 Bit::remove(&acts, k);
             } else if(ls.at(k) ==  Qt::Checked) {
                 Bit::set(&acts, k);
@@ -124,13 +124,13 @@ void WndMultipleModify::newActsClicked()
             list.append(Eleuconf::mobActionsFlags.at(i));
         }
     }
-    QList<int> ls = SelectObject::getMultipleFlags(list,"Mob New Acts",this);
+    QList<int> ls = SelectObject::getMultipleFlags(list,"Mob New Acts",this, true);
     QList<VNumber> vnLst = getTreeCheckedList(listMob);
     for(int i = 0; i < vnLst.size(); i++) {
         Mob mob = m_area->mob(vnLst.at(i));
         BitVector acts = mob.extraFlags();
         for(int k = 0; k < ls.size(); k++) {
-            if(ls.at(k) == Qt::PartiallyChecked) {
+            if(ls.at(k) == Qt::Unchecked) {
                 Bit::remove(&acts, k);
             } else if(ls.at(k) ==  Qt::Checked) {
                 Bit::set(&acts, k);
@@ -155,13 +155,13 @@ void WndMultipleModify::affectsClicked()
         }
     }
 
-    QList<int> ls = SelectObject::getMultipleFlags(list,"Mob Affects",this);
+    QList<int> ls = SelectObject::getMultipleFlags(list,"Mob Affects",this, true);
     QList<VNumber> vnLst = getTreeCheckedList(listMob);
     for(int i = 0; i < vnLst.size(); i++) {
         Mob mob = m_area->mob(vnLst.at(i));
         BitVector aff = mob.affects();
         for(int k = 0; k < ls.size(); k++) {
-            if(ls.at(k) == Qt::PartiallyChecked) {
+            if(ls.at(k) == Qt::Unchecked) {
                 Bit::remove(&aff, k);
             } else if(ls.at(k) ==  Qt::Checked) {
                 Bit::set(&aff, k);
@@ -185,13 +185,13 @@ void WndMultipleModify::affects2Clicked()
             list.append(Eleuconf::mobAffectionsFlags.at(i));
         }
     }
-    QList<int> ls = SelectObject::getMultipleFlags(list,"Mob Affects2",this);
+    QList<int> ls = SelectObject::getMultipleFlags(list,"Mob Affects2",this, true);
     QList<VNumber> vnLst = getTreeCheckedList(listMob);
     for(int i = 0; i < vnLst.size(); i++) {
         Mob mob = m_area->mob(vnLst.at(i));
         BitVector aff = mob.affects2();
         for(int k = 0; k < ls.size(); k++) {
-            if(ls.at(k) == Qt::PartiallyChecked) {
+            if(ls.at(k) == Qt::Unchecked) {
                 Bit::remove(&aff, k);
             } else if(ls.at(k) ==  Qt::Checked) {
                 Bit::set(&aff, k);
@@ -215,13 +215,13 @@ void WndMultipleModify::objFlagsClicked()
             list.append(Eleuconf::objFlags.at(i));
         }
     }
-    QList<int> ls = SelectObject::getMultipleFlags(list, "Object Flags",this);
+    QList<int> ls = SelectObject::getMultipleFlags(list, "Object Flags",this, true);
     QList<VNumber> vnLst = getTreeCheckedList(listObj);
     for(int i = 0; i < vnLst.size(); i++) {
         Item itm = m_area->item(vnLst.at(i));
         BitVector flags = itm.flags();
         for(int k = 0; k < ls.size(); k++) {
-            if(ls.at(k) == Qt::PartiallyChecked) {
+            if(ls.at(k) == Qt::Unchecked) {
                 Bit::remove(&flags, k);
             } else if(ls.at(k) ==  Qt::Checked) {
                 Bit::set(&flags, k);
@@ -245,13 +245,13 @@ void WndMultipleModify::objNewFlagsClicked()
             list.append(Eleuconf::objFlags.at(i));
         }
     }
-    QList<int> ls = SelectObject::getMultipleFlags(list,"Object New Flags",this);
+    QList<int> ls = SelectObject::getMultipleFlags(list,"Object New Flags",this, true);
     QList<VNumber> vnLst = getTreeCheckedList(listObj);
     for(int i = 0; i < vnLst.size(); i++) {
         Item itm = m_area->item(vnLst.at(i));
         BitVector flags = itm.extraFlags();
         for(int k = 0; k < ls.size(); k++) {
-            if(ls.at(k) == Qt::PartiallyChecked) {
+            if(ls.at(k) == Qt::Unchecked) {
                 Bit::remove(&flags, k);
             } else if(ls.at(k) ==  Qt::Checked) {
                 Bit::set(&flags, k);

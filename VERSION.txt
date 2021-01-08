@@ -1,4 +1,10 @@
-﻿1.55
+﻿1.56
+- bugfix: modifiche multiple non settavano flag bene
+- aggiunti affect mancanti
+- bugfix: keyword delle extra non venivano lowercase
+- fixxo bugs a behaviors che si duplicavano nella finestra mob
+__________________________________
+1.55
 - Corretto un bug sulla visualizazzione dei flag align slayer
 - Aggiunti nuovi flag per room teleport
 __________________________________

@@ -172,8 +172,107 @@
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
+           <property name="maximumSize" >
+             <size>
+               <width>50</width>
+               <height>20</height>
+             </size>
+           </property>
+           <property name="minimumSize" >
+             <size>
+               <width>50</width>
+               <height>20</height>
+             </size>
+           </property>
          </widget>
         </item>
+         <item>
+           <widget class="QLabel" name="mp_labelMinLevel" >
+             <property name="text" >
+               <string>Lv Min. Sugg.</string>
+             </property>
+           </widget>
+         </item>
+         <item>
+           <widget class="QLineEdit" name="mp_leMinLevel" >
+             <property name="sizePolicy" >
+               <sizepolicy vsizetype="Fixed" hsizetype="Maximum" >
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+               </sizepolicy>
+             </property>
+             <property name="maximumSize" >
+               <size>
+                 <width>50</width>
+                 <height>20</height>
+               </size>
+             </property>
+             <property name="minimumSize" >
+               <size>
+                 <width>50</width>
+                 <height>20</height>
+               </size>
+             </property>
+           </widget>
+         </item>
+         <item>
+           <widget class="QLabel" name="mp_labelMaxLevel" >
+             <property name="text" >
+               <string>Lv. Max. Sugg.</string>
+             </property>
+           </widget>
+         </item>
+         <item>
+           <widget class="QLineEdit" name="mp_leMaxLevel" >
+             <property name="sizePolicy" >
+               <sizepolicy vsizetype="Fixed" hsizetype="Maximum" >
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+               </sizepolicy>
+             </property>
+             <property name="maximumSize" >
+               <size>
+                 <width>50</width>
+                 <height>20</height>
+               </size>
+             </property>
+             <property name="minimumSize" >
+               <size>
+                 <width>50</width>
+                 <height>20</height>
+               </size>
+             </property>
+           </widget>
+         </item>
+         <item>
+           <widget class="QLabel" name="mp_labelDanger" >
+             <property name="text" >
+               <string>Pericolo [1-&gt;10]</string>
+             </property>
+           </widget>
+         </item>
+         <item>
+           <widget class="QLineEdit" name="mp_leDangerLvl" >
+             <property name="sizePolicy" >
+               <sizepolicy vsizetype="Fixed" hsizetype="Maximum" >
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+               </sizepolicy>
+             </property>
+             <property name="maximumSize" >
+               <size>
+                 <width>50</width>
+                 <height>20</height>
+               </size>
+             </property>
+             <property name="minimumSize" >
+               <size>
+                 <width>50</width>
+                 <height>20</height>
+               </size>
+             </property>
+           </widget>
+         </item>
        </layout>
       </item>
       <item row="1" column="1" >

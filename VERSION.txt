@@ -1,6 +1,7 @@
 ﻿1.57
 - Aggiunti spell mancanti
 - Supporto per music intrument
+- aggiunto liv minimo e massimo suggerito alla zona, e il pericolo
 __________________________________
 1.56
 - bugfix: modifiche multiple non settavano flag bene

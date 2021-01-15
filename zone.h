@@ -86,6 +86,12 @@ namespace ts
 
     int pwpLevel() const { return m_pwpLevel; }
     void setPwpLevel(int lvl) { m_pwpLevel = lvl; }
+    int minLvl() const { return m_minLvl; }
+    void setMinLvl(int lvl) { m_minLvl = lvl; }
+    int maxLvl() const { return m_maxLvl; }
+    void setMaxLvl(int lvl) { m_maxLvl = lvl; }
+    int dangerous() const { return m_Dangerous; }
+    void setDangerous(int lvl) { m_Dangerous = lvl; }
     void flushBuffer();
 
   protected:
@@ -100,7 +106,9 @@ namespace ts
     int m_repopInterval;
     int m_repopMode;
     int m_pwpLevel;
-
+    int m_minLvl;
+    int m_maxLvl;
+    int m_Dangerous;
   };
 
 } // namespace ts

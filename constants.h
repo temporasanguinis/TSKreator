@@ -181,7 +181,7 @@ namespace ts
 
   const int ITEM_LIQUID_TYPE_END = 16;
   // See Handler.h for Liquid Name...
-
+  const int ITEM_INSTRUMENT_TYPE_END = 3;
   /* Equipment Position */
   const int EQUIPMENT_POSITION_END          = 22;
   /* Equipment Position End */

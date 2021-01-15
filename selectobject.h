@@ -34,6 +34,7 @@ public:
   static int itemTrapDamageType( int def_value, QWidget* parent = 0 );
   static int itemType( int def_value, QWidget* parent = 0 );
   static int liquid( int def_value, QWidget* parent = 0 );
+  static int instrumentType(int def_value, QWidget* parent = 0);
   static int weaponAlignmentSlayer( BitVector bv, QWidget* parent = 0 );
   static int race( int def_value, QWidget* parent = 0 );
   static int itemSealContainerTypes( int def_value, QWidget* parent = 0 );

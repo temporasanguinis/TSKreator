@@ -129,6 +129,18 @@ namespace ts
     }
   }
 
+  QString Handler::instrumentTypeName(int lid)
+  {
+      switch (lid)
+      {
+      case 0: return "Percussione";
+      case 1: return "Corde";
+      case 2: return "Fiato";
+      default:
+          return "Error";
+      }
+  }
+
   QString Handler::itemValueName( int item_type, int value_id )
   {
     if( value_id < 0 || value_id >= ITEM_VALUE_END )
@@ -186,6 +198,11 @@ namespace ts
       sValue[ ITEM_VALUE_0 ] = "AC attuale";
       sValue[ ITEM_VALUE_1 ] = "AC massima";
       break;
+    case ITEM_TYPE_MUS_INSTRUMENT:
+        sValue[ITEM_VALUE_0] = "Durabilita' attuale";
+        sValue[ITEM_VALUE_1] = "Durabilita' massima";
+        sValue[ITEM_VALUE_2] = "Tipo instrumento";
+        break;
 
     case ITEM_TYPE_TREASURE:
     case ITEM_TYPE_WORN:

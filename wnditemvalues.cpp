@@ -150,7 +150,10 @@ void WndItemValues::refreshPanel()
   case ITEM_TYPE_MONEY:
   case ITEM_TYPE_AUDIO:
     break;
-
+  case ITEM_TYPE_MUS_INSTRUMENT:
+      mp_leValue2->setValidator(Validator::instrumentType());
+      enableValueButton(ITEM_VALUE_2, true);
+      break;
   case ITEM_TYPE_TRAP:
     enableValueButton( ITEM_VALUE_0, true );
     enableValueButton( ITEM_VALUE_1, true );
@@ -348,6 +351,14 @@ void WndItemValues::editValue2()
     if( vnum_selected == def_vnum )
       return;
     mp_leValue2->setText( QString::number( vnum_selected ) );
+  }
+  if (m_item.itemType() == ITEM_TYPE_MUS_INSTRUMENT)
+  {
+      VNumber def_vnum = mp_leValue2->text().toLong();
+      VNumber vnum_selected = SelectObject::instrumentType(def_vnum, this);
+      if (vnum_selected == def_vnum)
+          return;
+      mp_leValue2->setText(QString::number(vnum_selected));
   }
   else if( m_item.itemType() == ITEM_TYPE_LIQUID_CONTAINER )
   {

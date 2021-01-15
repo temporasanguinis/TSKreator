@@ -524,6 +524,16 @@ int SelectObject::liquid( int def_value, QWidget* parent )
   return getLong( sList, QObject::trUtf8( "Seleziona il tipo di liquido" ), cur_item, def_value, parent );
 }
 
+int SelectObject::instrumentType(int def_value, QWidget* parent)
+{
+#if defined( KREATOR_DEBUG )
+    qDebug("SelectObject::liquid( int, QWidget* ) called.");
+#endif
+    int cur_item = 0;
+    QStringList sList = GetStringList(0, ITEM_INSTRUMENT_TYPE_END, Handler::instrumentTypeName, &cur_item, def_value);
+    return getLong(sList, QObject::trUtf8("Seleziona il tipo di instrumento"), cur_item, def_value, parent);
+}
+
 int SelectObject::weaponAlignmentSlayer( BitVector bv, QWidget* parent )
 {
 #if defined( KREATOR_DEBUG )

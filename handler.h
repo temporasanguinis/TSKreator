@@ -24,6 +24,7 @@ namespace ts
     static QString trapDamageTypeName( int );
     static QString liquidName( int );
     static QString itemValueName( int item_type, int value_id );
+    static QString instrumentTypeName(int );
     static QString itemValueToString( int item_type, int value_id, const Item& );
 
     static const QList<Spell>& spells() { return m_spells; }

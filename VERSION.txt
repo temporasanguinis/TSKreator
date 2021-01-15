@@ -1,4 +1,8 @@
-﻿1.56
+﻿1.57
+- Aggiunti spell mancanti
+- Supporto per music intrument
+__________________________________
+1.56
 - bugfix: modifiche multiple non settavano flag bene
 - aggiunti affect mancanti
 - bugfix: keyword delle extra non venivano lowercase

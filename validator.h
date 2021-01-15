@@ -31,6 +31,12 @@ public:
 class Validator
 {
 public:
+
+    static const QValidator* instrumentType()
+    {
+        return new QIntValidator(0, 2, 0);
+    }
+
     static const QValidator* spell()
     {
         if (!mp_spell)

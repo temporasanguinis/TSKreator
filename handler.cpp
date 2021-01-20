@@ -133,9 +133,10 @@ namespace ts
   {
       switch (lid)
       {
-      case 0: return "Percussione";
-      case 1: return "Corde";
-      case 2: return "Fiato";
+        case 0: return "Sconosciuto";
+        case 1: return "Percussione";
+        case 2: return "Corde";
+        case 3: return "Fiato";
       default:
           return "Error";
       }

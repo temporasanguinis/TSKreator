@@ -65,7 +65,8 @@ namespace ts
   const int ITEM_TYPE_MUS_INSTRUMENT    = 27;
   const int ITEM_TYPE_SPELL_BOOK        = 28;
   const int ITEM_TYPE_SEAL_CONTAINER    = 29;
-  const int ITEM_TYPE_END               = 30;
+  const int ITEM_TYPE_ARTIFACT = 30;
+  const int ITEM_TYPE_END               = 31;
   /* Item Types End */
 
   /* Item Affects */

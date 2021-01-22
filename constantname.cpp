@@ -149,6 +149,7 @@ namespace ts
     "MUSIC INSTRUMENT",
     "SPELL BOOK",
     "SEAL CONTAINER",
+    "ARTIFACT",
     "\n"
   };
 

@@ -128,12 +128,12 @@ void WndItemValues::refreshPanel()
     mp_leValue3->setValidator(Validator::spell());
     break;
 
+  case ITEM_TYPE_FIREWEAPON:
+  case ITEM_TYPE_MISSILE:
   case ITEM_TYPE_WEAPON:
     enableValueButton( ITEM_VALUE_3, true );
     break;
 
-  case ITEM_TYPE_FIREWEAPON:
-  case ITEM_TYPE_MISSILE:
   case ITEM_TYPE_ARMOR:
   case ITEM_TYPE_TREASURE:
   case ITEM_TYPE_WORN:
@@ -376,7 +376,9 @@ void WndItemValues::editValue3()
 #if defined( KREATOR_DEBUG )
   qDebug( "WndItemValues::editValue3() called." );
 #endif
-  if( m_item.itemType() == ITEM_TYPE_WEAPON )
+  if( m_item.itemType() == ITEM_TYPE_WEAPON ||
+      m_item.itemType() == ITEM_TYPE_FIREWEAPON ||
+      m_item.itemType() == ITEM_TYPE_MISSILE)
   {
     int dam_id = SelectObject::itemWeaponDamageType( mp_leValue3->text().toInt(), this );
     if( dam_id == mp_leValue3->text().toInt() )

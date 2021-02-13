@@ -182,17 +182,17 @@ namespace ts
       break;
 
     case ITEM_TYPE_FIREWEAPON:
-      sValue[ ITEM_VALUE_0 ] = "Forza minima";
-      sValue[ ITEM_VALUE_1 ] = "Distanza minima";
-      sValue[ ITEM_VALUE_2 ] = "Bonus sul range";
-      sValue[ ITEM_VALUE_3 ] = "Tipo di proiettile";
+      sValue[ ITEM_VALUE_0 ] = "Durabilita'";
+      sValue[ ITEM_VALUE_1 ] = "Range";
+      sValue[ ITEM_VALUE_2 ] = "Durabilita max";
+      sValue[ ITEM_VALUE_3 ] = "Tipo danno proiettile";
       break;
 
     case ITEM_TYPE_MISSILE:
       sValue[ ITEM_VALUE_0 ] = "% di rottura";
       sValue[ ITEM_VALUE_1 ] = "Numero dadi (danno)";
       sValue[ ITEM_VALUE_2 ] = "Numero facce (danno)";
-      sValue[ ITEM_VALUE_3 ] = "Tipo di proiettile";
+      sValue[ ITEM_VALUE_3 ] = "Tipo di danno";
       break;
 
     case ITEM_TYPE_ARMOR:
@@ -296,12 +296,12 @@ namespace ts
       sValue[ ITEM_VALUE_3 ] = Handler::spellName( item.value( ITEM_VALUE_3 ) );
       break;
 
+    case ITEM_TYPE_FIREWEAPON:
+    case ITEM_TYPE_MISSILE:
     case ITEM_TYPE_WEAPON:
       sValue[ ITEM_VALUE_3 ] = ConstantName::itemWeaponDamageType( item.value( ITEM_VALUE_3 ) );
       break;
 
-    case ITEM_TYPE_FIREWEAPON:
-    case ITEM_TYPE_MISSILE:
     case ITEM_TYPE_TREASURE:
     case ITEM_TYPE_ARMOR:
     case ITEM_TYPE_WORN:

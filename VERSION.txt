@@ -1,4 +1,8 @@
 ﻿1.57
+- supporto per oggetti fire weapon
+- supporto per oggetti missile
+__________________________________
+1.57
 - Aggiunti spell mancanti
 - Supporto per music intrument
 - aggiunto liv minimo e massimo suggerito alla zona, e il pericolo

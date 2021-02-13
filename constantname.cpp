@@ -173,7 +173,7 @@ namespace ts
     "sting",
     "pierce",
     "blast",
-    "range weapon",
+    "arrow/bolt",
     "acid",
     "cold",
     "fire",

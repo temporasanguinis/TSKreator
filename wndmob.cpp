@@ -1102,6 +1102,7 @@ void WndMob::showBehaviors() {
         case mr_Give:
         case mr_Xp:
         case mr_Elementi:
+        case mr_Divini:
         case ts::mr_GiveAward:
         case ts::mr_TakeAward:
         case ts::mr_GiveGold:
@@ -1124,6 +1125,7 @@ void WndMob::showBehaviors() {
             react = "";
             break;
         default:
+            react = *b.r_mb_String ? QString(b.r_mb_String) : QString::number(b.r_mb_Long[0]);
             break;
         }
         behaviorConditionMap[counter] = std::vector<std::vector<QString>>();

@@ -1,4 +1,8 @@
-﻿1.57
+﻿1.59
+- correzione a behavior "Dai divini" che non veniva letto al riaprire Kreator
+- aggiunti apply mancanti per oggetti (luck ... -> special)
+__________________________________
+1.58
 - supporto per oggetti fire weapon
 - supporto per oggetti missile
 __________________________________

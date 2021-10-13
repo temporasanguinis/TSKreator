@@ -258,6 +258,7 @@ namespace ts
       sValue[ ITEM_VALUE_0 ] = "Tipo";
       sValue[ ITEM_VALUE_1 ] = "Minimo";
       sValue[ ITEM_VALUE_2 ] = "Massimo";
+      sValue[ITEM_VALUE_3] = "PWP consigliato";
             break;
 
     default:

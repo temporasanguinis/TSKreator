@@ -21,6 +21,7 @@ namespace ts
     m_weight = 1;
     m_goldValue = 10;
     m_rentCost = 0;
+    m_timer = 0;
 
     if( !m_extraDescriptions.empty() )
       m_extraDescriptions.clear();
@@ -63,6 +64,7 @@ namespace ts
     m_weight = i.m_weight;
     m_goldValue = i.m_goldValue;
     m_rentCost = i.m_rentCost;
+    m_timer = i.m_timer;
     m_extraDescriptions = i.m_extraDescriptions;
     for( j = 0; j < ITEM_AFFECT_POSITION_END; j++ )
       m_affects[ j ] = i.m_affects[ j ];
@@ -91,6 +93,7 @@ namespace ts
       m_weight = i.m_weight;
       m_goldValue = i.m_goldValue;
       m_rentCost = i.m_rentCost;
+      m_timer = i.m_timer;
       m_extraDescriptions = i.m_extraDescriptions;
       for( j = 0; j < ITEM_AFFECT_POSITION_END; j++ )
         m_affects[ j ] = i.m_affects[ j ];
@@ -176,7 +179,8 @@ namespace ts
     stream << endl << flush;
     stream << m_weight << " " << flush;
     stream << m_goldValue << " " << flush;
-    stream << m_rentCost << endl << flush;
+    stream << m_rentCost << " " << flush;
+    stream << m_timer << endl << flush;
 
     /* Save Extra Descriptions */
     extra_description_iterator itex = m_extraDescriptions.begin();
@@ -224,6 +228,10 @@ namespace ts
     m_weight = Utils::readNumber( pFile, sErrorMessage + " (Weight)" );
     m_goldValue = Utils::readNumber( pFile, sErrorMessage + " (GoldValue)" );
     m_rentCost = Utils::readNumber( pFile, sErrorMessage + " (RentCost)" );
+    m_timer = Utils::readNumber(pFile, sErrorMessage + " (Timer)", -1);
+    if (m_timer == -1) {
+        m_timer = 0;
+    }
 
     validate();
 

@@ -75,6 +75,7 @@ void WndItem::init()
   mp_leWeight->setValidator( Validator::unsignedInteger() );
   mp_leGoldValue->setValidator( Validator::unsignedInteger() );
   mp_leRent->setValidator( Validator::integer() );
+  mp_leTimer->setValidator(Validator::integer());
 
   connect( mp_comboType, SIGNAL( activated( int ) ), this, SLOT( typeSelected( int ) ) );
   connect( mp_tbFlags, SIGNAL( clicked() ), this, SLOT( editFlags() ) );
@@ -98,6 +99,7 @@ void WndItem::init()
   connect( mp_leWeight, SIGNAL( textChanged( const QString& ) ), this, SLOT( somethingChanged() ) );
   connect( mp_leGoldValue, SIGNAL( textChanged( const QString& ) ), this, SLOT( somethingChanged() ) );
   connect( mp_leRent, SIGNAL( textChanged( const QString& ) ), this, SLOT( somethingChanged() ) );
+  connect( mp_leTimer, SIGNAL(textChanged(const QString&)), this, SLOT(somethingChanged()));
 
   connect( mp_pbSave, SIGNAL( clicked() ), this, SLOT( saveData() ) );
   connect( mp_pbRestore, SIGNAL( clicked() ), this, SLOT( restoreData() ) );
@@ -121,6 +123,7 @@ void WndItem::refreshPanel()
   mp_leWeight->setText( QString::number( m_item.weight() ) );
   mp_leGoldValue->setText( QString::number( m_item.goldValue() ) );
   mp_leRent->setText( QString::number( m_item.rentCost() ) );
+  mp_leTimer->setText(QString::number(m_item.timer()));
 }
 
 void WndItem::refreshFlags()
@@ -137,6 +140,7 @@ void WndItem::refreshNewFlags()
   qDebug( "WndItem::refreshNewFlags() called." );
 #endif
   mp_leNewFlags->setText( Utils::bitvector2string( m_item.extraFlags(), Eleuconf::getAllFlagsCaption(Eleuconf::objFlags, 1) ) );
+  mp_leTimer->setEnabled(m_item.hasExtraFlag(20));
 }
 
 void WndItem::refreshWearPositions()
@@ -306,6 +310,7 @@ void WndItem::saveData()
   m_item.setWeight( mp_leWeight->text().toInt() );
   m_item.setGoldValue( mp_leGoldValue->text().toInt() );
   m_item.setRentCost( mp_leRent->text().toInt() );
+  m_item.setTimer(mp_leTimer->text().toInt());
 
   m_area.addItem( m_item );
   m_area.setItemsChanged();

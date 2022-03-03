@@ -39,6 +39,7 @@ namespace ts
     int weight() const { return m_weight; }
     int goldValue() const { return m_goldValue; }
     int rentCost() const { return m_rentCost; }
+    int timer() const { return m_timer; }
 
     bool hasFlag( int flag ) const { return Bit::has( m_flags, flag ); }
     bool hasExtraFlag( int flag ) const { return Bit::has( m_extraFlags, flag ); }
@@ -59,6 +60,7 @@ namespace ts
     void setWeight( int w ) { m_weight = w; }
     void setGoldValue( int gv ) { m_goldValue = gv; }
     void setRentCost( int rc ) { m_rentCost = rc; }
+    void setTimer(int tmr) { m_timer = tmr; }
 
     typedef QList<ExtraDescription>::const_iterator extra_description_const_iterator;
     typedef QList<ExtraDescription>::iterator extra_description_iterator;
@@ -94,6 +96,7 @@ namespace ts
     int m_weight;
     int m_goldValue;
     int m_rentCost;
+    int m_timer = 0;
     QList<ExtraDescription> m_extraDescriptions;
     ItemAffect m_affects[ ITEM_AFFECT_POSITION_END ];
 

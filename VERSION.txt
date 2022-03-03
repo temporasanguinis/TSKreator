@@ -1,4 +1,7 @@
-﻿1.61
+﻿1.62
+- Flag e campo Timer per oggetti a tempo
+__________________________________
+1.61
 - I forzieri di xp o sigilli possono avere un pwp massimo consigliato
 __________________________________
 1.60

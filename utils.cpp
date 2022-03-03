@@ -109,7 +109,7 @@ namespace ts
         }
 
         if (!isdigit(c)) {
-            fprintf(stderr, "%s: invalid number read in char '%c'.\n\r", error.toUtf8().data(), c);
+            if (defNumber == 0) fprintf(stderr, "%s: invalid number read in char '%c'.\n\r", error.toUtf8().data(), c);
             ungetc(c, pFile);
             return defNumber;
         }

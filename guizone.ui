@@ -160,7 +160,7 @@
         <item>
          <widget class="QLabel" name="mp_labelPwpLevel" >
           <property name="text" >
-           <string>Livello PWP</string>
+           <string>MAX PWP</string>
           </property>
          </widget>
         </item>
@@ -186,6 +186,35 @@
            </property>
          </widget>
         </item>
+         <item>
+           <widget class="QLabel" name="mp_labelOptimalLevel" >
+             <property name="text" >
+               <string>Optimal PWP</string>
+             </property>
+           </widget>
+         </item>
+         <item>
+           <widget class="QLineEdit" name="mp_leOptimalLevel" >
+             <property name="sizePolicy" >
+               <sizepolicy vsizetype="Fixed" hsizetype="Maximum" >
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+               </sizepolicy>
+             </property>
+             <property name="maximumSize" >
+               <size>
+                 <width>50</width>
+                 <height>20</height>
+               </size>
+             </property>
+             <property name="minimumSize" >
+               <size>
+                 <width>50</width>
+                 <height>20</height>
+               </size>
+             </property>
+           </widget>
+         </item>
          <item>
            <widget class="QLabel" name="mp_labelMinLevel" >
              <property name="text" >

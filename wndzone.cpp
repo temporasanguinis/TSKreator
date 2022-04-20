@@ -88,6 +88,7 @@ void WndZone::init()
     connect(mp_leName, SIGNAL(textChanged(const QString&)), this, SLOT(somethingChanged()));
     connect(mp_comboRepopMode, SIGNAL(activated(int)), this, SLOT(somethingChanged()));
     connect(mp_lePwpLevel, SIGNAL(textChanged(const QString&)), this, SLOT(somethingChanged()));
+    connect(mp_leOptimalLevel, SIGNAL(textChanged(const QString&)), this, SLOT(somethingChanged()));
     connect(mp_leMinLevel, SIGNAL(textChanged(const QString&)), this, SLOT(somethingChanged()));
     connect(mp_leMaxLevel, SIGNAL(textChanged(const QString&)), this, SLOT(somethingChanged()));
     connect(mp_leDangerLvl, SIGNAL(textChanged(const QString&)), this, SLOT(somethingChanged()));
@@ -100,6 +101,7 @@ void WndZone::init()
     mp_leMaxVNumber->setValidator(Validator::vnumber());
     mp_leRepopInterval->setValidator(Validator::integer());
     mp_lePwpLevel->setValidator(Validator::integer());
+    mp_leOptimalLevel->setValidator(Validator::integer());
     mp_leMinLevel->setValidator(Validator::integer());
     mp_leMaxLevel->setValidator(Validator::integer());
     mp_leDangerLvl->setValidator(Validator::integer());
@@ -137,6 +139,7 @@ void WndZone::refreshPanel()
     mp_comboRepopMode->setCurrentIndex(m_zone.repopMode());
     mp_leRepopInterval->setText(QString::number(m_zone.repopInterval()));
     mp_lePwpLevel->setText(QString::number(m_zone.pwpLevel()));
+    mp_leOptimalLevel->setText(QString::number(m_zone.pwpOptimalLevel()));
     mp_leMinLevel->setText(QString::number(m_zone.minLvl()));
     mp_leMaxLevel->setText(QString::number(m_zone.maxLvl()));
     mp_leDangerLvl->setText(QString::number(m_zone.dangerous()));
@@ -309,6 +312,7 @@ void WndZone::saveData()
     m_zone.setRepopInterval(mp_leRepopInterval->text().toLong());
     bool ok;
     m_zone.setPwpLevel(mp_lePwpLevel->text().toInt(&ok, 10));
+    m_zone.setPwpOptimalLevel(mp_leOptimalLevel->text().toInt(&ok, 10));
     m_zone.setMinLvl(mp_leMinLevel->text().toInt(&ok, 10));
     m_zone.setMaxLvl(mp_leMaxLevel->text().toInt(&ok, 10));
     m_zone.setDangerous(mp_leDangerLvl->text().toInt(&ok, 10));

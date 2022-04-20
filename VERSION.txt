@@ -1,4 +1,7 @@
-﻿1.62
+﻿1.63
+- Aggiunto livello ottimale alle zone per pagamenti di divini dai mob in rapporto al pwp del pg
+__________________________________
+1.62
 - Flag e campo Timer per oggetti a tempo
 __________________________________
 1.61

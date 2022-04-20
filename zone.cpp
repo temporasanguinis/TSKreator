@@ -18,6 +18,7 @@ namespace ts
     m_repopMode = ZONE_REPOP_MODE_ALWAYS;
     m_initList.reset();
     m_pwpLevel = 0;
+    m_pwpOptimalLevel = 0;
     m_minLvl = 0;
     m_maxLvl = 0;
     m_Dangerous = 0;
@@ -50,6 +51,7 @@ namespace ts
     m_repopInterval = z.m_repopInterval;
     m_repopMode = z.m_repopMode;
     m_pwpLevel = z.m_pwpLevel;
+    m_pwpOptimalLevel = z.m_pwpOptimalLevel;
     m_minLvl = z.m_minLvl;
     m_maxLvl = z.m_maxLvl;
     m_Dangerous = z.m_Dangerous;
@@ -70,6 +72,7 @@ namespace ts
       m_repopInterval = z.m_repopInterval;
       m_repopMode = z.m_repopMode;
       m_pwpLevel = z.m_pwpLevel;
+      m_pwpOptimalLevel = z.m_pwpOptimalLevel;
       m_minLvl = z.m_minLvl;
       m_maxLvl = z.m_maxLvl;
       m_Dangerous = z.m_Dangerous;
@@ -104,6 +107,15 @@ namespace ts
                 }
                 else {
                     m_Dangerous = Utils::readNumberInLine(pFile, QString("(danger level)"));
+                    if (m_Dangerous == -1) {
+                        m_Dangerous = 0;
+                    }
+                    else {
+                        m_pwpOptimalLevel = Utils::readNumberInLine(pFile, QString("(optimal pwp level)"));
+                        if (m_pwpOptimalLevel == -1) {
+                            m_pwpOptimalLevel = 0;
+                        }
+                    }
                 }
             }
         }
@@ -152,7 +164,7 @@ namespace ts
     long iTmp = (long)m_repopMode + (long)m_flags;
     stream << "-1 " << iTmp << " "<< flush;
     Utils::saveBitVector(stream, m_newFlags);
-    stream << " " << m_pwpLevel << " " << m_minLvl << " " << m_maxLvl << " " << m_Dangerous << flush;
+    stream << " " << m_pwpLevel << " " << m_minLvl << " " << m_maxLvl << " " << m_Dangerous << " " << m_pwpOptimalLevel << flush;
 
     stream << endl << endl << flush;
     m_initList.flushBuffer();

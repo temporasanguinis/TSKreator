@@ -105,6 +105,7 @@ namespace ts
     "Arcangelo",
     "Unicorno d'argento",
 	"Panda",
+    "Non animato"
     "\n"
   };
 

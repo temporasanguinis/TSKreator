@@ -1,4 +1,9 @@
-﻿1.63
+﻿1.64
+- Aggiunto flag ACCOUNT per oggetti
+- Aggiunta razza Non animato
+- Abilitato i flag HERO e LOAL dei mob
+__________________________________
+1.63
 - Aggiunto livello ottimale alle zone per pagamenti di divini dai mob in rapporto al pwp del pg
 __________________________________
 1.62

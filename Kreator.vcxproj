@@ -305,6 +305,7 @@
     <None Include="conf\teleportflags.ini" />
     <None Include="conf\trapflags.ini" />
     <None Include="conf\zoneflags.ini" />
+    <None Include="cpp.hint" />
     <None Include="qt_globals.targets" />
     <None Include="RuleSet.ruleset" />
   </ItemGroup>

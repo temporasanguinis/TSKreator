@@ -1,4 +1,7 @@
-﻿1.64
+﻿1.65
+- Abilitato flag NoquestCard per oggetti
+__________________________________
+1.64
 - Aggiunto flag ACCOUNT per oggetti
 - Aggiunta razza Non animato
 - Abilitato i flag HERO e LOAL dei mob

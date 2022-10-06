@@ -27,6 +27,9 @@
 #include "constantname.h"
 #include "kreatorsettings.h"
 #include "eleuconf.h"
+#include <iostream>
+#include "C:/Qt/4.8.4_vs2010/src/gui/widgets/qtextedit.h"
+#include <QtGui>
 
 using namespace ts;
 
@@ -429,7 +432,7 @@ protected:
     void MyMSG::resizeEvent(QResizeEvent* Event)
     {
         QMessageBox::resizeEvent(Event);
-        this->setFixedWidth(myFixedWidth);
+        //this->setFixedWidth(myFixedWidth);
         //this->setFixedHeight(myFixedHeight);
     }
 private:
@@ -444,11 +447,11 @@ void WndMainWindow::showAbout()
 #endif
 
   QString sAbout = "";
-  sAbout.sprintf( "TS Kreator %s di Carlo(Otacon/Brandon)\n"
-          "basato su LeU Kreator.\nAmpliato da Redis(Martinus) e Marino(Auriel)", qPrintable( VERSION ));
+  sAbout.sprintf( "TS Kreator di Carlo(Otacon/Brandon)\n"
+          "basato su LeU Kreator.\nAmpliato da Redis(Martinus) e Marino(Auriel)");
 
   //QMessageBox::about( this, TS::MESSAGE_BOX_ABOUT, sAbout );
-  MyMSG msgBox;
+  QMessageBox msgBox(this);
   msgBox.setSizePolicy(QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Expanding);
   //msgBox.setParent(this);
   QFile fl(":/about/VERSION.txt");
@@ -461,9 +464,63 @@ void WndMainWindow::showAbout()
   msgBox.setWindowTitle(TS::MESSAGE_BOX_ABOUT);
   msgBox.setIcon(QMessageBox::Icon::Information);
   msgBox.setText(sAbout);
-  msgBox.setInformativeText("Premi il bottone dei dettagli per vedere le versioni.");
+  msgBox.setInformativeText("Versione " + (VERSION) + " (" + __DATE__ + ")");
   msgBox.setDetailedText(version);
+  msgBox.setStandardButtons(QMessageBox::Ok);
+  msgBox.setDefaultButton(QMessageBox::Ok);
+  msgBox.setEscapeButton(QMessageBox::Ok);
+  
+
+  QSpacerItem* horizontalSpacer = new QSpacerItem
+  (8 * version.size(), 0,
+      QSizePolicy::Minimum, QSizePolicy::Expanding);
+  QGridLayout* layout = (QGridLayout*)msgBox.layout();
+  layout->addItem(horizontalSpacer, layout->rowCount(),
+      0, 1, layout->columnCount());
+
+  QAbstractButton* detailsButton = NULL;
+
+  auto buttons = msgBox.findChildren<QAbstractButton*>();
+  if (!buttons.isEmpty()) {
+      detailsButton = buttons[1];
+  }
+
+  QList<QTextEdit*> textBoxes = msgBox.findChildren<QTextEdit*>();
+  if (textBoxes.size())
+      textBoxes[0]->setFixedHeight(250);
+  msgBox.setVisible(false);
+  msgBox.showMinimized();
+  //msgBox.setWindowFlags(Qt::Dialog | Qt::WindowTitleHint | Qt::CustomizeWindowHint | Qt::WindowCloseButtonHint | Qt::WindowStaysOnTopHint);
+
+  // If we have found the details button, then click it to expand the
+  // details area.
+  if (detailsButton) {
+      detailsButton->click();
+  }
+  
+
+
+
   //msgBox.setStyleSheet("QLabel{min-width: 300px;}");
+
+
+
+  msgBox.setWindowState(Qt::WindowState::WindowActive | Qt::WindowState::WindowNoState);
+  buttons = msgBox.findChildren<QAbstractButton*>();
+  //buttons[0]->setHidden(true);
+  buttons[1]->setHidden(true);
+  //buttons[0]->setVisible(false);
+  buttons[1]->setVisible(false);
+  msgBox.setFocus();
+  int x_offset = (WndMainWindow::geometry().width() - msgBox.geometry().width()) / 2;
+  int y_offset = (WndMainWindow::geometry().height() - msgBox.geometry().height()) / 2;
+
+  msgBox.setGeometry(
+      WndMainWindow::geometry().x() + x_offset,
+      WndMainWindow::geometry().y() + y_offset,
+      msgBox.geometry().width(),
+      msgBox.geometry().height());
+
   msgBox.exec();
 }
 

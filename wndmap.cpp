@@ -12,6 +12,7 @@
 #include "exception.h"
 #include "wndroom.h"
 #include "wndmap.h"
+#include <QtGui>
 
 
 #define matsize 4
@@ -651,10 +652,10 @@ namespace ts
         painter.fillRect(QRect(10, 10 + 3 * 35, 150, 30), QColor(255, 255, 255, 127));
         painter.drawText(15, 30 + 3 * 35, QString("Coord: %1,%2").arg(QString::number(x)).arg(QString::number(y)));*/
         if (bMouseDown == Qt::LeftButton) {
-            int x = min(mouseDownX, mouseMoveX);
-            int y = min(mouseDownY, mouseMoveY);
-            int x2 = max(mouseDownX, mouseMoveX);
-            int y2 = max(mouseDownY, mouseMoveY);
+            int x = std::min(mouseDownX, mouseMoveX);
+            int y = std::min(mouseDownY, mouseMoveY);
+            int x2 = std::max(mouseDownX, mouseMoveX);
+            int y2 = std::max(mouseDownY, mouseMoveY);
             painter.fillRect(QRect(x, y, x2 - x, y2 - y), QColor(255, 255, 255, 127));
         }
 
@@ -667,7 +668,7 @@ namespace ts
             sec = QString::number(hovering->vnum) + " (" + sec + ")";
             int pixelsWide2 = fm.width(QString::number(hovering->vnum) + " (" + sec + ")");
             int pixelsHigh = fm.height();
-            int totW = max(pixelsWide, pixelsWide2);
+            int totW = std::max(pixelsWide, pixelsWide2);
             int totH = pixelsHigh * 2;
             QRect r(mouseMoveX-3+20, mouseMoveY- totH-3+40, totW+6, totH+6);
             painter.fillRect(r, QColor(255, 255, 200, 255));
@@ -1043,10 +1044,10 @@ namespace ts
             GLdouble y = ev->pos().y();
             GLdouble z = 1.0;
             GLdouble x2, y2, z2;
-            int rX = min(mouseDownX, x + 1);
-            int rY = min(mouseDownY, y + 1);
-            int rX2 = max(mouseDownX, x + 1);
-            int rY2 = max(mouseDownY, y + 1);
+            int rX = std::min(mouseDownX, (int)x + 1);
+            int rY = std::min(mouseDownY, (int)y + 1);
+            int rX2 = std::max(mouseDownX, (int)x + 1);
+            int rY2 = std::max(mouseDownY, (int)y + 1);
             QRect clickRect(rX, rY, rX2 - rX, rY2 - rY);
             transformScreenToModel(rX, rY, z, x2, y2, z2);
             rX = x2;

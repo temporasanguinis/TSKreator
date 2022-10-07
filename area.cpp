@@ -3,7 +3,7 @@
 
 #include <QFile>
 #include <QTextStream>
-#include <qmessagebox.h>
+#include <QMessageBox>
 #pragma warning(pop)
 #include "exception.h"
 #include "utils.h"

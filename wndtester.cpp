@@ -974,7 +974,17 @@ void WndTester::checkMobInit(VNumber vnum)
         while (it != zcl.end()) {
             qWarning(qPrintable(it->toString(false)));
             if (it->isMobLoad() && it->argument(ZoneCommand::Argument3) == vnum) {
-                textBrowser->append(ParseAnsiColors("$c0007" + m_area.mob(it->argument(ZoneCommand::Argument1)).longDescription() + " (Mob #" + QString::number(it->argument(ZoneCommand::Argument1)) + ", Init line:" + QString::number(it->id()) + ")"));
+                QString mobName = "";
+
+                try {
+                    auto mob = m_area.mob(it->argument(ZoneCommand::Argument1));
+                    mobName.append(mob.longDescription());
+                }
+                catch (...) {
+                    mobName.append(("Mob Sconosciuto"));
+                }
+                
+                textBrowser->append(ParseAnsiColors("$c0007" + mobName + " (Mob #" + QString::number(it->argument(ZoneCommand::Argument1)) + ", Init line:" + QString::number(it->id()) + ")"));
             }
             it++;
         }

@@ -28,7 +28,7 @@
 #include "kreatorsettings.h"
 #include "eleuconf.h"
 #include <iostream>
-#include "C:/Qt/4.8.4_vs2010/src/gui/widgets/qtextedit.h"
+#include <QTextEdit>
 #include <QtGui>
 
 using namespace ts;
@@ -134,11 +134,11 @@ void WndMainWindow::init()
   pHeader->setStretchLastSection( true );
   pHeader->setSortIndicator( COLUMN_VNUMBER, Qt::AscendingOrder );
   pHeader->setSortIndicatorShown( true );
-  pHeader->setClickable( true );
+  pHeader->setSectionsClickable( true );
 
   mp_popupFile = menuBar()->addMenu( trUtf8( "File" ) );
   mp_barFile = addToolBar( trUtf8( "File" ) );
-  mp_barFile->setIconSize( QSize( 22, 22 ) );
+  mp_barFile->setIconSize( QSize(16, 16) );
 
   mp_actRefreshAreas = new QAction( QIcon(":/images/searchareas.png"), trUtf8( "Genera lista aree" ), this );
   mp_actRefreshAreas->setStatusTip( trUtf8( "Genera la lista delle aree" ) );
@@ -334,6 +334,9 @@ void WndMainWindow::refreshAreaView()
 
   checkBootFile();
 
+  for (int i = 0; i < COLUMN_FLAGS; i++)
+      mp_twObjectList->resizeColumnToContents(i);
+
   QApplication::restoreOverrideCursor();
   
 }
@@ -452,7 +455,7 @@ void WndMainWindow::showAbout()
 
   //QMessageBox::about( this, TS::MESSAGE_BOX_ABOUT, sAbout );
   QMessageBox msgBox(this);
-  msgBox.setSizePolicy(QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Expanding);
+  msgBox.setSizePolicy(QSizePolicy::Policy::Preferred, QSizePolicy::Policy::Expanding);
   //msgBox.setParent(this);
   QFile fl(":/about/VERSION.txt");
   fl.open(QFile::ReadOnly);
@@ -469,14 +472,14 @@ void WndMainWindow::showAbout()
   msgBox.setStandardButtons(QMessageBox::Ok);
   msgBox.setDefaultButton(QMessageBox::Ok);
   msgBox.setEscapeButton(QMessageBox::Ok);
+  msgBox.setFixedWidth(300);
   
 
   QSpacerItem* horizontalSpacer = new QSpacerItem
-  (8 * version.size(), 0,
+  (300, 0,
       QSizePolicy::Minimum, QSizePolicy::Expanding);
   QGridLayout* layout = (QGridLayout*)msgBox.layout();
-  layout->addItem(horizontalSpacer, layout->rowCount(),
-      0, 1, layout->columnCount());
+  layout->addItem(horizontalSpacer, layout->rowCount(),0, 1, layout->columnCount());
 
   QAbstractButton* detailsButton = NULL;
 
@@ -501,7 +504,7 @@ void WndMainWindow::showAbout()
 
 
 
-  //msgBox.setStyleSheet("QLabel{min-width: 300px;}");
+  //msgBox.setStyleSheet("QLabel{align:left;width: 100px;min-width: 100px;max-width: 100px;}");
 
 
 
@@ -512,13 +515,13 @@ void WndMainWindow::showAbout()
   //buttons[0]->setVisible(false);
   buttons[1]->setVisible(false);
   msgBox.setFocus();
-  int x_offset = (WndMainWindow::geometry().width() - msgBox.geometry().width()) / 2;
+  int x_offset = (WndMainWindow::geometry().width() - 300) / 2;
   int y_offset = (WndMainWindow::geometry().height() - msgBox.geometry().height()) / 2;
 
   msgBox.setGeometry(
       WndMainWindow::geometry().x() + x_offset,
       WndMainWindow::geometry().y() + y_offset,
-      msgBox.geometry().width(),
+      300,
       msgBox.geometry().height());
 
   msgBox.exec();
@@ -580,7 +583,7 @@ void WndMainWindow::checkBootFile()
         while (fgets(buffer, bufferLength, filePointer)) {
             buffer[strcspn(buffer, "#\r\n")] = 0;
             if (buffer[0]) {
-                lines.append(QString::fromAscii(buffer));
+                lines.append(QString::fromLatin1(buffer));
             }
         }
 

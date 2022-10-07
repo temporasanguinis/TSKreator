@@ -251,7 +251,7 @@ namespace ts
             }
         }
 
-        return QDir::convertSeparators(sRet);
+        return QDir::toNativeSeparators(sRet);
     }
 
     QString Utils::vnumber2string(VNumber vnum, int num_chars)

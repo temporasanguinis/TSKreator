@@ -172,8 +172,10 @@ void WndMob::init()
   m_BehaviorModel->setColumnCount(4);
 
   //mp_Behaviors->verticalHeader()->setResizeMode(QHeaderView::ResizeToContents);
-  mp_Behaviors->verticalHeader()->setResizeMode(QHeaderView::Fixed);
-  mp_Behaviors->verticalHeader()->setDefaultSectionSize(48);
+  mp_Behaviors->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+  mp_Behaviors->verticalHeader()->setMinimumSectionSize(18);
+  mp_Behaviors->verticalHeader()->setMaximumSectionSize(18);
+  mp_Behaviors->verticalHeader()->setDefaultSectionSize(18);
   mp_Behaviors->horizontalHeader()->setStretchLastSection(true);
   m_BehaviorModel->setHeaderData(0, Qt::Orientation::Horizontal, "Tipo Evento");
   m_BehaviorModel->setHeaderData(1, Qt::Orientation::Horizontal, "Evento");
@@ -182,10 +184,14 @@ void WndMob::init()
   mp_Behaviors->setItemDelegate(new BehaviorComboBoxDelegate(mp_Behaviors));
   mp_Behaviors->setModel(m_BehaviorModel);
   
-  mp_Behaviors->setColumnWidth(0, 190);
-  mp_Behaviors->setColumnWidth(1, 190);
-  mp_Behaviors->setColumnWidth(2, 270);
-  mp_Conditions->setColumnWidth(0, 270);
+  mp_Behaviors->setColumnWidth(0, 80);
+  mp_Behaviors->setColumnWidth(1, 100);
+  mp_Behaviors->setColumnWidth(2, 120);
+  mp_Conditions->setColumnWidth(0, 130);
+  mp_Conditions->verticalHeader()->setMinimumSectionSize(18);
+  mp_Conditions->verticalHeader()->setMaximumSectionSize(18);
+  mp_Conditions->verticalHeader()->setDefaultSectionSize(18);
+
   mp_Behaviors->setSelectionBehavior(QAbstractItemView::SelectRows);
   mp_Behaviors->setSelectionMode(QAbstractItemView::SingleSelection);
   mp_Conditions->setSelectionBehavior(QAbstractItemView::SelectRows);
@@ -1297,7 +1303,7 @@ void WndMob::applyBehaviors() {
         switch (ev)
         {
         case ts::me_Talk:
-            strcpy(b.e_mb_String, v2.toAscii());
+            strcpy(b.e_mb_String, v2.toLatin1());
             break;
         case ts::me_Give:
             b.e_mb_Long = v2.toInt();
@@ -1306,13 +1312,13 @@ void WndMob::applyBehaviors() {
         switch (re)
         {
         case ts::mr_Talk:
-            strcpy(b.r_mb_String, v4.toAscii());
+            strcpy(b.r_mb_String, v4.toLatin1());
             break;
         case ts::mr_Give:
             b.r_mb_Long[0] = v4.toInt();
             break;
         case ts::mr_Emote:
-            strcpy(b.r_mb_String, v4.toAscii());
+            strcpy(b.r_mb_String, v4.toLatin1());
             break;
         case ts::mr_Xp:
         case ts::mr_Elementi:

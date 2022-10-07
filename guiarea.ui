@@ -1,87 +1,101 @@
-<ui version="4.0" >
- <author></author>
- <comment></comment>
- <exportmacro></exportmacro>
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>GuiArea</class>
- <widget class="QMainWindow" name="GuiArea" >
-  <property name="geometry" >
+ <widget class="QMainWindow" name="GuiArea">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>761</width>
-    <height>503</height>
+    <width>700</width>
+    <height>360</height>
    </rect>
   </property>
-  <property name="windowTitle" >
+  <property name="windowTitle">
    <string>MainWindow</string>
   </property>
-  <widget class="QWidget" name="centralWidget" >
-   <layout class="QGridLayout" >
-    <property name="margin" >
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QGridLayout">
+    <property name="leftMargin">
      <number>9</number>
     </property>
-    <property name="spacing" >
+    <property name="topMargin">
+     <number>9</number>
+    </property>
+    <property name="rightMargin">
+     <number>9</number>
+    </property>
+    <property name="bottomMargin">
+     <number>9</number>
+    </property>
+    <property name="spacing">
      <number>6</number>
     </property>
-    <item row="2" column="0" >
-     <widget class="QFrame" name="frame" >
-      <property name="sizePolicy" >
-       <sizepolicy>
-        <hsizetype>1</hsizetype>
-        <vsizetype>5</vsizetype>
+    <item row="2" column="0">
+     <widget class="QFrame" name="frame">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
-      <property name="minimumSize" >
+      <property name="minimumSize">
        <size>
-        <width>110</width>
+        <width>0</width>
         <height>16</height>
        </size>
       </property>
-      <property name="maximumSize" >
+      <property name="maximumSize">
        <size>
         <width>16777215</width>
         <height>16777215</height>
        </size>
       </property>
-      <property name="frameShape" >
+      <property name="frameShape">
        <enum>QFrame::StyledPanel</enum>
       </property>
-      <property name="frameShadow" >
+      <property name="frameShadow">
        <enum>QFrame::Sunken</enum>
       </property>
-      <layout class="QVBoxLayout" >
-       <property name="margin" >
-        <number>8</number>
-       </property>
-       <property name="spacing" >
+      <layout class="QVBoxLayout">
+       <property name="spacing">
         <number>6</number>
        </property>
+       <property name="leftMargin">
+        <number>8</number>
+       </property>
+       <property name="topMargin">
+        <number>8</number>
+       </property>
+       <property name="rightMargin">
+        <number>8</number>
+       </property>
+       <property name="bottomMargin">
+        <number>8</number>
+       </property>
        <item>
-        <widget class="QPushButton" name="mp_pbNew" >
-         <property name="text" >
+        <widget class="QPushButton" name="mp_pbNew">
+         <property name="text">
           <string>Crea</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="mp_pbEdit" >
-         <property name="text" >
+        <widget class="QPushButton" name="mp_pbEdit">
+         <property name="text">
           <string>Modifica</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="mp_pbClone" >
-         <property name="text" >
+        <widget class="QPushButton" name="mp_pbClone">
+         <property name="text">
           <string>Clona</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="mp_pbRemove" >
-         <property name="text" >
+        <widget class="QPushButton" name="mp_pbRemove">
+         <property name="text">
           <string>Elimina</string>
          </property>
         </widget>
@@ -89,113 +103,163 @@
       </layout>
      </widget>
     </item>
-    <item row="1" column="0" >
-     <widget class="QFrame" name="mp_frameVisual" >
-      <property name="sizePolicy" >
-       <sizepolicy>
-        <hsizetype>1</hsizetype>
-        <vsizetype>5</vsizetype>
+    <item row="1" column="0">
+     <widget class="QFrame" name="mp_frameVisual">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
-      <property name="minimumSize" >
+      <property name="minimumSize">
        <size>
-        <width>110</width>
+        <width>0</width>
         <height>16</height>
        </size>
       </property>
-      <property name="autoFillBackground" >
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="autoFillBackground">
        <bool>false</bool>
       </property>
-      <property name="frameShape" >
+      <property name="frameShape">
        <enum>QFrame::StyledPanel</enum>
       </property>
-      <property name="frameShadow" >
+      <property name="frameShadow">
        <enum>QFrame::Sunken</enum>
       </property>
-      <layout class="QGridLayout" >
-       <property name="margin" >
+      <layout class="QGridLayout">
+       <property name="leftMargin">
         <number>9</number>
        </property>
-       <property name="spacing" >
+       <property name="topMargin">
+        <number>9</number>
+       </property>
+       <property name="rightMargin">
+        <number>9</number>
+       </property>
+       <property name="bottomMargin">
+        <number>9</number>
+       </property>
+       <property name="spacing">
         <number>6</number>
        </property>
-       <item row="0" column="0" >
-        <widget class="QGroupBox" name="mp_gbChangeView" >
-         <property name="sizePolicy" >
-          <sizepolicy>
-           <hsizetype>1</hsizetype>
-           <vsizetype>5</vsizetype>
+       <item row="0" column="0">
+        <widget class="QGroupBox" name="mp_gbChangeView">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
-         <property name="minimumSize" >
+         <property name="minimumSize">
           <size>
-           <width>90</width>
+           <width>0</width>
            <height>135</height>
           </size>
          </property>
-         <property name="maximumSize" >
+         <property name="maximumSize">
           <size>
-           <width>110</width>
+           <width>16777215</width>
            <height>16777215</height>
           </size>
          </property>
-         <property name="autoFillBackground" >
+         <property name="autoFillBackground">
           <bool>true</bool>
          </property>
-         <property name="title" >
+         <property name="title">
           <string/>
          </property>
-         <property name="alignment" >
+         <property name="alignment">
           <set>Qt::AlignHCenter</set>
          </property>
-         <property name="flat" >
+         <property name="flat">
           <bool>false</bool>
          </property>
-         <layout class="QVBoxLayout" >
-          <property name="margin" >
-           <number>8</number>
-          </property>
-          <property name="spacing" >
+         <layout class="QVBoxLayout">
+          <property name="spacing">
            <number>6</number>
           </property>
+          <property name="leftMargin">
+           <number>8</number>
+          </property>
+          <property name="topMargin">
+           <number>8</number>
+          </property>
+          <property name="rightMargin">
+           <number>8</number>
+          </property>
+          <property name="bottomMargin">
+           <number>8</number>
+          </property>
           <item>
-           <widget class="QRadioButton" name="mp_rbViewRooms" >
-            <property name="text" >
+           <widget class="QRadioButton" name="mp_rbViewRooms">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
              <string>Stanze</string>
             </property>
-            <property name="checked" >
+            <property name="checked">
              <bool>true</bool>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QRadioButton" name="mp_rbViewMobs" >
-            <property name="text" >
+           <widget class="QRadioButton" name="mp_rbViewMobs">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
              <string>Mobs</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QRadioButton" name="mp_rbViewItems" >
-            <property name="text" >
+           <widget class="QRadioButton" name="mp_rbViewItems">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
              <string>Oggetti</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QRadioButton" name="mp_rbViewShops" >
-            <property name="text" >
+           <widget class="QRadioButton" name="mp_rbViewShops">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
              <string>Negozi</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QRadioButton" name="mp_rbViewZones" >
-            <property name="text" >
+           <widget class="QRadioButton" name="mp_rbViewZones">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
              <string>Zone</string>
             </property>
            </widget>
@@ -206,12 +270,12 @@
       </layout>
      </widget>
     </item>
-    <item row="3" column="0" >
+    <item row="3" column="0">
      <spacer>
-      <property name="orientation" >
+      <property name="orientation">
        <enum>Qt::Vertical</enum>
       </property>
-      <property name="sizeHint" >
+      <property name="sizeHint" stdset="0">
        <size>
         <width>20</width>
         <height>40</height>
@@ -219,95 +283,100 @@
       </property>
      </spacer>
     </item>
-    <item rowspan="3" row="1" column="1" >
-     <widget class="QTreeWidget" name="mp_twObjectList" >
-      <property name="rootIsDecorated" >
+    <item row="1" column="1" rowspan="3">
+     <widget class="QTreeWidget" name="mp_twObjectList">
+      <property name="rootIsDecorated">
        <bool>false</bool>
       </property>
-      <property name="itemsExpandable" >
+      <property name="itemsExpandable">
        <bool>false</bool>
       </property>
-      <property name="columnCount" >
+      <property name="columnCount">
        <number>0</number>
       </property>
      </widget>
     </item>
-    <item row="0" column="1" >
-     <layout class="QHBoxLayout" >
-      <property name="margin" >
-       <number>0</number>
-      </property>
-      <property name="spacing" >
+    <item row="0" column="1">
+     <layout class="QHBoxLayout">
+      <property name="spacing">
        <number>6</number>
       </property>
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
       <item>
-       <widget class="QLabel" name="mp_labelFile" >
-        <property name="sizePolicy" >
-         <sizepolicy>
-          <hsizetype>7</hsizetype>
-          <vsizetype>5</vsizetype>
+       <widget class="QLabel" name="mp_labelFile">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
-        <property name="minimumSize" >
+        <property name="minimumSize">
          <size>
           <width>300</width>
           <height>22</height>
          </size>
         </property>
-        <property name="frameShape" >
+        <property name="frameShape">
          <enum>QFrame::StyledPanel</enum>
         </property>
-        <property name="frameShadow" >
+        <property name="frameShadow">
          <enum>QFrame::Sunken</enum>
         </property>
-        <property name="text" >
+        <property name="text">
          <string>TextLabel</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QToolButton" name="mp_tbChangeFile" >
-        <property name="text" >
+       <widget class="QToolButton" name="mp_tbChangeFile">
+        <property name="text">
          <string>...</string>
         </property>
        </widget>
       </item>
      </layout>
     </item>
-    <item row="0" column="0" >
-     <widget class="QLabel" name="mp_labelPage" >
-      <property name="sizePolicy" >
-       <sizepolicy>
-        <hsizetype>1</hsizetype>
-        <vsizetype>5</vsizetype>
+    <item row="0" column="0">
+     <widget class="QLabel" name="mp_labelPage">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
-      <property name="minimumSize" >
+      <property name="minimumSize">
        <size>
-        <width>110</width>
+        <width>60</width>
         <height>22</height>
        </size>
       </property>
-      <property name="frameShape" >
+      <property name="frameShape">
        <enum>QFrame::StyledPanel</enum>
       </property>
-      <property name="frameShadow" >
+      <property name="frameShadow">
        <enum>QFrame::Sunken</enum>
       </property>
-      <property name="text" >
+      <property name="text">
        <string>Stanze  </string>
       </property>
-      <property name="alignment" >
+      <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
       </property>
-      <property name="margin" >
+      <property name="margin">
        <number>0</number>
       </property>
-      <property name="indent" >
+      <property name="indent">
        <number>10</number>
       </property>
      </widget>
@@ -315,7 +384,6 @@
    </layout>
   </widget>
  </widget>
- <pixmapfunction></pixmapfunction>
  <tabstops>
   <tabstop>mp_twObjectList</tabstop>
   <tabstop>mp_tbChangeFile</tabstop>

@@ -10,6 +10,7 @@
 #include "kreatorsettings.h"
 #include "guiversion.h"
 #include "settings.h"
+#include <windows.h>
 
 QFile *pLogFile = 0;
 
@@ -36,26 +37,26 @@ void closeLogFile()
   }
 }
 
-void TsKreatorMessageHandler( QtMsgType type, const char *msg )
+void TsKreatorMessageHandler( QtMsgType type, const QMessageLogContext &ctx, const QString &msg )
 {
   QString sTxt = "";
 
   switch( type )
   {
   case QtDebugMsg:
-    sTxt.sprintf( "[Debug] %s", msg );
+    sTxt = QString("[Debug] %1").arg(msg);
     break;
   case QtWarningMsg:
-    sTxt.sprintf( "[Warning] %s", msg );
+    sTxt = QString( "[Warning] %1").arg(msg );
     break;
   case QtCriticalMsg:
-    sTxt.sprintf( "[Critical]: %s", msg );
+    sTxt = QString( "[Critical]: %1").arg(msg );
     break;
   case QtFatalMsg:
-    sTxt.sprintf( "[Fatal] %s", msg );
+    sTxt = QString( "[Fatal] %1").arg(msg );
     abort();
   default:
-    sTxt.sprintf( "[Info]: %s", msg );
+    sTxt = QString( "[Info]: %1").arg(msg );
     break;
   }
 
@@ -77,7 +78,10 @@ void TsKreatorMessageHandler( QtMsgType type, const char *msg )
 
 int main( int argc, char ** argv )
 {
-  qInstallMsgHandler( TsKreatorMessageHandler );  
+  
+  SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
+  QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+  qInstallMessageHandler( TsKreatorMessageHandler );  
   TsKreator appTsKreator( argc, argv );
   initLogFile();
   QString sLogHeader = QString( "Starting log at " ) + QDateTime::currentDateTime().toString( "dd/MM/yyyy hh:mm:ss" );
@@ -87,6 +91,8 @@ int main( int argc, char ** argv )
   QSplashScreen *pSplash = new QSplashScreen( pixSplash, Qt::WindowStaysOnTopHint );
   pSplash->connect( &wndMain, SIGNAL( messageShowed( const QString&, int, const QColor& ) ),
   pSplash, SLOT( showMessage( const QString&, int, const QColor& ) ) );
+  //pSplash->setFixedWidth(468);
+  //pSplash->setFixedHeight(100);
   pSplash->show();
   wndMain.connect( &wndMain, SIGNAL( windowClosed() ), &appTsKreator, SLOT( closeTsKreator() ) );
   int iDelay = 2200;

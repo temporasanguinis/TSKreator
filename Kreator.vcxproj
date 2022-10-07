@@ -85,29 +85,6 @@
     <ClInclude Include="exception.h" />
     <ClInclude Include="exit.h" />
     <ClInclude Include="extradescription.h" />
-    <ClInclude Include="GeneratedFiles\Debug\ui_guiarea.h" />
-    <ClInclude Include="GeneratedFiles\Debug\ui_guichangevnumbers.h" />
-    <ClInclude Include="GeneratedFiles\Debug\ui_guicreatearea.h" />
-    <ClInclude Include="GeneratedFiles\Debug\ui_guiexit.h" />
-    <ClInclude Include="GeneratedFiles\Debug\ui_guiextradescription.h" />
-    <ClInclude Include="GeneratedFiles\Debug\ui_guifind.h" />
-    <ClInclude Include="GeneratedFiles\Debug\ui_guiinit.h" />
-    <ClInclude Include="GeneratedFiles\Debug\ui_guiitem.h" />
-    <ClInclude Include="GeneratedFiles\Debug\ui_guiitemaffects.h" />
-    <ClInclude Include="GeneratedFiles\Debug\ui_guiitemvalues.h" />
-    <ClInclude Include="GeneratedFiles\Debug\ui_guimainwindow.h" />
-    <ClInclude Include="GeneratedFiles\Debug\ui_guimob.h" />
-    <ClInclude Include="GeneratedFiles\Debug\ui_guimobinit.h" />
-    <ClInclude Include="GeneratedFiles\Debug\ui_guimultiplemodify.h" />
-    <ClInclude Include="GeneratedFiles\Debug\ui_guireport.h" />
-    <ClInclude Include="GeneratedFiles\Debug\ui_guiroom.h" />
-    <ClInclude Include="GeneratedFiles\Debug\ui_guiselectflags.h" />
-    <ClInclude Include="GeneratedFiles\Debug\ui_guisettings.h" />
-    <ClInclude Include="GeneratedFiles\Debug\ui_guishop.h" />
-    <ClInclude Include="GeneratedFiles\Debug\ui_guiteleportroom.h" />
-    <ClInclude Include="GeneratedFiles\Debug\ui_guitester.h" />
-    <ClInclude Include="GeneratedFiles\Debug\ui_guizone.h" />
-    <ClInclude Include="GeneratedFiles\Debug\ui_guizonecommand.h" />
     <ClInclude Include="guiutils.h" />
     <ClInclude Include="guiversion.h" />
     <ClInclude Include="handler.h" />
@@ -238,29 +215,98 @@
     <ClInclude Include="zoneinitlist.h" />
   </ItemGroup>
   <ItemGroup>
-    <QtUic Include="guiarea.ui" />
-    <QtUic Include="guichangevnumbers.ui" />
-    <QtUic Include="guicreatearea.ui" />
-    <QtUic Include="guiexit.ui" />
-    <QtUic Include="guiextradescription.ui" />
-    <QtUic Include="guifind.ui" />
-    <QtUic Include="guiinit.ui" />
-    <QtUic Include="guiitem.ui" />
-    <QtUic Include="guiitemaffects.ui" />
-    <QtUic Include="guiitemvalues.ui" />
-    <QtUic Include="guimainwindow.ui" />
-    <QtUic Include="guimob.ui" />
-    <QtUic Include="guimobinit.ui" />
-    <QtUic Include="guimultiplemodify.ui" />
-    <QtUic Include="guireport.ui" />
-    <QtUic Include="guiroom.ui" />
-    <QtUic Include="guiselectflags.ui" />
-    <QtUic Include="guisettings.ui" />
-    <QtUic Include="guishop.ui" />
-    <QtUic Include="guiteleportroom.ui" />
-    <QtUic Include="guitester.ui" />
-    <QtUic Include="guizone.ui" />
-    <QtUic Include="guizonecommand.ui" />
+    <QtUic Include="guiarea.ui">
+      <OutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)\ui_%(Filename).h</OutputFile>
+      <OutputFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)\ui_%(Filename).h</OutputFile>
+    </QtUic>
+    <QtUic Include="guichangevnumbers.ui">
+      <OutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)\ui_%(Filename).h</OutputFile>
+      <OutputFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)\ui_%(Filename).h</OutputFile>
+    </QtUic>
+    <QtUic Include="guicreatearea.ui">
+      <OutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)\ui_%(Filename).h</OutputFile>
+      <OutputFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)\ui_%(Filename).h</OutputFile>
+    </QtUic>
+    <QtUic Include="guiexit.ui">
+      <OutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)\ui_%(Filename).h</OutputFile>
+      <OutputFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)\ui_%(Filename).h</OutputFile>
+    </QtUic>
+    <QtUic Include="guiextradescription.ui">
+      <OutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)\ui_%(Filename).h</OutputFile>
+      <OutputFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)\ui_%(Filename).h</OutputFile>
+    </QtUic>
+    <QtUic Include="guifind.ui">
+      <OutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)\ui_%(Filename).h</OutputFile>
+      <OutputFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)\ui_%(Filename).h</OutputFile>
+    </QtUic>
+    <QtUic Include="guiinit.ui">
+      <OutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)\ui_%(Filename).h</OutputFile>
+      <OutputFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)\ui_%(Filename).h</OutputFile>
+    </QtUic>
+    <QtUic Include="guiitem.ui">
+      <OutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)\ui_%(Filename).h</OutputFile>
+      <OutputFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)\ui_%(Filename).h</OutputFile>
+    </QtUic>
+    <QtUic Include="guiitemaffects.ui">
+      <OutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)\ui_%(Filename).h</OutputFile>
+      <OutputFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)\ui_%(Filename).h</OutputFile>
+    </QtUic>
+    <QtUic Include="guiitemvalues.ui">
+      <OutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)\ui_%(Filename).h</OutputFile>
+      <OutputFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)\ui_%(Filename).h</OutputFile>
+    </QtUic>
+    <QtUic Include="guimainwindow.ui">
+      <OutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)\ui_%(Filename).h</OutputFile>
+      <OutputFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)\ui_%(Filename).h</OutputFile>
+    </QtUic>
+    <QtUic Include="guimob.ui">
+      <OutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)\ui_%(Filename).h</OutputFile>
+      <OutputFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)\ui_%(Filename).h</OutputFile>
+    </QtUic>
+    <QtUic Include="guimobinit.ui">
+      <OutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)\ui_%(Filename).h</OutputFile>
+      <OutputFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)\ui_%(Filename).h</OutputFile>
+    </QtUic>
+    <QtUic Include="guimultiplemodify.ui">
+      <OutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)\ui_%(Filename).h</OutputFile>
+      <OutputFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)\ui_%(Filename).h</OutputFile>
+    </QtUic>
+    <QtUic Include="guireport.ui">
+      <OutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)\ui_%(Filename).h</OutputFile>
+      <OutputFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)\ui_%(Filename).h</OutputFile>
+    </QtUic>
+    <QtUic Include="guiroom.ui">
+      <OutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)\ui_%(Filename).h</OutputFile>
+      <OutputFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)\ui_%(Filename).h</OutputFile>
+    </QtUic>
+    <QtUic Include="guiselectflags.ui">
+      <OutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)\ui_%(Filename).h</OutputFile>
+      <OutputFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)\ui_%(Filename).h</OutputFile>
+    </QtUic>
+    <QtUic Include="guisettings.ui">
+      <OutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)\ui_%(Filename).h</OutputFile>
+      <OutputFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)\ui_%(Filename).h</OutputFile>
+    </QtUic>
+    <QtUic Include="guishop.ui">
+      <OutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)\ui_%(Filename).h</OutputFile>
+      <OutputFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)\ui_%(Filename).h</OutputFile>
+    </QtUic>
+    <QtUic Include="guiteleportroom.ui">
+      <OutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)\ui_%(Filename).h</OutputFile>
+      <OutputFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)\ui_%(Filename).h</OutputFile>
+    </QtUic>
+    <QtUic Include="guitester.ui">
+      <OutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)\ui_%(Filename).h</OutputFile>
+      <OutputFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)\ui_%(Filename).h</OutputFile>
+    </QtUic>
+    <QtUic Include="guizone.ui">
+      <OutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)\ui_%(Filename).h</OutputFile>
+      <OutputFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)\ui_%(Filename).h</OutputFile>
+    </QtUic>
+    <QtUic Include="guizonecommand.ui">
+      <OutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)\ui_%(Filename).h</OutputFile>
+      <OutputFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)\ui_%(Filename).h</OutputFile>
+    </QtUic>
   </ItemGroup>
   <ItemGroup>
     <Image Include="kreator.ico" />
@@ -327,13 +373,13 @@
     <QtMsBuild>$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(QTDIR)\include;$(QTDIR)\include\QtCore;$(QTDIR)\include\Qt;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtOpenGL;$(IncludePath)</IncludePath>
+    <IncludePath>$(QTDIR)\include;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtOpenGL;$(IncludePath)</IncludePath>
     <LibraryPath>$(QTDIR)\lib;$(LibraryPath)</LibraryPath>
     <LinkIncremental>true</LinkIncremental>
     <CodeAnalysisRuleSet>NativeMinimumRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(QTDIR)\include;$(QTDIR)\include\QtCore;$(QTDIR)\include\Qt;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtOpenGL;$(IncludePath)</IncludePath>
+    <IncludePath>$(QTDIR)\include;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtOpenGL;$(IncludePath)</IncludePath>
     <LibraryPath>$(QTDIR)\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
@@ -368,10 +414,11 @@
       <PreprocessorDefinitions>KREATOR_DEBUG;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>qtmaind.lib;QtCored4.lib;QtGuid4.lib;QtOpenGLd4.lib;OpenGL32.Lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>qtmaind.lib;Qt5Cored.lib;Qt5Widgetsd.lib;Qt5Guid.lib;Qt5OpenGLd.lib;OpenGL32.Lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
       <AssemblyDebug>true</AssemblyDebug>
       <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
+      <SubSystem>Windows</SubSystem>
     </Link>
     <QtUic>
       <Generator>cpp</Generator>
@@ -381,7 +428,8 @@
 copy "$(ProjectDir)qt_globals.targets" "$(APPDATA)\..\Local\QtMsBuild\qt_globals.targets"</Command>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Command>copy "$(ProjectDir)GeneratedFiles\$(Configuration)\*.h" "$(ProjectDir)"</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -392,9 +440,12 @@ copy "$(ProjectDir)qt_globals.targets" "$(APPDATA)\..\Local\QtMsBuild\qt_globals
       </PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>qtmain.lib;QtCore4.lib;QtGui4.lib;QtOpenGL4.lib;OpenGL32.Lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>qtmain.lib;Qt5Core.lib;Qt5Widgets.lib;Qt5Gui.lib;Qt5OpenGL.lib;OpenGL32.Lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
+      <SubSystem>Windows</SubSystem>
+      <MinimumRequiredVersion>
+      </MinimumRequiredVersion>
     </Link>
     <QtUic>
       <Generator>cpp</Generator>
@@ -404,7 +455,8 @@ copy "$(ProjectDir)qt_globals.targets" "$(APPDATA)\..\Local\QtMsBuild\qt_globals
 copy "$(ProjectDir)qt_globals.targets" "$(APPDATA)\..\Local\QtMsBuild\qt_globals.targets"</Command>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Command>copy "$(ProjectDir)GeneratedFiles\$(Configuration)\*.h" "$(ProjectDir)"</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

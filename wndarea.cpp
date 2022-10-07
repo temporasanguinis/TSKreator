@@ -117,7 +117,7 @@ void WndArea::init()
   mp_twObjectList->setAlternatingRowColors( true );
   QHeaderView* pHeader = mp_twObjectList->header();
   pHeader->setStretchLastSection( true );
-  pHeader->setClickable( false );
+  pHeader->setSectionsClickable( false );
 
   if (!connect(mp_bgViews, SIGNAL(buttonClicked(int)), this, SLOT(changeView(int))))
       throw Exception(ts::Exception::Type::Runtime, "Cannot connect signal");
@@ -153,7 +153,7 @@ void WndArea::initMenuArea()
 #endif
   mp_menuArea = menuBar()->addMenu( trUtf8( "Area" ) );
   mp_barArea = addToolBar( trUtf8( "Area" ) );
-  mp_barArea->setIconSize( QSize( 22, 22 ) );
+  mp_barArea->setIconSize( QSize( 16, 16 ) );
 
   mp_actSaveArea = new QAction( QIcon(":/images/savearea.png"), trUtf8( "Salva" ), this );
   mp_actSaveArea->setStatusTip( trUtf8( "Salva l'area corrente" ) );
@@ -184,7 +184,7 @@ void WndArea::initMenuActions()
 #endif
   mp_menuActions = menuBar()->addMenu( trUtf8( "Azioni" ) );
   mp_barActions = addToolBar( trUtf8( "Azioni" ) );
-  mp_barActions->setIconSize( QSize( 22, 22 ) );
+  mp_barActions->setIconSize( QSize(16, 16) );
 
   mp_actNew = new QAction( TS::GetAddIcon(), trUtf8( "Crea" ), this );
   mp_actNew->setStatusTip( trUtf8( "Crea una nuova entita'" ) );
@@ -218,7 +218,7 @@ void WndArea::initMenuReport()
 #endif
   mp_menuReport = menuBar()->addMenu( trUtf8( "Report" ) );
   mp_barReport = addToolBar( trUtf8( "Report" ) );
-  mp_barReport->setIconSize( QSize( 22, 22 ) );
+  mp_barReport->setIconSize( QSize(16, 16) );
 
   mp_actReportCoins = new QAction( QIcon(":/images/coins.png"), trUtf8( "Monete..." ), this );
   mp_actReportCoins->setStatusTip( trUtf8( "Genera il report delle monete" ) );
@@ -259,7 +259,7 @@ void WndArea::initMenuUtils()
 #endif
   mp_menuUtils = menuBar()->addMenu( trUtf8( "Strumenti" ) );
   mp_barUtils = addToolBar( trUtf8( "Strumenti" ) );
-  mp_barUtils->setIconSize( QSize( 22, 22 ) );
+  mp_barUtils->setIconSize( QSize(16, 16) );
 
   mp_actFind = new QAction( QIcon(":/images/searchareas.png"), trUtf8( "Cerca..." ), this );
   mp_actFind->setStatusTip( trUtf8( "Cerca tra tutte le entita'" ) );
@@ -684,6 +684,9 @@ void WndArea::refreshView()
   default:
     qWarning( "Invalid View ID selected." );
   };
+
+  for (int i = 0; i < mp_twObjectList->columnCount(); i++)
+      mp_twObjectList->resizeColumnToContents(i);
 }
 
 void WndArea::showRooms()

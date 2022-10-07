@@ -88,13 +88,13 @@ void WndSettings::refreshPanel()
 #if defined( KREATOR_DEBUG )
   qDebug( "WndSettings::refreshPanel() called." );
 #endif
-  mp_leRoomsDir->setText( QDir::convertSeparators( Settings::roomsDirectory() ) );
-  mp_leItemsDir->setText( QDir::convertSeparators( Settings::itemsDirectory() ) );
-  mp_leMobsDir->setText( QDir::convertSeparators( Settings::mobsDirectory() ) );
-  mp_leShopsDir->setText( QDir::convertSeparators( Settings::shopsDirectory() ) );
-  mp_leZonesDir->setText( QDir::convertSeparators( Settings::zonesDirectory() ) );
-  mp_leNotesDir->setText( QDir::convertSeparators( Settings::notesDirectory() ) );
-  mp_leLogsDir->setText( QDir::convertSeparators( Settings::logsDirectory() ) );
+  mp_leRoomsDir->setText( QDir::toNativeSeparators( Settings::roomsDirectory() ) );
+  mp_leItemsDir->setText( QDir::toNativeSeparators( Settings::itemsDirectory() ) );
+  mp_leMobsDir->setText( QDir::toNativeSeparators( Settings::mobsDirectory() ) );
+  mp_leShopsDir->setText( QDir::toNativeSeparators( Settings::shopsDirectory() ) );
+  mp_leZonesDir->setText( QDir::toNativeSeparators( Settings::zonesDirectory() ) );
+  mp_leNotesDir->setText( QDir::toNativeSeparators( Settings::notesDirectory() ) );
+  mp_leLogsDir->setText( QDir::toNativeSeparators( Settings::logsDirectory() ) );
 
   mp_cbApplyAlways->setChecked( KreatorSettings::instance().applyWithoutAsking() );
   mp_cbCheckAreasAtStartup->setChecked( KreatorSettings::instance().checkAreasAtStartup() );

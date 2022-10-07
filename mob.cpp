@@ -662,7 +662,7 @@ namespace ts
     {
         long cur = ftell(fp);
         char TmpBuf[4096];
-        bool any = FALSE;
+        bool any = false;
         while (fscanf(fp, "%s", TmpBuf) && *TmpBuf == 'E') {
             MobBehaviour mb;
             mb.mb_Event = MobEvents::me_SIZE;
@@ -681,7 +681,7 @@ namespace ts
             case me_Talk:
             {
                 auto val = (Utils::readString(fp).toLower().trimmed());
-                strcpy(mb.e_mb_String, val.toAscii());
+                strcpy(mb.e_mb_String, val.toLatin1());
             }
                 break;
 
@@ -724,7 +724,7 @@ namespace ts
                     return any;
                 }
                 long condizione = atol(TmpBuf);
-                mb.conditions[numCondizioni].active = TRUE;
+                mb.conditions[numCondizioni].active = true;
                 mb.conditions[numCondizioni].conditionType = (MobBehaviourCondition)tipoCondizione;
                 mb.conditions[numCondizioni].condition = condizione;
                 numCondizioni++;
@@ -738,7 +738,7 @@ namespace ts
             case mr_Emote:
             {
                 auto val = (Utils::readString(fp).trimmed());
-                strcpy(mb.r_mb_String, val.toAscii());
+                strcpy(mb.r_mb_String, val.toLatin1());
             }
                 
                 break;

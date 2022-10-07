@@ -1,5 +1,8 @@
 ﻿1.65
 - Abilitato flag NoquestCard per oggetti
+- corretto un bug di crash nel Tester
+- il GUI di Kreator passa a QT 5
+- ora Kreator e' DPI aware
 __________________________________
 1.64
 - Aggiunto flag ACCOUNT per oggetti

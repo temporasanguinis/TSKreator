@@ -1,121 +1,159 @@
-<ui version="4.0" >
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>GuiItem</class>
- <widget class="QDialog" name="GuiItem" >
-  <property name="geometry" >
+ <widget class="QDialog" name="GuiItem">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>647</width>
-    <height>592</height>
+    <height>512</height>
    </rect>
   </property>
-  <property name="windowTitle" >
+  <property name="minimumSize">
+   <size>
+    <width>647</width>
+    <height>512</height>
+   </size>
+  </property>
+  <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <layout class="QVBoxLayout" >
-   <property name="margin" >
-    <number>9</number>
-   </property>
-   <property name="spacing" >
+  <layout class="QVBoxLayout">
+   <property name="spacing">
     <number>6</number>
    </property>
+   <property name="leftMargin">
+    <number>9</number>
+   </property>
+   <property name="topMargin">
+    <number>9</number>
+   </property>
+   <property name="rightMargin">
+    <number>9</number>
+   </property>
+   <property name="bottomMargin">
+    <number>9</number>
+   </property>
    <item>
-    <widget class="QGroupBox" name="mp_gbMain" >
-     <property name="sizePolicy" >
-      <sizepolicy>
-       <hsizetype>7</hsizetype>
-       <vsizetype>5</vsizetype>
+    <widget class="QGroupBox" name="mp_gbMain">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <property name="minimumSize" >
+     <property name="minimumSize">
       <size>
        <width>16</width>
-       <height>130</height>
+       <height>170</height>
       </size>
      </property>
-     <property name="title" >
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>170</height>
+      </size>
+     </property>
+     <property name="title">
       <string>Generale</string>
      </property>
-     <layout class="QVBoxLayout" >
-      <property name="margin" >
-       <number>9</number>
-      </property>
-      <property name="spacing" >
+     <layout class="QVBoxLayout">
+      <property name="spacing">
        <number>6</number>
       </property>
+      <property name="leftMargin">
+       <number>9</number>
+      </property>
+      <property name="topMargin">
+       <number>9</number>
+      </property>
+      <property name="rightMargin">
+       <number>9</number>
+      </property>
+      <property name="bottomMargin">
+       <number>9</number>
+      </property>
       <item>
-       <layout class="QHBoxLayout" >
-        <property name="margin" >
-         <number>0</number>
-        </property>
-        <property name="spacing" >
+       <layout class="QHBoxLayout">
+        <property name="spacing">
          <number>6</number>
         </property>
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
         <item>
-         <widget class="QLabel" name="mp_labelVNumber" >
-          <property name="enabled" >
+         <widget class="QLabel" name="mp_labelVNumber">
+          <property name="enabled">
            <bool>true</bool>
           </property>
-          <property name="minimumSize" >
+          <property name="minimumSize">
            <size>
             <width>50</width>
             <height>0</height>
            </size>
           </property>
-          <property name="text" >
+          <property name="text">
            <string>VNumber</string>
           </property>
-          <property name="alignment" >
+          <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="mp_leVNumber" >
-          <property name="minimumSize" >
+         <widget class="QLineEdit" name="mp_leVNumber">
+          <property name="minimumSize">
            <size>
             <width>70</width>
             <height>0</height>
            </size>
           </property>
-          <property name="maximumSize" >
+          <property name="maximumSize">
            <size>
             <width>70</width>
             <height>16777215</height>
            </size>
           </property>
-          <property name="focusPolicy" >
+          <property name="focusPolicy">
            <enum>Qt::StrongFocus</enum>
           </property>
-          <property name="maxLength" >
+          <property name="maxLength">
            <number>5</number>
           </property>
-          <property name="readOnly" >
+          <property name="readOnly">
            <bool>false</bool>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="mp_labelName" >
-          <property name="minimumSize" >
+         <widget class="QLabel" name="mp_labelName">
+          <property name="minimumSize">
            <size>
             <width>40</width>
             <height>0</height>
            </size>
           </property>
-          <property name="text" >
+          <property name="text">
            <string>Nome</string>
           </property>
-          <property name="alignment" >
+          <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="mp_leName" >
-          <property name="minimumSize" >
+         <widget class="QLineEdit" name="mp_leName">
+          <property name="minimumSize">
            <size>
             <width>200</width>
             <height>0</height>
@@ -124,27 +162,27 @@
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="mp_labelType" >
-          <property name="minimumSize" >
+         <widget class="QLabel" name="mp_labelType">
+          <property name="minimumSize">
            <size>
             <width>40</width>
             <height>0</height>
            </size>
           </property>
-          <property name="toolTip" >
+          <property name="toolTip">
            <string>Tipo dell'oggetto</string>
           </property>
-          <property name="text" >
+          <property name="text">
            <string>Tipo</string>
           </property>
-          <property name="alignment" >
+          <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QComboBox" name="mp_comboType" >
-          <property name="minimumSize" >
+         <widget class="QComboBox" name="mp_comboType">
+          <property name="minimumSize">
            <size>
             <width>150</width>
             <height>0</height>
@@ -155,32 +193,41 @@
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" >
-        <property name="margin" >
-         <number>0</number>
-        </property>
-        <property name="spacing" >
+       <layout class="QHBoxLayout">
+        <property name="spacing">
          <number>6</number>
         </property>
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
         <item>
-         <widget class="QLabel" name="mp_labellShort" >
-          <property name="minimumSize" >
+         <widget class="QLabel" name="mp_labellShort">
+          <property name="minimumSize">
            <size>
             <width>50</width>
             <height>0</height>
            </size>
           </property>
-          <property name="text" >
+          <property name="text">
            <string>Short</string>
           </property>
-          <property name="alignment" >
+          <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="mp_leShort" >
-          <property name="minimumSize" >
+         <widget class="QLineEdit" name="mp_leShort">
+          <property name="minimumSize">
            <size>
             <width>200</width>
             <height>0</height>
@@ -191,240 +238,258 @@
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" >
-        <property name="margin" >
-         <number>0</number>
-        </property>
-        <property name="spacing" >
+       <layout class="QHBoxLayout">
+        <property name="spacing">
          <number>6</number>
         </property>
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
         <item>
-         <widget class="QLabel" name="mp_labelWearPositions" >
-          <property name="minimumSize" >
+         <widget class="QLabel" name="mp_labelWearPositions">
+          <property name="minimumSize">
            <size>
             <width>50</width>
             <height>0</height>
            </size>
           </property>
-          <property name="text" >
+          <property name="text">
            <string>Posizione</string>
           </property>
-          <property name="alignment" >
+          <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="mp_leWearPositions" >
-          <property name="minimumSize" >
+         <widget class="QLineEdit" name="mp_leWearPositions">
+          <property name="minimumSize">
            <size>
             <width>200</width>
             <height>0</height>
            </size>
           </property>
-          <property name="focusPolicy" >
+          <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>
-          <property name="dragEnabled" >
+          <property name="dragEnabled">
            <bool>true</bool>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QToolButton" name="mp_tbWearPositions" >
-          <property name="text" >
+         <widget class="QToolButton" name="mp_tbWearPositions">
+          <property name="text">
            <string>...</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="mp_labelWeight" >
-          <property name="minimumSize" >
+         <widget class="QLabel" name="mp_labelWeight">
+          <property name="minimumSize">
            <size>
             <width>40</width>
             <height>0</height>
            </size>
           </property>
-          <property name="toolTip" >
+          <property name="toolTip">
            <string>E' il peso dell'oggetto</string>
           </property>
-          <property name="text" >
+          <property name="text">
            <string>Peso</string>
           </property>
-          <property name="alignment" >
+          <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="mp_leWeight" >
-          <property name="maximumSize" >
+         <widget class="QLineEdit" name="mp_leWeight">
+          <property name="maximumSize">
            <size>
             <width>50</width>
             <height>16777215</height>
            </size>
           </property>
-          <property name="text" >
+          <property name="text">
            <string/>
           </property>
-          <property name="maxLength" >
+          <property name="maxLength">
            <number>4</number>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="mp_labelGoldValue" >
-          <property name="minimumSize" >
+         <widget class="QLabel" name="mp_labelGoldValue">
+          <property name="minimumSize">
            <size>
             <width>40</width>
             <height>0</height>
            </size>
           </property>
-          <property name="toolTip" >
+          <property name="toolTip">
            <string>E' il valore in monete dell'oggetto. Deve essere maggiore o uguale a zero.</string>
           </property>
-          <property name="text" >
+          <property name="text">
            <string>Valore</string>
           </property>
-          <property name="alignment" >
+          <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="mp_leGoldValue" >
-          <property name="maximumSize" >
+         <widget class="QLineEdit" name="mp_leGoldValue">
+          <property name="maximumSize">
            <size>
             <width>50</width>
             <height>16777215</height>
            </size>
           </property>
-          <property name="toolTip" >
+          <property name="toolTip">
            <string/>
           </property>
-          <property name="maxLength" >
+          <property name="maxLength">
            <number>6</number>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="mp_labelRent" >
-          <property name="minimumSize" >
+         <widget class="QLabel" name="mp_labelRent">
+          <property name="minimumSize">
            <size>
             <width>40</width>
             <height>0</height>
            </size>
           </property>
-          <property name="toolTip" >
+          <property name="toolTip">
            <string>E' il costo dell'oggetto per un giorno di rent. Se e' -1 l'oggetto non si puo' rentare</string>
           </property>
-          <property name="text" >
+          <property name="text">
            <string>Rent</string>
           </property>
-          <property name="alignment" >
+          <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="mp_leRent" >
-          <property name="maximumSize" >
+         <widget class="QLineEdit" name="mp_leRent">
+          <property name="maximumSize">
            <size>
             <width>50</width>
             <height>16777215</height>
            </size>
           </property>
-          <property name="text" >
+          <property name="text">
            <string/>
           </property>
-          <property name="maxLength" >
+          <property name="maxLength">
            <number>6</number>
           </property>
          </widget>
         </item>
-       <item>
-         <widget class="QLabel" name="mp_labelTimer" >
-           <property name="minimumSize" >
-             <size>
-               <width>40</width>
-               <height>0</height>
-             </size>
-           </property>
-           <property name="toolTip" >
-             <string>E' il tempo in tick fino all'autodistruzione (se oggetto ha flag Timer)</string>
-           </property>
-           <property name="text" >
-             <string>Timer</string>
-           </property>
-           <property name="alignment" >
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-           </property>
-         </widget>
-       </item>
-       <item>
-         <widget class="QLineEdit" name="mp_leTimer" >
-           <property name="maximumSize" >
-             <size>
-               <width>50</width>
-               <height>16777215</height>
-             </size>
-           </property>
-           <property name="text" >
-             <string/>
-           </property>
-           <property name="maxLength" >
-             <number>6</number>
-           </property>
-         </widget>
-       </item>
-     </layout>
-   </item>
-      <item>
-       <layout class="QHBoxLayout" >
-        <property name="margin" >
-         <number>0</number>
-        </property>
-        <property name="spacing" >
-         <number>6</number>
-        </property>
         <item>
-         <widget class="QLabel" name="mp_labelFlags" >
-          <property name="minimumSize" >
+         <widget class="QLabel" name="mp_labelTimer">
+          <property name="minimumSize">
            <size>
-            <width>50</width>
+            <width>40</width>
             <height>0</height>
            </size>
           </property>
-          <property name="text" >
-           <string>Flags</string>
+          <property name="toolTip">
+           <string>E' il tempo in tick fino all'autodistruzione (se oggetto ha flag Timer)</string>
           </property>
-          <property name="alignment" >
+          <property name="text">
+           <string>Timer</string>
+          </property>
+          <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="mp_leFlags" >
-          <property name="minimumSize" >
+         <widget class="QLineEdit" name="mp_leTimer">
+          <property name="maximumSize">
+           <size>
+            <width>50</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="maxLength">
+           <number>6</number>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout">
+        <property name="spacing">
+         <number>6</number>
+        </property>
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="mp_labelFlags">
+          <property name="minimumSize">
+           <size>
+            <width>50</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Flags</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="mp_leFlags">
+          <property name="minimumSize">
            <size>
             <width>200</width>
             <height>0</height>
            </size>
           </property>
-          <property name="focusPolicy" >
+          <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>
-          <property name="dragEnabled" >
+          <property name="dragEnabled">
            <bool>true</bool>
           </property>
-          <property name="readOnly" >
+          <property name="readOnly">
            <bool>true</bool>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QToolButton" name="mp_tbFlags" >
-          <property name="text" >
+         <widget class="QToolButton" name="mp_tbFlags">
+          <property name="text">
            <string>...</string>
           </property>
          </widget>
@@ -432,51 +497,60 @@
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" >
-        <property name="margin" >
-         <number>0</number>
-        </property>
-        <property name="spacing" >
+       <layout class="QHBoxLayout">
+        <property name="spacing">
          <number>6</number>
         </property>
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
         <item>
-         <widget class="QLabel" name="mp_labelNewFlags" >
-          <property name="minimumSize" >
+         <widget class="QLabel" name="mp_labelNewFlags">
+          <property name="minimumSize">
            <size>
             <width>50</width>
             <height>0</height>
            </size>
           </property>
-          <property name="text" >
+          <property name="text">
            <string>NewFlags</string>
           </property>
-          <property name="alignment" >
+          <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="mp_leNewFlags" >
-          <property name="minimumSize" >
+         <widget class="QLineEdit" name="mp_leNewFlags">
+          <property name="minimumSize">
            <size>
             <width>200</width>
             <height>0</height>
            </size>
           </property>
-          <property name="focusPolicy" >
+          <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>
-          <property name="dragEnabled" >
+          <property name="dragEnabled">
            <bool>true</bool>
           </property>
-          <property name="readOnly" >
+          <property name="readOnly">
            <bool>true</bool>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QToolButton" name="mp_tbNewFlags" >
-          <property name="text" >
+         <widget class="QToolButton" name="mp_tbNewFlags">
+          <property name="text">
            <string>...</string>
           </property>
          </widget>
@@ -487,37 +561,61 @@
     </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout" >
-     <property name="margin" >
-      <number>0</number>
-     </property>
-     <property name="spacing" >
+    <layout class="QHBoxLayout">
+     <property name="spacing">
       <number>6</number>
      </property>
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
      <item>
-      <widget class="QGroupBox" name="mp_gbValues" >
-       <property name="minimumSize" >
+      <widget class="QGroupBox" name="mp_gbValues">
+       <property name="minimumSize">
         <size>
          <width>16</width>
          <height>160</height>
         </size>
        </property>
-       <property name="title" >
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>200</height>
+        </size>
+       </property>
+       <property name="title">
         <string>Values</string>
        </property>
-       <layout class="QGridLayout" >
-        <property name="margin" >
+       <layout class="QGridLayout">
+        <property name="leftMargin">
          <number>8</number>
         </property>
-        <property name="spacing" >
+        <property name="topMargin">
+         <number>8</number>
+        </property>
+        <property name="rightMargin">
+         <number>8</number>
+        </property>
+        <property name="bottomMargin">
+         <number>8</number>
+        </property>
+        <property name="spacing">
          <number>6</number>
         </property>
-        <item row="1" column="1" >
+        <item row="1" column="1">
          <spacer>
-          <property name="orientation" >
+          <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
-          <property name="sizeHint" >
+          <property name="sizeHint" stdset="0">
            <size>
             <width>40</width>
             <height>20</height>
@@ -525,64 +623,82 @@
           </property>
          </spacer>
         </item>
-        <item row="1" column="0" >
-         <widget class="QToolButton" name="mp_tbEditValues" >
-          <property name="text" >
+        <item row="1" column="0">
+         <widget class="QToolButton" name="mp_tbEditValues">
+          <property name="text">
            <string>...</string>
           </property>
          </widget>
         </item>
-        <item row="0" column="0" colspan="2" >
-         <widget class="QTextEdit" name="mp_teValues" />
+        <item row="0" column="0" colspan="2">
+         <widget class="QTextEdit" name="mp_teValues"/>
         </item>
        </layout>
       </widget>
      </item>
      <item>
-      <widget class="QGroupBox" name="mp_gbAffects" >
-       <property name="minimumSize" >
+      <widget class="QGroupBox" name="mp_gbAffects">
+       <property name="minimumSize">
         <size>
          <width>16</width>
-         <height>160</height>
+         <height>170</height>
         </size>
        </property>
-       <property name="maximumSize" >
+       <property name="maximumSize">
         <size>
          <width>16777215</width>
-         <height>16777215</height>
+         <height>200</height>
         </size>
        </property>
-       <property name="title" >
+       <property name="title">
         <string>Affects</string>
        </property>
-       <layout class="QGridLayout" >
-        <property name="margin" >
+       <layout class="QGridLayout">
+        <property name="leftMargin">
          <number>8</number>
         </property>
-        <property name="spacing" >
+        <property name="topMargin">
+         <number>8</number>
+        </property>
+        <property name="rightMargin">
+         <number>8</number>
+        </property>
+        <property name="bottomMargin">
+         <number>8</number>
+        </property>
+        <property name="spacing">
          <number>6</number>
         </property>
-        <item row="1" column="0" >
-         <layout class="QHBoxLayout" >
-          <property name="margin" >
-           <number>0</number>
-          </property>
-          <property name="spacing" >
+        <item row="1" column="0">
+         <layout class="QHBoxLayout">
+          <property name="spacing">
            <number>6</number>
           </property>
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
           <item>
-           <widget class="QToolButton" name="mp_tbEditAffects" >
-            <property name="text" >
+           <widget class="QToolButton" name="mp_tbEditAffects">
+            <property name="text">
              <string>...</string>
             </property>
            </widget>
           </item>
           <item>
            <spacer>
-            <property name="orientation" >
+            <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>
-            <property name="sizeHint" >
+            <property name="sizeHint" stdset="0">
              <size>
               <width>40</width>
               <height>20</height>
@@ -592,74 +708,92 @@
           </item>
          </layout>
         </item>
-        <item row="0" column="0" >
-         <widget class="QTextEdit" name="mp_teAffects" />
+        <item row="0" column="0">
+         <widget class="QTextEdit" name="mp_teAffects"/>
         </item>
        </layout>
       </widget>
      </item>
      <item>
-      <widget class="QGroupBox" name="mp_gbExtraDescriptions" >
-       <property name="minimumSize" >
+      <widget class="QGroupBox" name="mp_gbExtraDescriptions">
+       <property name="minimumSize">
         <size>
          <width>16</width>
          <height>160</height>
         </size>
        </property>
-       <property name="maximumSize" >
+       <property name="maximumSize">
         <size>
          <width>16777215</width>
-         <height>16777215</height>
+         <height>200</height>
         </size>
        </property>
-       <property name="title" >
+       <property name="title">
         <string>Descrizioni Extra</string>
        </property>
-       <layout class="QGridLayout" >
-        <property name="margin" >
+       <layout class="QGridLayout">
+        <property name="leftMargin">
          <number>8</number>
         </property>
-        <property name="spacing" >
+        <property name="topMargin">
+         <number>8</number>
+        </property>
+        <property name="rightMargin">
+         <number>8</number>
+        </property>
+        <property name="bottomMargin">
+         <number>8</number>
+        </property>
+        <property name="spacing">
          <number>6</number>
         </property>
-        <item row="0" column="0" >
-         <widget class="QListWidget" name="mp_lwExtraDescriptions" />
+        <item row="0" column="0">
+         <widget class="QListWidget" name="mp_lwExtraDescriptions"/>
         </item>
-        <item row="1" column="0" >
-         <layout class="QHBoxLayout" >
-          <property name="margin" >
-           <number>0</number>
-          </property>
-          <property name="spacing" >
+        <item row="1" column="0">
+         <layout class="QHBoxLayout">
+          <property name="spacing">
            <number>6</number>
           </property>
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
           <item>
-           <widget class="QToolButton" name="mp_tbAddExtraDescription" >
-            <property name="text" >
+           <widget class="QToolButton" name="mp_tbAddExtraDescription">
+            <property name="text">
              <string>+</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QToolButton" name="mp_tbEditExtraDescription" >
-            <property name="text" >
+           <widget class="QToolButton" name="mp_tbEditExtraDescription">
+            <property name="text">
              <string>...</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QToolButton" name="mp_tbRemoveExtraDescription" >
-            <property name="text" >
+           <widget class="QToolButton" name="mp_tbRemoveExtraDescription">
+            <property name="text">
              <string>-</string>
             </property>
            </widget>
           </item>
           <item>
            <spacer>
-            <property name="orientation" >
+            <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>
-            <property name="sizeHint" >
+            <property name="sizeHint" stdset="0">
              <size>
               <width>40</width>
               <height>20</height>
@@ -675,105 +809,130 @@
     </layout>
    </item>
    <item>
-    <widget class="QTabWidget" name="mp_twDescriptions" >
-     <property name="sizePolicy" >
-      <sizepolicy>
-       <hsizetype>1</hsizetype>
-       <vsizetype>1</vsizetype>
+    <widget class="QTabWidget" name="mp_twDescriptions">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <property name="minimumSize" >
+     <property name="minimumSize">
       <size>
        <width>0</width>
        <height>100</height>
       </size>
      </property>
-     <widget class="QWidget" name="mp_tabLong" >
-      <attribute name="title" >
+     <widget class="QWidget" name="mp_tabLong">
+      <attribute name="title">
        <string>Long Description</string>
       </attribute>
-      <layout class="QGridLayout" >
-       <property name="margin" >
+      <layout class="QGridLayout">
+       <property name="leftMargin">
         <number>8</number>
        </property>
-       <property name="spacing" >
+       <property name="topMargin">
+        <number>8</number>
+       </property>
+       <property name="rightMargin">
+        <number>8</number>
+       </property>
+       <property name="bottomMargin">
+        <number>8</number>
+       </property>
+       <property name="spacing">
         <number>6</number>
        </property>
-       <item row="0" column="0" >
-        <widget class="QTextEdit" name="mp_teLong" />
+       <item row="0" column="0">
+        <widget class="QTextEdit" name="mp_teLong"/>
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="mp_tabAction" >
-      <attribute name="title" >
+     <widget class="QWidget" name="mp_tabAction">
+      <attribute name="title">
        <string>Action Description</string>
       </attribute>
-      <layout class="QGridLayout" >
-       <property name="margin" >
+      <layout class="QGridLayout">
+       <property name="leftMargin">
         <number>8</number>
        </property>
-       <property name="spacing" >
+       <property name="topMargin">
+        <number>8</number>
+       </property>
+       <property name="rightMargin">
+        <number>8</number>
+       </property>
+       <property name="bottomMargin">
+        <number>8</number>
+       </property>
+       <property name="spacing">
         <number>6</number>
        </property>
-       <item row="0" column="0" >
-        <widget class="QTextEdit" name="mp_teAction" />
+       <item row="0" column="0">
+        <widget class="QTextEdit" name="mp_teAction"/>
        </item>
       </layout>
      </widget>
     </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout" >
-     <property name="margin" >
-      <number>0</number>
-     </property>
-     <property name="spacing" >
+    <layout class="QHBoxLayout">
+     <property name="spacing">
       <number>6</number>
      </property>
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
      <item>
-      <widget class="QPushButton" name="mp_pbPrevItem" >
-       <property name="maximumSize" >
+      <widget class="QPushButton" name="mp_pbPrevItem">
+       <property name="maximumSize">
         <size>
          <width>30</width>
          <height>16777215</height>
         </size>
        </property>
-       <property name="text" >
+       <property name="text">
         <string>&lt;</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="mp_pbInit" >
-       <property name="enabled" >
+      <widget class="QPushButton" name="mp_pbInit">
+       <property name="enabled">
         <bool>false</bool>
        </property>
-       <property name="text" >
+       <property name="text">
         <string>Init</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="mp_pbNextItem" >
-       <property name="maximumSize" >
+      <widget class="QPushButton" name="mp_pbNextItem">
+       <property name="maximumSize">
         <size>
          <width>30</width>
          <height>16777215</height>
         </size>
        </property>
-       <property name="text" >
-        <string>></string>
+       <property name="text">
+        <string>&gt;</string>
        </property>
       </widget>
      </item>
      <item>
       <spacer>
-       <property name="orientation" >
+       <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
-       <property name="sizeHint" >
+       <property name="sizeHint" stdset="0">
         <size>
          <width>91</width>
          <height>23</height>
@@ -782,29 +941,29 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="mp_pbOk" >
-       <property name="text" >
+      <widget class="QPushButton" name="mp_pbOk">
+       <property name="text">
         <string>Ok</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="mp_pbSave" >
-       <property name="text" >
+      <widget class="QPushButton" name="mp_pbSave">
+       <property name="text">
         <string>Applica</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="mp_pbRestore" >
-       <property name="text" >
+      <widget class="QPushButton" name="mp_pbRestore">
+       <property name="text">
         <string>Ripristina</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="mp_pbCancel" >
-       <property name="text" >
+      <widget class="QPushButton" name="mp_pbCancel">
+       <property name="text">
         <string>Annulla</string>
        </property>
       </widget>
@@ -813,7 +972,7 @@
    </item>
   </layout>
  </widget>
- <layoutdefault spacing="5" margin="5" />
+ <layoutdefault spacing="5" margin="5"/>
  <tabstops>
   <tabstop>mp_leVNumber</tabstop>
   <tabstop>mp_leName</tabstop>

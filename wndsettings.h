@@ -27,6 +27,7 @@ protected slots:
   void editShopsDir();
   void editNotesDir();
   void editLogsDir();
+  void editCustomTheme();
 
 protected:
   void init();
@@ -34,6 +35,7 @@ protected:
   void loadData();
   void refreshPanel();
   void selectDir( QLineEdit*, const QString& msg );
+  void selectFile(QLineEdit*, const QString& msg);
 
 
 };

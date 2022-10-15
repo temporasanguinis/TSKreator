@@ -93,21 +93,37 @@ void WndMainWindow::init()
   setWindowTitle( "TS Kreator" );
   TS::SetKreatorLogo( this );
   KreatorSettings::instance().loadGuiStatus( "MainWindow", this );
-
-  if(KreatorSettings::instance().kreatorTheme() != -1) {
-    QApplication::setStyle(QStyleFactory::create(QStyleFactory::keys().at(KreatorSettings::instance().kreatorTheme())));
-  } else {
-#ifdef Q_WS_WIN32
-      if(QStyleFactory::keys().contains("cleanlooks", Qt::CaseInsensitive))
-          QApplication::setStyle(QStyleFactory::create("cleanlooks"));
-      else
-          QApplication::setStyle(QStyleFactory::create("windows"));
-#elif defined( Q_WS_MAC )
-      //da testare se funziona su os x
-      QApplication::setStyle(QStyleFactory::create("macintosh"));
-#elif defined( Q_WS_X11 )
-      QApplication::setStyle(QStyleFactory::create("plastique"));
+  bool loadedCustom = false;
+  if (!KreatorSettings::instance().customTheme().isNull()) {
+      QString ct(KreatorSettings::instance().customTheme());
+      QFile ss(ct);
+      if (ss.exists()) {
+          ss.open(QFile::ReadOnly | QFile::Text);
+          QString prevDir = QDir::currentPath();
+          QDir::setCurrent(QFileInfo(ct).absolutePath());
+          QApplication::setStyle(QStyleFactory::create("Fusion"));
+          qApp->setStyleSheet(QLatin1String(ss.readAll()));
+          //QDir::setCurrent(prevDir);
+          loadedCustom = true;
+      }
+  }
+  if (!loadedCustom) {
+      if (KreatorSettings::instance().kreatorTheme() != -1) {
+          QApplication::setStyle(QStyleFactory::create(QStyleFactory::keys().at(KreatorSettings::instance().kreatorTheme())));
+      }
+      else {
+#ifdef Q_OS_WIN32
+          if (QStyleFactory::keys().contains("cleanlooks", Qt::CaseInsensitive))
+              QApplication::setStyle(QStyleFactory::create("cleanlooks"));
+          else
+              QApplication::setStyle(QStyleFactory::create("windows"));
+#elif defined( Q_OS_MAC )
+          //da testare se funziona su os x
+          QApplication::setStyle(QStyleFactory::create("macintosh"));
+#elif defined( Q_OS_X11 )
+          QApplication::setStyle(QStyleFactory::create("plastique"));
 #endif
+      }
   }
 
   QString ColumnName[ COLUNM_MAX ];

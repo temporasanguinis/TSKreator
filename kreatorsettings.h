@@ -33,6 +33,9 @@ public:
   int kreatorTheme();
   void  setKreatorTheme( int );
 
+  QString customTheme();
+  void setCustomTheme(QString theme);
+
   void save() { instance().sync(); }
 
   QList<QString> mru();

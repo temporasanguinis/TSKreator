@@ -326,11 +326,7 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Readme BUILD.txt" />
     <Text Include="VERSION.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <Natvis Include="NatvisFile.natvis" />
   </ItemGroup>
   <ItemGroup>
     <None Include="conf\alignmentflags.ini" />
@@ -419,6 +415,8 @@
       <AssemblyDebug>true</AssemblyDebug>
       <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
       <SubSystem>Windows</SubSystem>
+      <SuppressStartupBanner>false</SuppressStartupBanner>
+      <AdditionalOptions>%(AdditionalOptions)</AdditionalOptions>
     </Link>
     <QtUic>
       <Generator>cpp</Generator>
@@ -431,6 +429,9 @@ copy "$(ProjectDir)qt_globals.targets" "$(APPDATA)\..\Local\QtMsBuild\qt_globals
       <Command>
       </Command>
     </PostBuildEvent>
+    <PreLinkEvent>
+      <Command>copy /-y "$(ProjectDir)qt.natvis" $(OutDir)</Command>
+    </PreLinkEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -455,9 +456,17 @@ copy "$(ProjectDir)qt_globals.targets" "$(APPDATA)\..\Local\QtMsBuild\qt_globals
 copy "$(ProjectDir)qt_globals.targets" "$(APPDATA)\..\Local\QtMsBuild\qt_globals.targets"</Command>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Command>
-      </Command>
+      <Command>rmdir "$(ProjectDir)binaries\msvc\build" /Q /S
+mkdir "$(ProjectDir)binaries\msvc\build"
+copy /y "$(ProjectDir)binaries\msvc\$(Configuration)\*.*" "$(OutDir)"
+copy /y "$(OutDir)\Kreator.exe" "$(ProjectDir)binaries\msvc\build\"
+copy /y "$(ProjectDir)binaries\msvc\$(Configuration)\*.*" "$(ProjectDir)binaries\msvc\build\"
+xcopy /y /i "$(ProjectDir)\themes" "$(ProjectDir)binaries\msvc\build\themes" /E /H
+</Command>
     </PostBuildEvent>
+    <PreLinkEvent>
+      <Command>copy /-y "$(ProjectDir)qt.natvis" $(OutDir)</Command>
+    </PreLinkEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

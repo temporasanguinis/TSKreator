@@ -1,4 +1,10 @@
-﻿1.65
+﻿1.66
+- correzione a un bug di gestione mob e oggetti
+- correzioni all'UI di QT 5
+- possibilita' di usare un tema *.qss personale in opzioni
+- aggiunto themes/darktheme
+__________________________________
+1.65
 - Abilitato flag NoquestCard per oggetti
 - corretto un bug di crash nel Tester
 - il GUI di Kreator passa a QT 5

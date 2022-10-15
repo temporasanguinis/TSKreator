@@ -10,6 +10,12 @@
     <height>360</height>
    </rect>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>700</width>
+    <height>360</height>
+   </size>
+  </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
@@ -106,7 +112,7 @@
     <item row="1" column="0">
      <widget class="QFrame" name="mp_frameVisual">
       <property name="sizePolicy">
-       <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+       <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
@@ -114,13 +120,19 @@
       <property name="minimumSize">
        <size>
         <width>0</width>
-        <height>16</height>
+        <height>0</height>
        </size>
       </property>
       <property name="maximumSize">
        <size>
         <width>16777215</width>
         <height>16777215</height>
+       </size>
+      </property>
+      <property name="baseSize">
+       <size>
+        <width>0</width>
+        <height>0</height>
        </size>
       </property>
       <property name="autoFillBackground">
@@ -133,6 +145,9 @@
        <enum>QFrame::Sunken</enum>
       </property>
       <layout class="QGridLayout">
+       <property name="sizeConstraint">
+        <enum>QLayout::SetDefaultConstraint</enum>
+       </property>
        <property name="leftMargin">
         <number>9</number>
        </property>
@@ -146,12 +161,12 @@
         <number>9</number>
        </property>
        <property name="spacing">
-        <number>6</number>
+        <number>0</number>
        </property>
        <item row="0" column="0">
         <widget class="QGroupBox" name="mp_gbChangeView">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+          <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -169,13 +184,13 @@
           </size>
          </property>
          <property name="autoFillBackground">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="title">
-          <string/>
+          <string>Visuale</string>
          </property>
          <property name="alignment">
-          <set>Qt::AlignHCenter</set>
+          <set>Qt::AlignHCenter|Qt::AlignTop</set>
          </property>
          <property name="flat">
           <bool>false</bool>
@@ -188,13 +203,13 @@
            <number>8</number>
           </property>
           <property name="topMargin">
-           <number>8</number>
+           <number>6</number>
           </property>
           <property name="rightMargin">
            <number>8</number>
           </property>
           <property name="bottomMargin">
-           <number>8</number>
+           <number>6</number>
           </property>
           <item>
            <widget class="QRadioButton" name="mp_rbViewRooms">
@@ -328,7 +343,7 @@
          </size>
         </property>
         <property name="frameShape">
-         <enum>QFrame::StyledPanel</enum>
+         <enum>QFrame::NoFrame</enum>
         </property>
         <property name="frameShadow">
          <enum>QFrame::Sunken</enum>
@@ -362,7 +377,7 @@
        </size>
       </property>
       <property name="frameShape">
-       <enum>QFrame::StyledPanel</enum>
+       <enum>QFrame::NoFrame</enum>
       </property>
       <property name="frameShadow">
        <enum>QFrame::Sunken</enum>
@@ -384,6 +399,7 @@
    </layout>
   </widget>
  </widget>
+ <layoutdefault spacing="3" margin="3"/>
  <tabstops>
   <tabstop>mp_twObjectList</tabstop>
   <tabstop>mp_tbChangeFile</tabstop>

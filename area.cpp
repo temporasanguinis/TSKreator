@@ -394,7 +394,7 @@ namespace ts
     VNumber vnum;
     FILE *pFile;
 
-#if defined( Q_WS_WIN )
+#if defined( Q_OS_WIN )
     // FIXME: fseek ha problemi con lo \r\n. Bisogna leggere in binario il file.
     if( ( pFile = fopen( qPrintable( m_mobsFilePath ), "rb" ) ) )
 #else
@@ -550,7 +550,7 @@ namespace ts
     VNumber vnum;
     FILE *pFile;
 
-#if defined( Q_WS_WIN )
+#if defined( Q_OS_WIN )
     // FIXME: fseek ha problemi con lo \r\n. Bisogna leggere in binario il file.
     if( ( pFile = fopen( qPrintable( m_itemsFilePath ), "rb" ) ) )
 #else

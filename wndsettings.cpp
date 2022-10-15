@@ -67,10 +67,13 @@ void WndSettings::init()
   connect( mp_tbZonesDir, SIGNAL( clicked() ), this, SLOT( editZonesDir() ) );
   connect( mp_tbNotesDir, SIGNAL( clicked() ), this, SLOT( editNotesDir() ) );
   connect( mp_tbLogsDir, SIGNAL( clicked() ), this, SLOT( editLogsDir() ) );
+  connect(mp_tbCustomTheme, SIGNAL(clicked()), this, SLOT(editCustomTheme()));
 
   connect( mp_cbApplyAlways, SIGNAL( stateChanged( int ) ), this, SLOT( somethingChanged() ) );
   connect( mp_cbCheckAreasAtStartup, SIGNAL( stateChanged( int ) ), this, SLOT( somethingChanged() ) );
   connect( mp_cbAssignZoneToRoom, SIGNAL( stateChanged( int ) ), this, SLOT( somethingChanged() ) );
+
+  connect(mp_leCustomTheme, SIGNAL(textChanged(const QString&)), this, SLOT(somethingChanged()));
 
   connect( mp_leRoomsDir, SIGNAL( textChanged( const QString& ) ), this, SLOT( somethingChanged() ) );
   connect( mp_leItemsDir, SIGNAL( textChanged( const QString& ) ), this, SLOT( somethingChanged() ) );
@@ -95,6 +98,7 @@ void WndSettings::refreshPanel()
   mp_leZonesDir->setText( QDir::toNativeSeparators( Settings::zonesDirectory() ) );
   mp_leNotesDir->setText( QDir::toNativeSeparators( Settings::notesDirectory() ) );
   mp_leLogsDir->setText( QDir::toNativeSeparators( Settings::logsDirectory() ) );
+  mp_leCustomTheme->setText(QDir::toNativeSeparators(KreatorSettings::instance().customTheme()));
 
   mp_cbApplyAlways->setChecked( KreatorSettings::instance().applyWithoutAsking() );
   mp_cbCheckAreasAtStartup->setChecked( KreatorSettings::instance().checkAreasAtStartup() );
@@ -139,13 +143,28 @@ void WndSettings::saveData()
   KreatorSettings::instance().setCheckAreasAtStartup( mp_cbCheckAreasAtStartup->isChecked() );
   KreatorSettings::instance().setAssignZoneToRooms( mp_cbAssignZoneToRoom->isChecked() );
   KreatorSettings::instance().setKreatorTheme( mp_comboTheme->currentIndex() );
+  KreatorSettings::instance().setCustomTheme(Utils::createPath(mp_leCustomTheme->text().simplified()));
   KreatorSettings::instance().save();
 
   refreshPanel();
   auto keys = QStyleFactory::keys();
-  auto theme = KreatorSettings::instance().kreatorTheme();
-  if (theme != -1) {
-      QApplication::setStyle(QStyleFactory::create(keys.at(theme)));
+  auto ctheme = KreatorSettings::instance().customTheme();
+  if (!ctheme.isEmpty()) {
+      QFile ss(KreatorSettings::instance().customTheme());
+      if (ss.exists()) {
+          ss.open(QFile::ReadOnly | QFile::Text);
+          QString prevDir = QDir::currentPath();
+          QDir::setCurrent(QFileInfo(KreatorSettings::instance().customTheme()).absolutePath());
+          QApplication::setStyle(QStyleFactory::create("Fusion"));
+          qApp->setStyleSheet(QLatin1String(ss.readAll()));
+      }
+  }
+  else {
+      qApp->setStyleSheet("");
+      auto theme = KreatorSettings::instance().kreatorTheme();
+      if (theme != -1) {
+          QApplication::setStyle(QStyleFactory::create(keys.at(theme)));
+      }
   }
   mp_pbSave->setEnabled( false );
 }
@@ -243,6 +262,14 @@ void WndSettings::editLogsDir()
   selectDir( mp_leLogsDir, trUtf8( "Seleziona la directory per i log" ) );
 }
 
+void WndSettings::editCustomTheme()
+{
+#if defined( KREATOR_DEBUG )
+    qDebug("WndSettings::editCustomTheme() called.");
+#endif
+    selectFile(mp_leCustomTheme, trUtf8("Seleziona il file *.qss del tema"));
+}
+
 void WndSettings::selectDir( QLineEdit* ple, const QString& msg )
 {
 #if defined( KREATOR_DEBUG )
@@ -251,4 +278,15 @@ void WndSettings::selectDir( QLineEdit* ple, const QString& msg )
   QString sDir = QFileDialog::getExistingDirectory( this, ple->text(), msg );
   if( !sDir.isNull() || !sDir.isEmpty() )
     ple->setText( Utils::createPath( sDir ) );
+}
+
+void WndSettings::selectFile(QLineEdit* ple, const QString& msg)
+{
+#if defined( KREATOR_DEBUG )
+    qDebug("WndSettings::selectDir( QLineEdit*, const QString&, const QString& ) called.");
+#endif
+    QString flt("*.qss");
+    QString sDir = QFileDialog::getOpenFileName(this, msg, !ple->text().isEmpty() ? ple->text() : QApplication::applicationDirPath(), flt, &flt);
+    if (!sDir.isNull() || !sDir.isEmpty())
+        ple->setText(Utils::createPath(sDir));
 }

@@ -80,7 +80,9 @@ int main( int argc, char ** argv )
 {
   
   SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
+  //QApplication app(argc, argv);
   QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+
   qInstallMessageHandler( TsKreatorMessageHandler );  
   TsKreator appTsKreator( argc, argv );
   initLogFile();
@@ -91,8 +93,7 @@ int main( int argc, char ** argv )
   QSplashScreen *pSplash = new QSplashScreen( pixSplash, Qt::WindowStaysOnTopHint );
   pSplash->connect( &wndMain, SIGNAL( messageShowed( const QString&, int, const QColor& ) ),
   pSplash, SLOT( showMessage( const QString&, int, const QColor& ) ) );
-  //pSplash->setFixedWidth(468);
-  //pSplash->setFixedHeight(100);
+
   pSplash->show();
   wndMain.connect( &wndMain, SIGNAL( windowClosed() ), &appTsKreator, SLOT( closeTsKreator() ) );
   int iDelay = 2200;

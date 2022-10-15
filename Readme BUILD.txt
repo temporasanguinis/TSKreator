@@ -1,1 +1,0 @@
-Leggi il file: binaries\msvc\Building in VS.txt

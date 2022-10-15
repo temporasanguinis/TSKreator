@@ -915,6 +915,7 @@ void WndArea::refreshMobsView()
     item->setText( 5, Utils::bitvector2string( (*it).acts(), Eleuconf::getAllFlagsCaption(Eleuconf::mobActionsFlags) ).toLower() );
     if ((*it).hasBehaviors()) {
         item->setBackgroundColor(1, Qt::yellow);
+        item->setForeground(1, Qt::black);
     }
     ++it;
   }

@@ -5,6 +5,7 @@
 #include "bit.h"
 #include <QApplication>
 #include <QDesktopWidget>
+#include <QFile>
 
 using namespace ts;
 
@@ -194,6 +195,21 @@ void KreatorSettings::setKreatorTheme( int theme )
   qDebug( "KreatorSettings::setKreatorTheme( int ) called." );
 #endif
   instance().setValue( "/settings/theme", theme );
+}
+
+QString KreatorSettings::customTheme() {
+#if defined( KREATOR_DEBUG )
+	qDebug("KreatorSettings::customTheme() called.");
+#endif
+	return instance().value("/settings/customtheme", -1).toString();
+}
+
+void KreatorSettings::setCustomTheme(QString theme) {
+	QFile ss(theme);
+#if defined( KREATOR_DEBUG )
+	qDebug("KreatorSettings::setCustomTheme( QString ) called.");
+#endif
+	instance().setValue("/settings/customtheme", theme);
 }
 
 

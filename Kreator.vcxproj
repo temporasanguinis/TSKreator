@@ -348,7 +348,6 @@
     <None Include="conf\trapflags.ini" />
     <None Include="conf\zoneflags.ini" />
     <None Include="cpp.hint" />
-    <None Include="qt_globals.targets" />
     <None Include="RuleSet.ruleset" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -423,14 +422,15 @@
     </QtUic>
     <PreBuildEvent>
       <Command>copy $(ProjectDir)binaries\msvc\$(Configuration)\*.* $(OutDir)
-copy "$(ProjectDir)qt_globals.targets" "$(APPDATA)\..\Local\QtMsBuild\qt_globals.targets"</Command>
+copy /-y "$(ProjectDir)qt_globals.targets" "$(APPDATA)\..\Local\QtMsBuild\qt_globals.targets"</Command>
     </PreBuildEvent>
     <PostBuildEvent>
       <Command>
       </Command>
     </PostBuildEvent>
     <PreLinkEvent>
-      <Command>copy /-y "$(ProjectDir)qt.natvis" $(OutDir)</Command>
+      <Command>copy /-y "$(ProjectDir)qt.natvis" "$(OutDir)"
+copy /-y "$(ProjectDir)qt.natvis" "$(OutDir)\qt5.natvis"</Command>
     </PreLinkEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -453,7 +453,7 @@ copy "$(ProjectDir)qt_globals.targets" "$(APPDATA)\..\Local\QtMsBuild\qt_globals
     </QtUic>
     <PreBuildEvent>
       <Command>copy $(ProjectDir)binaries\msvc\$(Configuration)\*.* $(OutDir)
-copy "$(ProjectDir)qt_globals.targets" "$(APPDATA)\..\Local\QtMsBuild\qt_globals.targets"</Command>
+copy /-y "$(ProjectDir)qt_globals.targets" "$(APPDATA)\..\Local\QtMsBuild\qt_globals.targets"</Command>
     </PreBuildEvent>
     <PostBuildEvent>
       <Command>rmdir "$(ProjectDir)binaries\msvc\build" /Q /S
@@ -462,10 +462,11 @@ copy /y "$(ProjectDir)binaries\msvc\$(Configuration)\*.*" "$(OutDir)"
 copy /y "$(OutDir)\Kreator.exe" "$(ProjectDir)binaries\msvc\build\"
 copy /y "$(ProjectDir)binaries\msvc\$(Configuration)\*.*" "$(ProjectDir)binaries\msvc\build\"
 xcopy /y /i "$(ProjectDir)\themes" "$(ProjectDir)binaries\msvc\build\themes" /E /H
-</Command>
+"$(QTDIR)\bin\windeployqt.exe" "$(ProjectDir)binaries\msvc\build\Kreator.exe"</Command>
     </PostBuildEvent>
     <PreLinkEvent>
-      <Command>copy /-y "$(ProjectDir)qt.natvis" $(OutDir)</Command>
+      <Command>copy /-y "$(ProjectDir)qt.natvis" "$(OutDir)"
+copy /-y "$(ProjectDir)qt.natvis" "$(OutDir)\qt5.natvis"</Command>
     </PreLinkEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

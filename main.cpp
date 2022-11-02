@@ -79,9 +79,13 @@ void TsKreatorMessageHandler( QtMsgType type, const QMessageLogContext &ctx, con
 int main( int argc, char ** argv )
 {
   
-  SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
+  bool dpi = SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
   //QApplication app(argc, argv);
   QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+  QFont font("Segoe UI");
+  font.setStyleHint(QFont::SansSerif);
+  font.setPointSize(8);
+  QApplication::setFont(font);
 
   qInstallMessageHandler( TsKreatorMessageHandler );  
   TsKreator appTsKreator( argc, argv );

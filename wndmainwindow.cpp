@@ -94,17 +94,16 @@ void WndMainWindow::init()
   TS::SetKreatorLogo( this );
   KreatorSettings::instance().loadGuiStatus( "MainWindow", this );
   bool loadedCustom = false;
-  if (!KreatorSettings::instance().customTheme().isNull()) {
-      QString ct(KreatorSettings::instance().customTheme());
-      QFile ss(ct);
-      if (ss.exists()) {
-          ss.open(QFile::ReadOnly | QFile::Text);
-          QString prevDir = QDir::currentPath();
-          QDir::setCurrent(QFileInfo(ct).absolutePath());
-          QApplication::setStyle(QStyleFactory::create("Fusion"));
-          qApp->setStyleSheet(QLatin1String(ss.readAll()));
-          //QDir::setCurrent(prevDir);
-          loadedCustom = true;
+  if (KreatorSettings::instance().customTheme().isNull() == false) {
+      QString qsFileName(KreatorSettings::instance().customTheme());
+      QFile qfFile(qsFileName);
+      if (qfFile.exists()) {
+          if (qfFile.open(QFile::ReadOnly | QFile::Text)) {
+              QDir::setCurrent(QFileInfo(qsFileName).absolutePath());
+              QApplication::setStyle(QStyleFactory::create("Fusion"));
+              qApp->setStyleSheet(QLatin1String(qfFile.readAll()));
+              loadedCustom = true;
+          }
       }
   }
   if (!loadedCustom) {

@@ -422,15 +422,19 @@
     </QtUic>
     <PreBuildEvent>
       <Command>copy $(ProjectDir)binaries\msvc\$(Configuration)\*.* $(OutDir)
-copy /-y "$(ProjectDir)qt_globals.targets" "$(APPDATA)\..\Local\QtMsBuild\qt_globals.targets"</Command>
+copy /-y "$(ProjectDir)qt_globals.targets" "$(APPDATA)\..\Local\QtMsBuild\qt_globals.targets"
+copy /-y "$(ProjectDir)qt.natvis" "$(OutDir)"
+copy /-y "$(ProjectDir)qt.natvis" "$(APPDATA)\..\Local\QtMsBuild\qt5.natvis"
+copy /-y "$(ProjectDir)qt.natvis" "$(APPDATA)\..\Local\QtMsBuild\qt5.natvis.xml"
+copy /-y "$(ProjectDir)qt.natvis" "$(APPDATA)\..\Local\QtMsBuild\qt.natvis.xml"</Command>
     </PreBuildEvent>
     <PostBuildEvent>
       <Command>
       </Command>
     </PostBuildEvent>
     <PreLinkEvent>
-      <Command>copy /-y "$(ProjectDir)qt.natvis" "$(OutDir)"
-copy /-y "$(ProjectDir)qt.natvis" "$(OutDir)\qt5.natvis"</Command>
+      <Command>
+      </Command>
     </PreLinkEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -453,7 +457,11 @@ copy /-y "$(ProjectDir)qt.natvis" "$(OutDir)\qt5.natvis"</Command>
     </QtUic>
     <PreBuildEvent>
       <Command>copy $(ProjectDir)binaries\msvc\$(Configuration)\*.* $(OutDir)
-copy /-y "$(ProjectDir)qt_globals.targets" "$(APPDATA)\..\Local\QtMsBuild\qt_globals.targets"</Command>
+copy /-y "$(ProjectDir)qt_globals.targets" "$(APPDATA)\..\Local\QtMsBuild\qt_globals.targets"
+copy /-y "$(ProjectDir)qt.natvis" "$(OutDir)"
+copy /-y "$(ProjectDir)qt.natvis" "$(APPDATA)\..\Local\QtMsBuild\qt5.natvis"
+copy /-y "$(ProjectDir)qt.natvis" "$(APPDATA)\..\Local\QtMsBuild\qt5.natvis.xml"
+copy /-y "$(ProjectDir)qt.natvis" "$(APPDATA)\..\Local\QtMsBuild\qt.natvis.xml"</Command>
     </PreBuildEvent>
     <PostBuildEvent>
       <Command>rmdir "$(ProjectDir)binaries\msvc\build" /Q /S
@@ -465,8 +473,8 @@ xcopy /y /i "$(ProjectDir)\themes" "$(ProjectDir)binaries\msvc\build\themes" /E 
 "$(QTDIR)\bin\windeployqt.exe" "$(ProjectDir)binaries\msvc\build\Kreator.exe"</Command>
     </PostBuildEvent>
     <PreLinkEvent>
-      <Command>copy /-y "$(ProjectDir)qt.natvis" "$(OutDir)"
-copy /-y "$(ProjectDir)qt.natvis" "$(OutDir)\qt5.natvis"</Command>
+      <Command>
+      </Command>
     </PreLinkEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

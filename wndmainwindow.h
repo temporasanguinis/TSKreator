@@ -21,6 +21,8 @@ class WndMainWindow : public QMainWindow, Ui::GuiMainWindow
     WndMainWindow( QWidget* parent );
     ~WndMainWindow();
 
+    void log(QString log);
+
     QMenu* helpMenu() { return mp_popupHelp; }
 
   signals:

@@ -45,6 +45,7 @@ protected slots:
   void removeBehavior();
   void moveUpBehavior();
   void moveDownBehavior();
+  void FullscreenBehaviors();
   void addCondition();
   void removeCondition();
   void moveUpCondition();

@@ -79,7 +79,9 @@ void WndMob::init()
   connect(mp_tbDelCondition, SIGNAL(clicked()), this, SLOT(removeCondition()));
   connect(mp_tbMoveUpCondition, SIGNAL(clicked()), this, SLOT(moveUpCondition()));
   connect(mp_tbMoveDownCondition, SIGNAL(clicked()), this, SLOT(moveDownCondition()));
-  
+  connect(mp_BtnFullscreen, SIGNAL(clicked()), this, SLOT(FullscreenBehaviors()));
+  TS::SetIOAreaIcon(mp_BtnFullscreen);
+
   mp_tbActs->setIcon( TS::GetEditIcon() );
   mp_tbNewActs->setIcon( TS::GetEditIcon() );
   mp_tbAffects->setIcon( TS::GetEditIcon() );
@@ -169,28 +171,35 @@ void WndMob::init()
   mp_Conditions->setModel(m_ConditionModel);
 
   m_BehaviorModel->clear();
-  m_BehaviorModel->setColumnCount(4);
+  m_BehaviorModel->setColumnCount(5);
 
   //mp_Behaviors->verticalHeader()->setResizeMode(QHeaderView::ResizeToContents);
   mp_Behaviors->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
-  mp_Behaviors->verticalHeader()->setMinimumSectionSize(18);
-  mp_Behaviors->verticalHeader()->setMaximumSectionSize(18);
-  mp_Behaviors->verticalHeader()->setDefaultSectionSize(18);
+  mp_Behaviors->verticalHeader()->setMinimumSectionSize(24);
+  mp_Behaviors->verticalHeader()->setMaximumSectionSize(24);
+  mp_Behaviors->verticalHeader()->setDefaultSectionSize(24);
   mp_Behaviors->horizontalHeader()->setStretchLastSection(true);
   m_BehaviorModel->setHeaderData(0, Qt::Orientation::Horizontal, "Tipo Evento");
   m_BehaviorModel->setHeaderData(1, Qt::Orientation::Horizontal, "Evento");
   m_BehaviorModel->setHeaderData(2, Qt::Orientation::Horizontal, "Tipo reazione");
-  m_BehaviorModel->setHeaderData(3, Qt::Orientation::Horizontal, "Reazione");
+  m_BehaviorModel->setHeaderData(4, Qt::Orientation::Horizontal, "Reazione");
+  m_BehaviorModel->setHeaderData(3, Qt::Orientation::Horizontal, "Lag");
+  m_BehaviorModel->horizontalHeaderItem(0)->setToolTip("Ogni behavior dei mob parte da un tipo di evento, e dalla definizione dell'evento.\nSi puo' avere piu eventi identici.");
+  m_BehaviorModel->horizontalHeaderItem(1)->setToolTip("La definizione dell'evento. Dipende dal tipo di evento. Vedere il dropdown del tipo evento.");
+  m_BehaviorModel->horizontalHeaderItem(2)->setToolTip("Ogni behavior deve avere un tipo di reazione all'evento.");
+  m_BehaviorModel->horizontalHeaderItem(3)->setToolTip("Se la reazione e' a un'azione di PG allora lagga il pg di tot cicli\n(1 round = 16 cicli)");
+  m_BehaviorModel->horizontalHeaderItem(4)->setToolTip("La definizione della reazione. Dipende dal tipo reazione.\nVedere tooltip nel dropdown delle reazioni..");
   mp_Behaviors->setItemDelegate(new BehaviorComboBoxDelegate(mp_Behaviors));
   mp_Behaviors->setModel(m_BehaviorModel);
-  
-  mp_Behaviors->setColumnWidth(0, 80);
+
+  mp_Behaviors->setColumnWidth(0, 120);
   mp_Behaviors->setColumnWidth(1, 100);
-  mp_Behaviors->setColumnWidth(2, 120);
-  mp_Conditions->setColumnWidth(0, 130);
-  mp_Conditions->verticalHeader()->setMinimumSectionSize(18);
-  mp_Conditions->verticalHeader()->setMaximumSectionSize(18);
-  mp_Conditions->verticalHeader()->setDefaultSectionSize(18);
+  mp_Behaviors->setColumnWidth(2, 160);
+  mp_Behaviors->setColumnWidth(3, 30);
+  mp_Conditions->setColumnWidth(0, 160);
+  mp_Conditions->verticalHeader()->setMinimumSectionSize(24);
+  mp_Conditions->verticalHeader()->setMaximumSectionSize(24);
+  mp_Conditions->verticalHeader()->setDefaultSectionSize(24);
 
   mp_Behaviors->setSelectionBehavior(QAbstractItemView::SelectRows);
   mp_Behaviors->setSelectionMode(QAbstractItemView::SingleSelection);
@@ -704,8 +713,8 @@ QWidget* ConditionComboBoxDelegate::createEditor(QWidget* parent,
     addItem(model, "<nessuna>", "", 0);
     addItem(model, "Mob ha oggetto", "0", 1);
     addItem(model, "Mob non ha oggetto", "1", 2);
-    addItem(model, "Mob VNUM e' vivo", "2", 3);
-    addItem(model, "Mob VNUM non e' vivo", "3", 4);
+    addItem(model, "Mob vnum e' vivo", "2", 3);
+    addItem(model, "Mob vnum non vivo", "3", 4);
     addItem(model, "Check persistenza", "4", 5);
     addItem(model, "PG ha Award", "5", 6);
     addItem(model, "PG Non ha Award", "6", 7);
@@ -713,6 +722,16 @@ QWidget* ConditionComboBoxDelegate::createEditor(QWidget* parent,
     addItem(model, "Confronta ricordo 2", "8", 9);
     addItem(model, "Pg ha Soldi sopra", "9", 10);
     addItem(model, "Pg ha Soldi sotto", "10", 11);
+    addItem(model, "Pg ha PWP sopra", "11", 12);
+    addItem(model, "Pg ha PWP sotto", "12", 13);
+    addItem(model, "Roll D100", "13", 14);
+    addItem(model, "Stat Roll", "14", 15);
+    addItem(model, "Global True", "15", 16);
+    addItem(model, "Global False", "16", 17);
+    addItem(model, "Pg ha Classe", "17", 18);
+    addItem(model, "Pg ha allineamento", "18", 19);
+    addItem(model, "Pg ha razza", "19", 20);
+    addItem(model, "Mob in room", "20", 21);
 
     editor->setModel(model);
     if (index.column() == 0) {
@@ -737,6 +756,16 @@ QWidget* ConditionComboBoxDelegate::createEditor(QWidget* parent,
         editor->setItemData(9, "La condizione riesce se la memoria del mob nel campo 2 combacia\nIl valore e' il valore da confrontare con la memoria", Qt::ToolTipRole);
         editor->setItemData(10, "La condizione riesce se il PG ha almeno X soldi\nIl valore e' X da confrontare con i soldi del pg", Qt::ToolTipRole);
         editor->setItemData(11, "La condizione riesce se il PG NON ha almeno X soldi\nIl valore e' X da confrontare con i soldi del pg", Qt::ToolTipRole);
+        editor->setItemData(12, "Se il PG ha Pwp piu di X", Qt::ToolTipRole);
+        editor->setItemData(13, "Se il PG NON ha Pwp piu di X", Qt::ToolTipRole);
+        editor->setItemData(14, "Scatta se un dado da 100 e'sotto #X", Qt::ToolTipRole);
+        editor->setItemData(15, "Roll riuscito su #:\n save 0,\n str 1,\n int 2,\n wis 3,\n dex 4,\n con 5,\n chr 6\n", Qt::ToolTipRole);
+        editor->setItemData(16, "Se variabile globale del mud $key e' TRUE", Qt::ToolTipRole);
+        editor->setItemData(17, "Se variabile globale del mud $key e' FALSE", Qt::ToolTipRole);
+        editor->setItemData(18, "Pg ha Classe #Num (da numeri:\n mago 0,\n chierico 1,\n guerriero 2,\n ladro 3,\n druido 4,\n monaco 5,\n barbaro 6,\n stregone 7,\n paladino 8,\n ranger 9,\n psi 10,\n antipaladino 11,\n bardo 12\n)", Qt::ToolTipRole);
+        editor->setItemData(19, "Neutral = 0 Good = 1 Evil = 2", Qt::ToolTipRole);
+        editor->setItemData(20, "Pg ha Razza #Num (da lista razze)", Qt::ToolTipRole);
+        editor->setItemData(21, "Se il Mob e' attualmente nella room #vnum", Qt::ToolTipRole);
     }
     return editor;
 }
@@ -787,9 +816,9 @@ QWidget* BehaviorComboBoxDelegate::createEditor(QWidget* parent,
     const QModelIndex& index) const
 {
     if (index.column() != 0 && index.column() != 2) {
-        if (index.column() == 3) {
+        if (index.column() == 4) {
             auto ret = new QTextEdit(parent);
-            ret->setToolTip("Parametri alla reazione (es. se parla quello che dice)");
+            ret->setToolTip("Parametri alla reazione (vedi dropdown del Tipo)");
             return ret;
         }
         else {
@@ -802,6 +831,15 @@ QWidget* BehaviorComboBoxDelegate::createEditor(QWidget* parent,
         addItem(model, "<nessuno>", "", 0);
         addItem(model, "PG dice", "0", 1);
         addItem(model, "PG da oggetto", "1", 2);
+        addItem(model, "Mob muore", "2", 3);
+        addItem(model, "Cambio ora", "3", 4);
+        addItem(model, "Comando", "4", 5);
+        addItem(model, "PG Entra/Esce", "5", 6);
+        addItem(model, "(s)Follato", "6", 7);
+        addItem(model, "Mob arrivato", "7", 8);
+        addItem(model, "PG ordina", "8", 9);
+        addItem(model, "Ricordo 1 mod.", "9", 10);
+        addItem(model, "Ricordo 2 mod.", "10", 11);
     }
     else if (index.column() == 2) {
         addItem(model, "<nessuno>", "", 0);
@@ -820,12 +858,40 @@ QWidget* BehaviorComboBoxDelegate::createEditor(QWidget* parent,
         addItem(model, "Prendi soldi dal pg", "12", 13);
         addItem(model, "Ricorda (memoria 1)", "13", 14);
         addItem(model, "Ricorda (memoria 2)", "14", 15);
+        addItem(model, "Scompari", "15", 16);
+        addItem(model, "Muori", "16", 17);
+        addItem(model, "Aggredisci", "17", 18);
+        addItem(model, "Carica mob", "18", 19);
+        addItem(model, "Togli mob", "19", 20);
+        addItem(model, "Carica oggetto", "20", 21);
+        addItem(model, "Transfer mob", "21", 22);
+        addItem(model, "Transfer room", "22", 23);
+        addItem(model, "Cammina verso", "23", 24);
+        addItem(model, "Dai medaglia", "24", 25);
+        addItem(model, "Segui", "25", 26);
+        addItem(model, "Esegui comando", "26", 27);
+        addItem(model, "Cambia la Long", "27", 28);
+        addItem(model, "Cambia Sound", "28", 29);
+        addItem(model, "Cambia Sound vicina", "29", 30);
+        addItem(model, "Setta var globale TRUE", "30", 31);
+        addItem(model, "Setta var globale FALSE", "31", 32);
+        addItem(model, "Incrementa (memoria 1)", "32", 33);
+        addItem(model, "Incrementa (memoria 2)", "33", 34);
     }
     editor->setModel(model);
     if (index.column() == 0) {
         editor->setItemData(0, "Scegliendo <nessuno> e' come cancellare l'evento o la reazione", Qt::ToolTipRole);
         editor->setItemData(1, "Scatta quando il pg parla al mob di tell o ask\nIn questo caso l'evento sono le parola chiavi\nStringa vuota scatta per ogni talk", Qt::ToolTipRole);
         editor->setItemData(2, "Scatta quando il pg da un oggetto al mob\nIn questo caso l'evento e' il VNUM dell'oggetto\n-1 scatta su tutti gli oggetti\nL'oggetto dato viene cancellato", Qt::ToolTipRole);
+        editor->setItemData(3, "Scatta quando il mob muore: 1 == morto per mano pg [numero o vuoto]", Qt::ToolTipRole);
+        editor->setItemData(4, "Scatta quando l'ora e' X, se X == "" ogni ora [numero o vuoto]", Qt::ToolTipRole);
+        editor->setItemData(5, "Scatta quando il pg da [numero] comando", Qt::ToolTipRole);
+        editor->setItemData(6, "Scatta quando il pg entra in stanza (1) o esce (0) [numero]", Qt::ToolTipRole);
+        editor->setItemData(7, "Scatta quando il pg inizia a seguire il mob (1 = inizia, 0 = smette) [numero]", Qt::ToolTipRole);
+        editor->setItemData(8, "Scatta quando il mob arriva in VNUM [numero]", Qt::ToolTipRole);
+        editor->setItemData(9, "Scatta se pg ordina al mob, se vuoto qualsiasi cosa, altrimenti l'ordine deve contenere il [testo]", Qt::ToolTipRole);
+        editor->setItemData(10, "Scatta ricordo 1 e' diventato X [numero]", Qt::ToolTipRole);
+        editor->setItemData(11, "Scatta ricordo 2 e' diventato X [numero]", Qt::ToolTipRole);
     }
     if (index.column() == 2) {
         editor->setItemData(0, "Scegliendo <nessuno> e' come cancellare l'evento o la reazione", Qt::ToolTipRole);
@@ -844,6 +910,25 @@ QWidget* BehaviorComboBoxDelegate::createEditor(QWidget* parent,
         editor->setItemData(13, "Il mob reagira' prendendo soldi al pg\nIl numero dei soldi e' il valore", Qt::ToolTipRole);
         editor->setItemData(14, "Il mob reagira' ricordando nel campo 1 il valore\nPuo' essere usato per poi usare condizioni su altre reazioni.", Qt::ToolTipRole);
         editor->setItemData(15, "Il mob reagira' ricordando nel campo 2 il valore\nPuo' essere usato per poi usare condizioni su altre reazioni.", Qt::ToolTipRole);
+        editor->setItemData(16, "Il mob scompare scritta (string)", Qt::ToolTipRole);
+        editor->setItemData(17, "Il mob muore con scritta (string)", Qt::ToolTipRole);
+        editor->setItemData(18, "Il mob aggredisce il pg", Qt::ToolTipRole);
+        editor->setItemData(19, "Carica mob VNUM in VNUM (se il vnum della room e' 0 allora nella room dove si trova)\n[numero numero], esempio:\n3005 23\ncaricherebbe rosetta nella stanza di Yffre", Qt::ToolTipRole);
+        editor->setItemData(20, "Togli mob VNUM dal mud [numero]", Qt::ToolTipRole);
+        editor->setItemData(21, "Carica oggetto VNUM in room VNUM [numero numero]", Qt::ToolTipRole);
+        editor->setItemData(22, "Sposta il mob in room VNUM [numero]", Qt::ToolTipRole);
+        editor->setItemData(23, "Sposta i pg presenti in room VNUM [numero]", Qt::ToolTipRole);
+        editor->setItemData(24, "Il mob inizia a camminare verso la stanza VNUM [numero]", Qt::ToolTipRole);
+        editor->setItemData(25, "Da numero X medaglie al pg (anche negativo) [numero]", Qt::ToolTipRole);
+        editor->setItemData(26, "Segui (1) o smetti di seguire (0) [numero]", Qt::ToolTipRole);
+        editor->setItemData(27, "Esegui i comandi (se il campo e' vuoto ed e' su evento PG Ordina, esegue ordine) [testo]", Qt::ToolTipRole);
+        editor->setItemData(28, "Cambia long al mob [testo]", Qt::ToolTipRole);
+        editor->setItemData(29, "Cambia sound action in room al mob [testo]", Qt::ToolTipRole);
+        editor->setItemData(30, "Cambia sound action in room adiacenti al mob [testo]", Qt::ToolTipRole);
+        editor->setItemData(31, "Setta true variabile globale [key]", Qt::ToolTipRole);
+        editor->setItemData(32, "Setta false variabile globale [key]", Qt::ToolTipRole);
+        editor->setItemData(33, "Incrementa il numero nella locazione di memoria 1 di num [numero]", Qt::ToolTipRole);
+        editor->setItemData(34, "Incrementa il numero nella locazione di memoria 2 di num [numero]", Qt::ToolTipRole);
     }
     return editor;
 }
@@ -944,6 +1029,24 @@ void WndMob::moveUpBehavior() {
         somethingChanged();
     }
 }
+void WndMob::FullscreenBehaviors() {
+    static int mh1, mh2;
+    if (mp_gbMain->minimumHeight() < 1) {
+        mp_gbMain->setMinimumHeight(mh1);
+        mp_gbMain->setMaximumHeight(mh1);
+        mp_gbFlags->setMinimumHeight(mh2);
+        mp_gbFlags->setMaximumHeight(mh2);
+    }
+    else {
+        mh1 = mp_gbMain->minimumHeight();
+        mh2 = mp_gbFlags->minimumHeight();
+        mp_gbMain->setMinimumHeight(0);
+        mp_gbMain->setMaximumHeight(0);
+        mp_gbFlags->setMinimumHeight(0);
+        mp_gbFlags->setMaximumHeight(0);
+    }
+}
+
 void WndMob::moveDownBehavior() {
     int rowIndex = -1;
     if (mp_Behaviors->selectionModel()->currentIndex().isValid()) {
@@ -1090,12 +1193,11 @@ void WndMob::showBehaviors() {
         switch (b.mb_Event)
         {
         case me_Talk:
+        case me_PgOrder:
             ev = QString(b.e_mb_String);
             break;
-        case me_Give:
-            ev = QString::number(b.e_mb_Long);
-            break;
         default:
+            ev = QString::number(b.e_mb_Long);
             break;
         }
 
@@ -1103,6 +1205,14 @@ void WndMob::showBehaviors() {
         {
         case mr_Talk:
         case mr_Emote:
+        case mr_SetGlobalTRUE:
+        case mr_SetGlobalFALSE:
+        case mr_Disappear:
+        case mr_Die:
+        case mr_ExecCommand:
+        case mr_ChangeLong:
+        case mr_ChangeSound:
+        case mr_ChangeNearSound:
             react = QString(b.r_mb_String);
             break;
         case mr_Give:
@@ -1115,9 +1225,20 @@ void WndMob::showBehaviors() {
         case ts::mr_TakeGold:
         case ts::mr_Ricorda1:
         case ts::mr_Ricorda2:
+        case mr_Aggro:
+        case mr_UnLoadMobVnum:
+        case mr_TransferMob:
+        case mr_TransferRoom:
+        case mr_TrackVnum:
+        case mr_GiveMedal:
+        case mr_Follow:
+        case mr_IncrementaRicordo1:
+        case mr_IncrementaRicordo2:
             react = QString::number(b.r_mb_Long[0]);
             break;
         case mr_DestroyObject:
+        case mr_LoadMobVnum:
+        case mr_LoadObjectInVnum:
             for (size_t i = 0; i < MAX_BEHAVIOUR_CONDITIONS; i++)
             {
                 if (b.r_mb_Long[i]>0) react += QString::number(b.r_mb_Long[i]) + " ";
@@ -1139,7 +1260,7 @@ void WndMob::showBehaviors() {
         {
             if (cond.active) {
                 QString condType = QString::number(cond.conditionType);
-                QString condVal = QString::number(cond.condition);
+                QString condVal = QString(cond.s_condition);// QString::number(cond.condition);
                 behaviorConditionMap[counter].push_back(std::vector<QString>{
                     condType,
                     condVal
@@ -1147,9 +1268,11 @@ void WndMob::showBehaviors() {
             }
         }
         QList<QStandardItem*> rowData;
+        QString lag = QString::number(b.r_mbLag);
         rowData << (new QStandardItem(evType));
         rowData << new QStandardItem(ev);
         rowData << new QStandardItem(reactType);
+        rowData << new QStandardItem(lag);
         rowData << new QStandardItem(react);
         m_BehaviorModel->appendRow(rowData);
         int rowIndex = m_BehaviorModel->rowCount() - 1;
@@ -1187,9 +1310,9 @@ void WndMob::showConditionsForBehavior(int behIndex) {
 
 QString err(int behIndex, QString err, int condIndex = -1) {
     if (condIndex == -1)
-        return QString("Behavior %0: %1").arg(behIndex).arg(err);
+        return QString("Behavior %0: %1").arg(behIndex + 1).arg(err);
     else 
-        return QString("Behavior %0: Condizione %1, Errore: %2").arg(behIndex).arg(condIndex).arg(err);
+        return QString("Behavior %0: Condizione %1, Errore: %2").arg(behIndex+1).arg(condIndex + 1).arg(err);
 }
 
 QString WndMob::validateBehaviors() {
@@ -1198,39 +1321,52 @@ QString WndMob::validateBehaviors() {
         QString v1 = m_BehaviorModel->item(i, 0)->data(Qt::EditRole).toString();
         QString v2 = m_BehaviorModel->item(i, 1)->data(Qt::EditRole).toString();
         QString v3 = m_BehaviorModel->item(i, 2)->data(Qt::EditRole).toString();
-        QString v4 = m_BehaviorModel->item(i, 3)->data(Qt::EditRole).toString();
+        QString v4 = m_BehaviorModel->item(i, 4)->data(Qt::EditRole).toString();
+        QString v5 = m_BehaviorModel->item(i, 3)->data(Qt::EditRole).toString();
+
         if (v1 != "" && (v3 == "")) return err(i, "Campi mancanti");
         if ((v3 != "" && v3 != "8") && v4 == "") return err(i, "Campi mancanti");
 
         MobEvents ev = (MobEvents)v1.toInt();
         MobReactions re = (MobReactions)v3.toInt();
-        if (ev >= ts::me_SIZE) return err(i, "Evento sconosciuto");
-        if (re >= ts::mr_SIZE) return err(i, "Reazione sconosciuta");;
+        if (ev >= ts::me_SIZE || ev < 0) return err(i, "Evento sconosciuto");
+        if (re >= ts::mr_SIZE || re < 0) return err(i, "Reazione sconosciuta");;
         bool ok;
+
+        if (v5 != "" && !v5.toInt(&ok) && !ok) {
+            return err(i, "Lag deve essere un numero o vuoto");
+        }
+
         switch (ev)
         {
         case ts::me_Talk:
+        case ts::me_PgOrder:
             if (v2 != "" && v2.trimmed()=="") return err(i, "Mancano parole chiavi per l'evento. Se vuoi qualsiasi parola deve essere completamente vuoto.");
             break;
-        case ts::me_Give:
+        default:
             v2.toInt(&ok);
             if (!ok) return err(i, "Evento richiede un numero");
             break;
-        default:
-            return err(i, "Evento sconosciuto");
         }
         switch (re)
         {
         case ts::mr_Talk:
             if (v4 == "") return err(i, "Manca testo da parlare per la reazione talk");
             break;
-        case ts::mr_Give:
-            v4.toInt(&ok);
-            if (!ok) return err(i, "Reazione richiede un numero");
-            break;
         case ts::mr_Emote:
             if (v4 == "") return err(i, "Manca testo per la reazione emote");
             break;
+        case ts::mr_ChangeLong:
+        case ts::mr_ChangeSound:
+        case ts::mr_ChangeNearSound:
+        case ts::mr_ExecCommand:
+            if (v4 == "") return err(i, "Manca stringa per la reazione");
+            break;
+        case ts::mr_SetGlobalFALSE:
+        case ts::mr_SetGlobalTRUE:
+            if (v4 == "") return err(i, "Manca la key della variabile");
+            break;
+        case ts::mr_Give:
         case ts::mr_Xp:
         case ts::mr_Elementi:
         case ts::mr_Divini:
@@ -1240,10 +1376,20 @@ QString WndMob::validateBehaviors() {
         case ts::mr_TakeGold:
         case ts::mr_Ricorda1:
         case ts::mr_Ricorda2:
+        case ts::mr_IncrementaRicordo1:
+        case ts::mr_IncrementaRicordo2:
+        case ts::mr_Follow:
+        case ts::mr_GiveMedal:
+        case ts::mr_TransferMob:
+        case ts::mr_TransferRoom:
+        case ts::mr_TrackVnum:
+        case ts::mr_UnLoadMobVnum:
             v4.toInt(&ok);
             if (!ok) return err(i, "Reazione richiede un numero");
             break;
         case ts::mr_RangeGive:
+        case mr_LoadMobVnum:
+        case mr_LoadObjectInVnum:
         {
             auto sp = v4.split(" ", QString::SkipEmptyParts);
             if (sp.size() != 2) return  err(i, "Reazione richiede due numeri");
@@ -1273,13 +1419,19 @@ QString WndMob::validateBehaviors() {
         {
             if (behaviorConditionMap[i][x][0] != "" &&
                 behaviorConditionMap[i][x][1] == "") {
-                return err(i, "Mancano valori", x);
+                return err(i, "Condizione: Mancano valori", x);
             }
             auto zz = (MobBehaviourCondition)behaviorConditionMap[i][x][0].toInt(&ok);
-            if (!ok) return err(i, "Deve essere un numero", x);
+            if (!ok) return err(i, "Condizione: Deve essere un numero", x);
             if (zz < 0 || zz >= ts::MobBehaviourCondition::mc_SIZE) return err(i, "Condizione sconosciuta", x);
-            behaviorConditionMap[i][x][1].toInt(&ok);
-            if (!ok) return err(i, "Deve essere un numero", x);
+            if ((MobBehaviourCondition)zz == mc_GlobalTrue ||
+                (MobBehaviourCondition)zz == mc_GlobalFalse) {
+                if (behaviorConditionMap[i][x][1] == "") return err(i, "Condizione: Deve essere una stringa", x);
+            }
+            else {
+                behaviorConditionMap[i][x][1].toInt(&ok);
+                if (!ok) return err(i, "Condizione: Deve essere un numero", x);
+            }
         }
     }
     return "";
@@ -1294,7 +1446,10 @@ void WndMob::applyBehaviors() {
         QString v1 = m_BehaviorModel->item(i, 0)->data(Qt::EditRole).toString();
         QString v2 = m_BehaviorModel->item(i, 1)->data(Qt::EditRole).toString();
         QString v3 = m_BehaviorModel->item(i, 2)->data(Qt::EditRole).toString();
-        QString v4 = m_BehaviorModel->item(i, 3)->data(Qt::EditRole).toString();
+        QString v4 = m_BehaviorModel->item(i, 4)->data(Qt::EditRole).toString();
+        QString v5 = m_BehaviorModel->item(i, 3)->data(Qt::EditRole).toString();
+        
+        b.r_mbLag = v5.toInt();
 
         MobEvents ev = (MobEvents)v1.toInt();
         b.mb_Event = ev;
@@ -1302,33 +1457,54 @@ void WndMob::applyBehaviors() {
         b.mb_Reaction = re;
         switch (ev)
         {
-        case ts::me_Talk:
+        case me_Talk:
+        case me_PgOrder:
             strcpy(b.e_mb_String, v2.toLatin1());
             break;
-        case ts::me_Give:
+        case me_Give:
+        case me_Death:
+        case me_Time:
+        case me_Command:
+        case me_PlayerEnterLeave:
+        case me_Follow:
+        case me_Arrives:
+        case me_Ricordo1Modificato:
+        case me_Ricordo2Modificato:
             b.e_mb_Long = v2.toInt();
             break;
         }
         switch (re)
         {
-        case ts::mr_Talk:
+        case mr_Talk:
+        case mr_Disappear:
+        case mr_Die:
+        case mr_ExecCommand:
+        case mr_ChangeLong:
+        case mr_ChangeSound:
+        case mr_ChangeNearSound:
+        case mr_SetGlobalTRUE:
+        case mr_SetGlobalFALSE:
+        case mr_Aggro:
+        case mr_Emote:
             strcpy(b.r_mb_String, v4.toLatin1());
             break;
-        case ts::mr_Give:
-            b.r_mb_Long[0] = v4.toInt();
-            break;
-        case ts::mr_Emote:
-            strcpy(b.r_mb_String, v4.toLatin1());
-            break;
-        case ts::mr_Xp:
-        case ts::mr_Elementi:
-        case ts::mr_Divini:
-        case ts::mr_GiveAward:
-        case ts::mr_TakeAward:
-        case ts::mr_GiveGold:
-        case ts::mr_TakeGold:
-        case ts::mr_Ricorda1:
-        case ts::mr_Ricorda2:
+        case mr_Give:
+        case mr_Elementi:
+        case mr_Divini:
+        case mr_GiveAward:
+        case mr_TakeAward:
+        case mr_GiveGold:
+        case mr_TakeGold:
+        case mr_Ricorda1:
+        case mr_Ricorda2:
+        case mr_Xp:
+        case mr_TrackVnum: /* mob inizia a camminare verso VNUM   */
+        case mr_TransferMob: /* sposta mob in VNUM   */
+        case mr_GiveMedal: /* Da numero X medaglei al pg (anche negativo) */
+        case mr_UnLoadMobVnum: /* togli mob VNUM dal mud  */
+        case mr_Follow: /* segui (1) o smetti di seguire (0)*/
+        case mr_IncrementaRicordo1:
+        case mr_IncrementaRicordo2:
             b.r_mb_Long[0] = v4.toInt();
             break;
         case ts::mr_RangeGive:
@@ -1340,7 +1516,10 @@ void WndMob::applyBehaviors() {
             
         }
             break;
-        case ts::mr_DestroyObject:
+        case mr_DestroyObject:
+        case mr_LoadMobVnum:
+        case mr_LoadObjectInVnum:
+        case mr_TransferRoom:
         {
             auto sp = v4.split(" ", QString::SkipEmptyParts);
             for (size_t i = 0; i < sp.length(); i++)
@@ -1361,6 +1540,7 @@ void WndMob::applyBehaviors() {
                 b.conditions[activeC].active = true;
                 b.conditions[activeC].conditionType = (MobBehaviourCondition)behaviorConditionMap[i][x][0].toInt();
                 b.conditions[activeC].condition = behaviorConditionMap[i][x][1].toLong();
+                strcpy(b.conditions[activeC].s_condition, behaviorConditionMap[i][x][1].toUtf8().data());
                 activeC++;
             }
         }

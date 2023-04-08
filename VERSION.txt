@@ -1,4 +1,9 @@
-﻿1.67
+﻿1.68
+- nuovi behavior per i mob
+- ulteriori correzioni all'UI
+- finestra log
+__________________________________
+1.67
 - aggiunti dei DLL mancanti perche non lanciava su certi OS
 - altre correzioni all'UI di QT 5
 __________________________________

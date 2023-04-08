@@ -22,12 +22,31 @@ namespace ts
         mc_Ricordo2,
         mc_PgHaSoldi,
         mc_PgNonHaSoldi,
+        mc_PgHaPwpSopra, /* Se il PG ha pwp piu di X*/
+        mc_PgHaPwpSotto, /* Se il PG NON ha pwp piu di X*/
+        mc_RollD100, /* scatta se un dado da 100 e'sotto X */
+        mc_StatCheck, /* roll riuscito su: save 0, str 1, int 2, wis 3, dex 4, con 5, chr 6 */
+        mc_GlobalTrue, /* se global (stirng) e' TRUE */
+        mc_GlobalFalse, /* se global (stirng) e' FALSE */
+        mc_PGHasClass, /* pg ha classe: da numeri classe */
+        mc_PGHasAlign, /* neutral = 0 good = 1 evil = 2*/
+        mc_PGHasRace, /* pg ha race num (da lista razze)*/
+        mc_InRoom, /* mob in room vnum */
         mc_SIZE
     };
 
     enum MobEvents {
         me_Talk, /* reagisce a tell ed ask; e.mb_String contiene la lista di parole chiave, separate da spazi */
         me_Give,  /* reagisce al give; e.mb_Long contiene il vnum dell'oggetto riconosciuto */
+        me_Death, /* quando il mob muore: 1 == morto per mano pg  */
+        me_Time, /* quando l'ora e' X, se X == "" ogni ora */
+        me_Command, /* quando il pg da comandi NUM  */
+        me_PlayerEnterLeave, /* quando il pg entra in stanza (1) o esce (0)  */
+        me_Follow, /* quando il pg inizia a seguire il mob 1=inizia 0 = smette  */
+        me_Arrives, /* quando il mob arriva in VNUM  */
+        me_PgOrder, /* pg ordina al mob, se vuoto qualsiasi cosa, altrimenti l'ordine deve contenere (string) */
+        me_Ricordo1Modificato, /* ricordo 1 e' diventato X (number)*/
+        me_Ricordo2Modificato, /* ricordo 2 e' diventato X (number)*/
         me_SIZE
     };
 
@@ -47,6 +66,25 @@ namespace ts
         mr_TakeGold,
         mr_Ricorda1,
         mr_Ricorda2,
+        mr_Disappear, /* mob scompare scritta (string)  */
+        mr_Die, /* mob muore con scritta (string)  */
+        mr_Aggro, /* aggra il pg */
+        mr_LoadMobVnum, /*- carica mob VNUM in VNUM (se il vnum della room e' 0 allora nella room dove si trova)  */
+        mr_UnLoadMobVnum, /* togli mob VNUM dal mud  */
+        mr_LoadObjectInVnum, /*- carica oggetto VNUM in room VNUM  */
+        mr_TransferMob, /* sposta mob in VNUM   */
+        mr_TransferRoom, /* sposta i pg in VNUM   */
+        mr_TrackVnum, /* mob inizia a camminare verso VNUM   */
+        mr_GiveMedal, /* Da numero X medaglei al pg (anche negativo) */
+        mr_Follow, /* segui (1) o smetti di seguire (0)*/
+        mr_ExecCommand, /* esegui i comandi (stringa) se vuoto e su evento PgOrder, esegue ordine */
+        mr_ChangeLong, /* cambia long al mob  (string) */
+        mr_ChangeSound, /* cambia action in room al mob  (string) */
+        mr_ChangeNearSound, /* cambia action in room adiacenti al mob  (string)  */
+        mr_SetGlobalTRUE, /* setta true variabile globale (string) */
+        mr_SetGlobalFALSE, /* setta false variabile globale (string) */
+        mr_IncrementaRicordo1, /* Incrementa il numero nella locazione di memoria Y di num (number)*/
+        mr_IncrementaRicordo2, /* Incrementa il numero nella nella locazione di memoria Y di num (number)*/
         mr_SIZE
     };
 
@@ -55,6 +93,7 @@ namespace ts
         bool active;
         enum MobBehaviourCondition conditionType;
         long condition;
+        char s_condition[2048];
     } BehaviourCondition;
 
     typedef struct MobBehaviour_Struct
@@ -66,6 +105,7 @@ namespace ts
         char r_mb_String[2048];
         long r_mb_Long[MAX_BEHAVIOUR_CONDITIONS];
         short int r_mb_Range;
+        short int r_mbLag;
         struct BehaviourCondition conditions[MAX_BEHAVIOUR_CONDITIONS];
     } MobBehaviour;
 

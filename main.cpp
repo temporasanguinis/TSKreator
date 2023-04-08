@@ -11,6 +11,7 @@
 #include "guiversion.h"
 #include "settings.h"
 #include <windows.h>
+#include <QMessageBox>
 
 QFile *pLogFile = 0;
 
@@ -37,13 +38,26 @@ void closeLogFile()
   }
 }
 
+WndMainWindow* mainWin = NULL;
+
+void showMessage(QString msg, int error = 0) {
+    if (!mainWin) return;
+    QMessageBox msgBox(mainWin);
+    msgBox.setSizePolicy(QSizePolicy::Policy::Preferred, QSizePolicy::Policy::Expanding);
+    msgBox.setWindowIcon(mainWin->windowIcon());
+    msgBox.setWindowTitle(error ? (QString("Errore") + (error > 1 ? QString(" FATALE") : QString(""))) : QString("Messaggio"));
+    msgBox.setIcon(error == 2 ? QMessageBox::Icon::Critical : error ? QMessageBox::Icon::Warning : QMessageBox::Icon::Information);
+    msgBox.setText(msg);
+    msgBox.exec();
+}
 void TsKreatorMessageHandler( QtMsgType type, const QMessageLogContext &ctx, const QString &msg )
 {
   QString sTxt = "";
-
+  BOOL isDebug = FALSE;
   switch( type )
   {
   case QtDebugMsg:
+      isDebug = TRUE;
     sTxt = QString("[Debug] %1").arg(msg);
     break;
   case QtWarningMsg:
@@ -51,9 +65,11 @@ void TsKreatorMessageHandler( QtMsgType type, const QMessageLogContext &ctx, con
     break;
   case QtCriticalMsg:
     sTxt = QString( "[Critical]: %1").arg(msg );
+    showMessage(sTxt, 1);
     break;
   case QtFatalMsg:
     sTxt = QString( "[Fatal] %1").arg(msg );
+    showMessage(sTxt, 2);
     abort();
   default:
     sTxt = QString( "[Info]: %1").arg(msg );
@@ -62,6 +78,7 @@ void TsKreatorMessageHandler( QtMsgType type, const QMessageLogContext &ctx, con
 
   if( !sTxt.isEmpty() )
   {
+      if (mainWin && !isDebug) mainWin->log(sTxt);
     if( pLogFile )
     {
       QTextStream stream( pLogFile );
@@ -74,6 +91,7 @@ void TsKreatorMessageHandler( QtMsgType type, const QMessageLogContext &ctx, con
     }
   }
 }
+
 
 
 int main( int argc, char ** argv )
@@ -93,6 +111,7 @@ int main( int argc, char ** argv )
   QString sLogHeader = QString( "Starting log at " ) + QDateTime::currentDateTime().toString( "dd/MM/yyyy hh:mm:ss" );
   qDebug( sLogHeader.toUtf8().data() );
   WndMainWindow wndMain( 0 );
+ 
   QPixmap pixSplash(":/images/logo.png");
   QSplashScreen *pSplash = new QSplashScreen( pixSplash, Qt::WindowStaysOnTopHint );
   pSplash->connect( &wndMain, SIGNAL( messageShowed( const QString&, int, const QColor& ) ),
@@ -116,9 +135,11 @@ int main( int argc, char ** argv )
   }
 
   QTimer::singleShot( iDelay, pSplash, SLOT( close() ) );
+  mainWin = &wndMain;
   QTimer::singleShot( iDelay + 200, &wndMain, SLOT( show() ) );
 
   int iAppRet = appTsKreator.exec();
+  mainWin = NULL;
   delete pSplash;
   qDebug( "TS Kreator exit with code #%d.", iAppRet );
   closeLogFile();

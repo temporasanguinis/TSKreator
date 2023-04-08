@@ -50,6 +50,11 @@ WndMainWindow::~WndMainWindow()
 #endif
 }
 
+void WndMainWindow::log(QString log)
+{
+    WndMainWindow::showMessage(log, 0);
+}
+
 void WndMainWindow::closeMainWindow()
 {
 #if defined( KREATOR_DEBUG )

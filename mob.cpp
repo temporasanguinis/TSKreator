@@ -422,6 +422,7 @@ namespace ts
         switch (beh.mb_Event) {
 
         case me_Talk:
+        case me_PgOrder:
         {
             auto str = QString(beh.e_mb_String).replace("\r\n", "").replace("\r", "").replace("\n", "").trimmed();
             if (str == "") {
@@ -434,6 +435,14 @@ namespace ts
             break;
 
         case me_Give:
+        case me_Death:
+        case me_Time:
+        case me_Command:
+        case me_PlayerEnterLeave:
+        case me_Follow:
+        case me_Arrives:
+        case me_Ricordo1Modificato:
+        case me_Ricordo2Modificato:
 
             ret += QString::number(beh.e_mb_Long) + "\n";
 
@@ -449,16 +458,28 @@ namespace ts
         {
             if (beh.conditions[i].active) {
                 ret += "C" + QString::number((int)beh.conditions[i].conditionType) + "\n";
-                ret += QString::number(beh.conditions[i].condition) + "\n";
+                ret += QString(beh.conditions[i].s_condition) + "\n";
             }
         }
 
-        ret += "R" + QString::number((int)beh.mb_Reaction) + "\n";
+        ret += "R" + QString::number((int)beh.mb_Reaction);
+        if (beh.r_mbLag) {
+            ret += "L" + QString::number((int)beh.r_mbLag);
+        }
+        ret +="\n";
 
         switch (beh.mb_Reaction) {
 
         case mr_Talk:
-
+        case mr_Disappear:
+        case mr_Die:
+        case mr_ExecCommand:
+        case mr_ChangeLong:
+        case mr_ChangeSound:
+        case mr_ChangeNearSound:
+        case mr_SetGlobalTRUE:
+        case mr_SetGlobalFALSE:
+        case mr_Aggro:
         case mr_Emote:
             ret += QString(beh.r_mb_String) + "\n~\n";
             break;
@@ -478,9 +499,19 @@ namespace ts
         case mr_Ricorda1:
         case mr_Ricorda2:
         case mr_Xp:
+        case mr_TrackVnum: /* mob inizia a camminare verso VNUM   */
+        case mr_TransferMob: /* sposta mob in VNUM   */
+        case mr_GiveMedal: /* Da numero X medaglei al pg (anche negativo) */
+        case mr_UnLoadMobVnum: /* togli mob VNUM dal mud  */
+        case mr_Follow: /* segui (1) o smetti di seguire (0)*/
+        case mr_IncrementaRicordo1:
+        case mr_IncrementaRicordo2:
             ret += QString::number(beh.r_mb_Long[0]) + "\n";
             break;
         case mr_DestroyObject:
+        case mr_LoadMobVnum:
+        case mr_LoadObjectInVnum:
+        case mr_TransferRoom:
         {
             QString buffer = "";
             for (size_t i = 0; i < MAX_BEHAVIOUR_CONDITIONS; i++)
@@ -665,6 +696,7 @@ namespace ts
         bool any = false;
         while (fscanf(fp, "%s", TmpBuf) && *TmpBuf == 'E') {
             MobBehaviour mb;
+            mb.r_mbLag = 0;
             mb.mb_Event = MobEvents::me_SIZE;
             mb.e_mb_Long = 0;
             strcpy(mb.e_mb_String, "");
@@ -679,16 +711,33 @@ namespace ts
             switch (mb.mb_Event = (MobEvents)atoi(TmpBuf + 1)) {
 
             case me_Talk:
+            case me_PgOrder:
             {
                 auto val = (Utils::readString(fp).toLower().trimmed());
                 strcpy(mb.e_mb_String, val.toLatin1());
             }
                 break;
 
+            case me_Time:
+                if (!fscanf(fp, "%s", TmpBuf)) {
+                    qCritical("ReadMobBehaviours(%s): syntax error", m_name.toUtf8().data());
+                    FreeMobBehaviour(mb);
+                    return any;
+                }
+
+                mb.e_mb_Long = !*TmpBuf ? -1 : atol(TmpBuf);
+                break;
+            case me_Death:
+            case me_Command:
+            case me_PlayerEnterLeave:
+            case me_Follow:
+            case me_Arrives:
+            case me_Ricordo1Modificato:
+            case me_Ricordo2Modificato:
             case me_Give:
 
                 if (!fscanf(fp, "%s", TmpBuf)) {
-                    qWarning("ReadMobBehaviours(%ld): syntax error");
+                    qCritical("ReadMobBehaviours(%s): syntax error", m_name.toUtf8().data());
                     FreeMobBehaviour(mb);
                     return any;
                 }
@@ -698,28 +747,34 @@ namespace ts
                 break;
 
             default:
-                qWarning("ReadMobBehaviours(%ld): syntax error");
+                qCritical("ReadMobBehaviours(%s): syntax error", m_name.toUtf8().data());
                 FreeMobBehaviour(mb);
                 return any;
             }
             int numCondizioni = 0;
         again:
             if (!(fscanf(fp, "%s", TmpBuf))) {
-                qWarning("ReadMobBehaviours(%ld): syntax error");
+                qCritical("ReadMobBehaviours(%s): syntax error", m_name.toUtf8().data());
                 FreeMobBehaviour(mb);
                 return any;
             }
             if (*TmpBuf != 'R' && *TmpBuf != 'C') {
-                qWarning("ReadMobBehaviours(%ld): syntax error");
+                qCritical("ReadMobBehaviours(%s): syntax error", m_name.toUtf8().data());
                 FreeMobBehaviour(mb);
                 return any;
             }
 
             if (*TmpBuf == 'C') {
+                if (numCondizioni>MAX_BEHAVIOUR_CONDITIONS-1)
+                {
+                    qCritical("ReadMobBehaviours(%s): syntax error, troppe condizioni", m_name.toUtf8().data());
+                    FreeMobBehaviour(mb);
+                    return any;
+                }
                 int tipoCondizione = atoi(TmpBuf + 1);
                 if (!(fscanf(fp, "%s", TmpBuf)))
                 {
-                    qWarning("ReadMobBehaviours(%ld): syntax error");
+                    qCritical("ReadMobBehaviours(%s): syntax error", m_name.toUtf8().data());
                     FreeMobBehaviour(mb);
                     return any;
                 }
@@ -727,14 +782,27 @@ namespace ts
                 mb.conditions[numCondizioni].active = true;
                 mb.conditions[numCondizioni].conditionType = (MobBehaviourCondition)tipoCondizione;
                 mb.conditions[numCondizioni].condition = condizione;
+                strcpy(mb.conditions[numCondizioni].s_condition, TmpBuf);
                 numCondizioni++;
                 goto again;
             }
 
+            char* lag = 0;
+            if ((lag = strstr(TmpBuf, "L"))++) {
+                mb.r_mbLag = (short)atoi(lag);
+            }
             switch (mb.mb_Reaction = (MobReactions)atoi(TmpBuf + 1)) {
 
             case mr_Talk:
-
+            case mr_Disappear:
+            case mr_Die:
+            case mr_ExecCommand:
+            case mr_ChangeLong:
+            case mr_ChangeSound:
+            case mr_ChangeNearSound:
+            case mr_SetGlobalTRUE:
+            case mr_SetGlobalFALSE:
+            case mr_Aggro:
             case mr_Emote:
             {
                 auto val = (Utils::readString(fp).trimmed());
@@ -745,12 +813,12 @@ namespace ts
 
             case mr_RangeGive:
                 if (fgets(TmpBuf, 4096, fp) == NULL) {
-                    qWarning("ReadMobBehaviours(%ld): syntax error");
+                    qCritical("ReadMobBehaviours(%s): syntax error", m_name.toUtf8().data());
                     FreeMobBehaviour(mb);
                     return any;
                 }
                 if (fgets(TmpBuf, 4096, fp) == NULL) {
-                    qWarning("ReadMobBehaviours(%ld): syntax error");
+                    qCritical("ReadMobBehaviours(%s): syntax error", m_name.toUtf8().data());
                     FreeMobBehaviour(mb);
                     return any;
                 }
@@ -759,7 +827,7 @@ namespace ts
                     tmp = tmp.trimmed();
                     auto split = tmp.split(' ', QString::SkipEmptyParts, Qt::CaseInsensitive);
                     if (split.length() != 2) {
-                        qWarning("ReadMobBehaviours(%ld): syntax error");
+                        qCritical("ReadMobBehaviours(%s): syntax error", m_name.toUtf8().data());
                         FreeMobBehaviour(mb);
                         return any;
                     }
@@ -776,27 +844,30 @@ namespace ts
             case mr_Xp:
 
                 if (!fscanf(fp, "%s", TmpBuf)) {
-                    qWarning("ReadMobBehaviours(%ld): syntax error");
+                    qCritical("ReadMobBehaviours(%s): syntax error", m_name.toUtf8().data());
                     FreeMobBehaviour(mb);
                     return any;
                 }
 
                 mb.r_mb_Long[0] = atol(TmpBuf);
                 if (mb.mb_Reaction == mr_Divini && mb.r_mb_Long[0] > 10) {
-                    qWarning("Caricato Mob %d che ha Behavior di pagare divini: %d", vnumber(), mb.r_mb_Long[0]);
+                    qCritical("Caricato Mob %d che ha Behavior di pagare divini: %d", vnumber(), mb.r_mb_Long[0]);
                 }
                 if (mb.mb_Reaction == mr_Elementi && mb.r_mb_Long[0] > 100) {
-                    qWarning("Caricato Mob %d che ha Behavior di pagare elementi: %d", vnumber(), mb.r_mb_Long[0]);
+                    qCritical("Caricato Mob %d che ha Behavior di pagare elementi: %d", vnumber(), mb.r_mb_Long[0]);
                 }
                 break;
             case mr_DestroyObject:
+            case mr_LoadMobVnum:
+            case mr_LoadObjectInVnum:
+            case mr_TransferRoom:
                 if(fgets(TmpBuf, 4096, fp) == NULL) {
-                    qWarning("ReadMobBehaviours(%ld): syntax error");
+                    qCritical("ReadMobBehaviours(%s): syntax error", m_name.toUtf8().data());
                     FreeMobBehaviour(mb);
                     return any;
                 }
                 if (fgets(TmpBuf, 4096, fp) == NULL) {
-                    qWarning("ReadMobBehaviours(%ld): syntax error");
+                    qCritical("ReadMobBehaviours(%s): syntax error", m_name.toUtf8().data());
                     FreeMobBehaviour(mb);
                     return any;
                 }
@@ -821,20 +892,27 @@ namespace ts
             case mr_TakeAward:
             case mr_Ricorda1:
             case mr_Ricorda2:
+            case mr_TrackVnum: /* mob inizia a camminare verso VNUM   */
+            case mr_TransferMob: /* sposta mob in VNUM   */
+            case mr_GiveMedal: /* Da numero X medaglei al pg (anche negativo) */
+            case mr_UnLoadMobVnum: /* togli mob VNUM dal mud  */
+            case mr_Follow: /* segui (1) o smetti di seguire (0)*/
+            case mr_IncrementaRicordo1:
+            case mr_IncrementaRicordo2:
                 if (fgets(TmpBuf, 4096, fp) == NULL) {
-                    qWarning("ReadMobBehaviours(%ld): syntax error");
+                    qCritical("ReadMobBehaviours(%s): syntax error", m_name.toUtf8().data());
                     FreeMobBehaviour(mb);
                     return any;
                 }
                 if (fgets(TmpBuf, 4096, fp) == NULL) {
-                    qWarning("ReadMobBehaviours(%ld): syntax error");
+                    qCritical("ReadMobBehaviours(%s): syntax error", m_name.toUtf8().data());
                     FreeMobBehaviour(mb);
                     return any;
                 }
                 mb.r_mb_Long[0] = atol(TmpBuf);
                 break;
             default:
-                qWarning("ReadMobBehaviours(%ld): syntax error");
+                qCritical("ReadMobBehaviours(%s): syntax error", m_name.toUtf8().data());
                 FreeMobBehaviour(mb);
                 return any;
             }

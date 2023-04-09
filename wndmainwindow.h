@@ -4,6 +4,7 @@
 #pragma warning(push, 0)
 #include <QMainWindow>
 #include "ui_guimainwindow.h"
+#include "wnd_log.h"
 #pragma warning(pop)
 
 class QAction;
@@ -46,6 +47,7 @@ class WndMainWindow : public QMainWindow, Ui::GuiMainWindow
     void openRecentFile();
     void filterList();
     void checkBootFile();
+    void showLog();
 
   protected:
     void init();
@@ -64,7 +66,7 @@ class WndMainWindow : public QMainWindow, Ui::GuiMainWindow
     QAction* mp_actSettings;
     QAction* mp_actQuit;
 	QAction* mp_recentFileActs[5];
-
+    WndLog* mp_log = NULL;
 };
 
 #endif // TS_WNDMAINWINDOW_H

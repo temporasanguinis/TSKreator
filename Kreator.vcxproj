@@ -67,6 +67,7 @@
     <ClCompile Include="wndtester.cpp" />
     <ClCompile Include="wndzone.cpp" />
     <ClCompile Include="wndzonecommand.cpp" />
+    <ClCompile Include="wnd_log.cpp" />
     <ClCompile Include="zone.cpp" />
     <ClCompile Include="zonecommand.cpp" />
     <ClCompile Include="zonecommandgroup.cpp" />
@@ -134,6 +135,12 @@
     </ClInclude>
     <ClInclude Include="ui_guiitemvalues.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ui_guilog.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="ui_guimainwindow.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
@@ -208,6 +215,7 @@
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Compiling %(Filename).%(Extension) using MOC</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(RootDir)%(Directory)moc_%(Filename).cpp</Outputs>
     </QtMoc>
+    <QtMoc Include="wnd_log.h" />
     <ClInclude Include="zone.h" />
     <ClInclude Include="zonecommand.h" />
     <ClInclude Include="zonecommandgroup.h" />
@@ -252,6 +260,10 @@
       <OutputFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)\ui_%(Filename).h</OutputFile>
     </QtUic>
     <QtUic Include="guiitemvalues.ui">
+      <OutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)\ui_%(Filename).h</OutputFile>
+      <OutputFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)\ui_%(Filename).h</OutputFile>
+    </QtUic>
+    <QtUic Include="guilog.ui">
       <OutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)\ui_%(Filename).h</OutputFile>
       <OutputFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)\ui_%(Filename).h</OutputFile>
     </QtUic>

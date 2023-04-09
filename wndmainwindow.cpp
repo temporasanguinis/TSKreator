@@ -48,11 +48,13 @@ WndMainWindow::~WndMainWindow()
 #if defined( KREATOR_DEBUG )
   qDebug( "WndMainWindow::~WndMainWindow() called." );
 #endif
+  delete this->mp_log;
 }
 
 void WndMainWindow::log(QString log)
 {
     WndMainWindow::showMessage(log, 0);
+    this->mp_log->Log(log);
 }
 
 void WndMainWindow::closeMainWindow()
@@ -88,11 +90,17 @@ void WndMainWindow::closeEvent( QCloseEvent* e )
 #define COLUNM_MAX        8
 
 
+void WndMainWindow::showLog() {
+    if (this->mp_log) this->mp_log->show();
+}
+
 void WndMainWindow::init()
 {
 #if defined( KREATOR_DEBUG )
   qDebug( "WndMainWindow::init() called." );
 #endif
+  this->mp_log = new WndLog(this);
+
   setupUi( this );
   (void) statusBar();
   setWindowTitle( "TS Kreator" );
@@ -218,6 +226,7 @@ void WndMainWindow::init()
   //mp_popupHelp->addAction( trUtf8( "Aiuto..." ) );
   //mp_popupHelp->addSeparator();
   mp_popupHelp->addAction( QIcon( ":/images/info.png" ), trUtf8( "Informazioni..." ), this, SLOT( showAbout() ) );
+  mp_popupHelp->addAction(QIcon(":/images/ioarea.png"), trUtf8("Log..."), this, SLOT(showLog()));
 
   connect( mp_twObjectList, SIGNAL( itemDoubleClicked( QTreeWidgetItem *, int ) ),
     this, SLOT( loadArea( QTreeWidgetItem*, int ) ) );

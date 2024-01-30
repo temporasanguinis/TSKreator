@@ -120,15 +120,16 @@ void WndMainWindow::init()
       }
   }
   if (!loadedCustom) {
-      if (KreatorSettings::instance().kreatorTheme() != -1) {
-          QApplication::setStyle(QStyleFactory::create(QStyleFactory::keys().at(KreatorSettings::instance().kreatorTheme())));
+      auto theme = KreatorSettings::instance().kreatorTheme();
+      if (theme != -1 && QStyleFactory::keys().size() > theme) {
+          QApplication::setStyle(QStyleFactory::create(QStyleFactory::keys().at(theme)));
       }
       else {
 #ifdef Q_OS_WIN32
           if (QStyleFactory::keys().contains("cleanlooks", Qt::CaseInsensitive))
               QApplication::setStyle(QStyleFactory::create("cleanlooks"));
           else
-              QApplication::setStyle(QStyleFactory::create("windows"));
+              QApplication::setStyle(QStyleFactory::create("Fusion"));
 #elif defined( Q_OS_MAC )
           //da testare se funziona su os x
           QApplication::setStyle(QStyleFactory::create("macintosh"));
@@ -137,6 +138,8 @@ void WndMainWindow::init()
 #endif
       }
   }
+
+  mp_leFilter->setText(KreatorSettings::instance().areaFilter());
 
   QString ColumnName[ COLUNM_MAX ];
   ColumnName[ COLUMN_VNUMBER    ] = trUtf8( "# Zona" );
@@ -595,6 +598,7 @@ void WndMainWindow::filterList()
 #if defined( KREATOR_DEBUG )
   qDebug( "WndMainWindow::filterList() called." );
 #endif
+  KreatorSettings::instance().setAreaFilter(mp_leFilter->text());
   for( int i = 0; i < mp_twObjectList->topLevelItemCount(); i++)
   {
       if(mp_twObjectList->topLevelItem(i)->text(COLUMN_NAME).contains(mp_leFilter->text(), Qt::CaseInsensitive))

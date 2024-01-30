@@ -33,6 +33,9 @@ public:
   int kreatorTheme();
   void  setKreatorTheme( int );
 
+  QString areaFilter();
+  void setAreaFilter(QString theme);
+
   QString customTheme();
   void setCustomTheme(QString theme);
 

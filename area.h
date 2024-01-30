@@ -129,10 +129,13 @@ namespace ts
     VNumber topZonesVNumber() const;
     VNumber firstVNumber() const;
     VNumber firstFreeRoomVNumber(VNumber vn) const;
-    VNumber newRoomsVNumber() const { return m_rooms.empty() ? firstVNumber() : topRoomsVNumber() + 1; }
-    VNumber newItemsVNumber() const { return m_items.empty() ? firstVNumber() : topItemsVNumber() + 1; }
-    VNumber newMobsVNumber() const { return m_mobs.empty() ? firstVNumber() : topMobsVNumber() + 1; }
-    VNumber newShopsVNumber() const { return m_shops.empty() ? firstVNumber() : topShopsVNumber() + 1; }
+    VNumber firstFreeMobVNumber(VNumber vn) const;
+    VNumber firstFreeItemVNumber(VNumber vn) const;
+    VNumber firstFreeShopVNumber(VNumber vn) const;
+    VNumber newRoomsVNumber(VNumber current) const { return m_rooms.empty() ? firstVNumber() : current>0 ? firstFreeRoomVNumber(current) : topRoomsVNumber() + 1; }
+    VNumber newItemsVNumber(VNumber current) const { return m_items.empty() ? firstVNumber() : current > 0 ? firstFreeItemVNumber(current) : topItemsVNumber() + 1; }
+    VNumber newMobsVNumber(VNumber current) const { return m_mobs.empty() ? firstVNumber() : current > 0 ? firstFreeMobVNumber(current) : topMobsVNumber() + 1; }
+    VNumber newShopsVNumber(VNumber current) const { return m_shops.empty() ? firstVNumber() : current > 0 ? firstFreeShopVNumber(current) : topShopsVNumber() + 1; }
     VNumber newZonesVNumber() const { return topZonesVNumber() + 1; }
     VNumber bottomRoomsVNumber() const;
     VNumber bottomItemsVNumber() const;

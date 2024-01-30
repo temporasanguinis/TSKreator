@@ -2126,9 +2126,90 @@ namespace ts
       ++it;
     }
     if (vRet == VNumberInvalid) {
-        vRet = this->newRoomsVNumber();
+        vRet = this->topRoomsVNumber();
     }
     return vRet;
+  }
+
+  VNumber Area::firstFreeMobVNumber(VNumber vn) const
+  {
+      VNumber vRet = VNumberInvalid;
+      VNumber vStart = VNumberInvalid;
+      VNumber vEnd = VNumberInvalid;
+      zones_const_iterator it = m_zones.begin();
+
+      while (it != m_zones.end())
+      {
+          if (vn >= (*it).minVNumber() && vn <= (*it).maxVNumber()) {
+              vStart = (*it).minVNumber();
+              vEnd = (*it).maxVNumber();
+              for (long i = vStart; i < vEnd; i++) {
+                  if (!this->hasMob(i)) {
+                      vRet = (VNumber)i;
+                      break;
+                  }
+              }
+          }
+          ++it;
+      }
+      if (vRet == VNumberInvalid) {
+          vRet = this->topMobsVNumber();
+      }
+      return vRet;
+  }
+
+  VNumber Area::firstFreeItemVNumber(VNumber vn) const
+  {
+      VNumber vRet = VNumberInvalid;
+      VNumber vStart = VNumberInvalid;
+      VNumber vEnd = VNumberInvalid;
+      zones_const_iterator it = m_zones.begin();
+
+      while (it != m_zones.end())
+      {
+          if (vn >= (*it).minVNumber() && vn <= (*it).maxVNumber()) {
+              vStart = (*it).minVNumber();
+              vEnd = (*it).maxVNumber();
+              for (long i = vStart; i < vEnd; i++) {
+                  if (!this->hasItem(i)) {
+                      vRet = (VNumber)i;
+                      break;
+                  }
+              }
+          }
+          ++it;
+      }
+      if (vRet == VNumberInvalid) {
+          vRet = this->topItemsVNumber();
+      }
+      return vRet;
+  }
+
+  VNumber Area::firstFreeShopVNumber(VNumber vn) const
+  {
+      VNumber vRet = VNumberInvalid;
+      VNumber vStart = VNumberInvalid;
+      VNumber vEnd = VNumberInvalid;
+      zones_const_iterator it = m_zones.begin();
+
+      while (it != m_zones.end())
+      {
+          if (vn >= (*it).minVNumber() && vn <= (*it).maxVNumber()) {
+              vStart = (*it).minVNumber();
+              vEnd = (*it).maxVNumber();
+              for (long i = vStart; i < vEnd; i++) {
+                  if (!this->hasShop(i)) {
+                      vRet = (VNumber)i;
+                      break;
+                  }
+              }
+          }
+          ++it;
+      }
+      if (vRet == VNumberInvalid) {
+          vRet = this->topShopsVNumber();
+      }
+      return vRet;
   }
 
 } // namespace ts

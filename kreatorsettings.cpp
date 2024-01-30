@@ -197,6 +197,22 @@ void KreatorSettings::setKreatorTheme( int theme )
   instance().setValue( "/settings/theme", theme );
 }
 
+QString KreatorSettings::areaFilter()
+{
+#if defined( KREATOR_DEBUG )
+	qDebug("KreatorSettings::areaFilter() called.");
+#endif
+	return instance().value("/settings/areafilter", "").toString();
+}
+
+void KreatorSettings::setAreaFilter(QString theme)
+{
+#if defined( KREATOR_DEBUG )
+	qDebug("KreatorSettings::setAreaFilter( int ) called.");
+#endif
+	instance().setValue("/settings/areafilter", theme);
+}
+
 QString KreatorSettings::customTheme() {
 #if defined( KREATOR_DEBUG )
 	qDebug("KreatorSettings::customTheme() called.");

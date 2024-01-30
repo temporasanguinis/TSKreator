@@ -954,7 +954,7 @@ void WndTester::checkObjInit(VNumber vnum)
         ZoneCommandList zcl = m_area.zones().at(i).commandList();
         ZoneCommandList::const_iterator it = zcl.begin();
         while (it != zcl.end()) {
-            qWarning(qPrintable(it->toString(false)));
+            //qWarning(qPrintable(it->toString(false)));
             if (it->isItemLoad() && it->argument(ZoneCommand::Argument3) == vnum) {
                 textBrowser->append(ParseAnsiColors("$c0007" + m_area.item(it->argument(ZoneCommand::Argument1)).longDescription() + " (Item #" + QString::number(it->argument(ZoneCommand::Argument1)) + ", Init line:" + QString::number(it->id()) + ")"));
             }
@@ -972,7 +972,7 @@ void WndTester::checkMobInit(VNumber vnum)
         ZoneCommandList zcl = m_area.zones().at(i).commandList();
         ZoneCommandList::const_iterator it = zcl.begin();
         while (it != zcl.end()) {
-            qWarning(qPrintable(it->toString(false)));
+            //qWarning(qPrintable(it->toString(false)));
             if (it->isMobLoad() && it->argument(ZoneCommand::Argument3) == vnum) {
                 QString mobName = "";
 

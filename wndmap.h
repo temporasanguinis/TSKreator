@@ -128,7 +128,7 @@ namespace ts
             GLfloat getZoom() {
                 return zoomRatio;
             };
-            explicit GlMap(QList<const Room*> rooms, QWidget *parent = 0);
+            explicit GlMap(const QGLFormat& f, QList<const Room*> rooms, QWidget *parent = 0);
             ~GlMap();
         protected:
             void paintEvent(QPaintEvent* event);
@@ -191,17 +191,22 @@ namespace ts
             QFont font = QFont("Arial", 18);
             QFont font2 = QFont("Arial", 12);
             QFont font3 = QFont("Arial", 12);
-            int mouseDownX, mouseDownY;
-            int mouseMoveX, mouseMoveY;
+            double mouseDownX, mouseDownY;
+            double mouseMoveX, mouseMoveY;
             int bMouseDown = 0;
             const glCoords* hovering = NULL;
             int bImages = 2;
             bool bVnums = TRUE;
+            double dpiScale = 1.0;
     };
 
     class WndMap : public QWidget
     {
         Q_OBJECT
+
+        ~WndMap() {
+            delete map;
+        }
 
         public:
             WndMap(Area *ar, WndArea* parent);
@@ -231,6 +236,7 @@ namespace ts
             GlMap *map = NULL;
             WndArea* parent = NULL;
             Area* area;
+            VNumber zoneNum = 0;
     };
 }
 #endif

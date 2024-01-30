@@ -365,15 +365,16 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{B12702AD-ABFB-343A-A199-8E24837244A3}</ProjectGuid>
     <Keyword>QtVS</Keyword>
+    <WindowsTargetPlatformVersion>10.0.22621.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <PropertyGroup Condition="'$(QtMsBuild)'=='' or !Exists('$(QtMsBuild)\qt.targets')">
@@ -417,7 +418,7 @@
       <SupportJustMyCode>true</SupportJustMyCode>
       <WarningLevel>Level2</WarningLevel>
       <FunctionLevelLinking>true</FunctionLevelLinking>
-      <BrowseInformation>true</BrowseInformation>
+      <BrowseInformation>false</BrowseInformation>
       <PreprocessorDefinitions>KREATOR_DEBUG;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
@@ -455,6 +456,9 @@ copy /-y "$(ProjectDir)qt.natvis" "$(APPDATA)\..\Local\QtMsBuild\qt.natvis.xml"<
       <WholeProgramOptimization>true</WholeProgramOptimization>
       <PreprocessorDefinitions>
       </PreprocessorDefinitions>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <SupportJustMyCode>false</SupportJustMyCode>
+      <Optimization>MaxSpeed</Optimization>
     </ClCompile>
     <Link>
       <AdditionalDependencies>qtmain.lib;Qt5Core.lib;Qt5Widgets.lib;Qt5Gui.lib;Qt5OpenGL.lib;OpenGL32.Lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -463,6 +467,7 @@ copy /-y "$(ProjectDir)qt.natvis" "$(APPDATA)\..\Local\QtMsBuild\qt.natvis.xml"<
       <SubSystem>Windows</SubSystem>
       <MinimumRequiredVersion>
       </MinimumRequiredVersion>
+      <AssemblyDebug>false</AssemblyDebug>
     </Link>
     <QtUic>
       <Generator>cpp</Generator>

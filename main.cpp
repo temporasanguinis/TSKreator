@@ -70,7 +70,7 @@ void TsKreatorMessageHandler( QtMsgType type, const QMessageLogContext &ctx, con
   case QtFatalMsg:
     sTxt = QString( "[Fatal] %1").arg(msg );
     showMessage(sTxt, 2);
-    abort();
+    //abort();
   default:
     sTxt = QString( "[Info]: %1").arg(msg );
     break;

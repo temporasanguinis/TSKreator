@@ -851,10 +851,10 @@ namespace ts
 
                 mb.r_mb_Long[0] = atol(TmpBuf);
                 if (mb.mb_Reaction == mr_Divini && mb.r_mb_Long[0] > 10) {
-                    qCritical("Caricato Mob %d che ha Behavior di pagare divini: %d", vnumber(), mb.r_mb_Long[0]);
+                    qWarning("Caricato Mob %d che ha Behavior di pagare divini: %d", vnumber(), mb.r_mb_Long[0]);
                 }
                 if (mb.mb_Reaction == mr_Elementi && mb.r_mb_Long[0] > 100) {
-                    qCritical("Caricato Mob %d che ha Behavior di pagare elementi: %d", vnumber(), mb.r_mb_Long[0]);
+                    qWarning("Caricato Mob %d che ha Behavior di pagare elementi: %d", vnumber(), mb.r_mb_Long[0]);
                 }
                 break;
             case mr_DestroyObject:

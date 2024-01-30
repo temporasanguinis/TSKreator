@@ -23,6 +23,7 @@ class WndTester : public QDialog, Ui::GuiTester
 public:
   WndTester( Area*, QWidget* );
   ~WndTester();
+  void go(VNumber);
 
 protected slots:
 	void mudChangeText();
@@ -31,7 +32,7 @@ protected slots:
 
 protected:
 	void init();
-	void go(VNumber);
+
 	void do_move(int cmd);
 	QString ParseAnsiColors(const QString &text);
 	QString ansi_parse(const QString &code);

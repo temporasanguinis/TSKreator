@@ -22,8 +22,8 @@
 
 namespace ts
 {
-    GlMap::GlMap(QList<const Room*> rooms, QWidget* parent)
-        : QGLWidget(parent)
+    GlMap::GlMap(const QGLFormat& f, QList<const Room*> rooms, QWidget* parent)
+        : QGLWidget(f, parent)
     {
         setRooms(rooms);
         object = 0;
@@ -130,10 +130,20 @@ namespace ts
         *winy = viewport[1] + (1 + in[1]) * viewport[3] / 2;
 
         *winz = (1 + in[2]) / 2;
+
+        *winx /= this->dpiScale;
+        *winy /= this->dpiScale;
+        *winz /= this->dpiScale;
+
         return GL_TRUE;
     }
 
     void GlMap::transformScreenToModel(GLdouble winx, GLdouble winy, GLdouble winz, GLdouble& X, GLdouble& Y, GLdouble& Z) {
+        
+        winx *= this->dpiScale;
+        winy *= this->dpiScale;
+        winz *= this->dpiScale;
+
         GLdouble iModel[4][4];
         GLdouble iProj[4][4];
         GLdouble model[4][4], proj[4][4];
@@ -370,8 +380,10 @@ namespace ts
             &textPosX2, &textPosY2, &textPosZ2);
         textPosY2 = this->height() - textPosY2; // y is inverted
 
-        painter->fillRect(QRect(textPosX1, textPosY1, textPosX2 - textPosX1, textPosY2 - textPosY1), color);
-        if (border) painter->drawRect(QRect(textPosX1, textPosY1, textPosX2 - textPosX1, textPosY2 - textPosY1));
+        auto r1 = QRect(textPosX1, textPosY1, (textPosX2 - textPosX1), (textPosY2 - textPosY1));
+
+        painter->fillRect(r1, color);
+        if (border) painter->drawRect(r1);
     }
 
     void GlMap::renderText(QPainter* painter, D3DVECTOR& textPosWorld, glCoords &obj)
@@ -407,6 +419,7 @@ namespace ts
             }
 
             painter->setFont(font);
+
             drawTextAtWorld((GLdouble)textPosWorld.x - 0.0f,
                 (GLdouble)textPosWorld.y - 10,
                 textPosWorld.z, painter, model, proj, view,
@@ -535,6 +548,9 @@ namespace ts
     {
         e->accept();
         KreatorSettings::instance().saveGuiStatus("MapWindow", this);
+        disconnect(parent, SIGNAL(somethingSelected()), this, SLOT(somethingChanged()));
+
+        this->deleteLater();
     }
 
     void GlMap::paintGL()
@@ -569,16 +585,39 @@ namespace ts
         glTranslatef(offsetX * 100 / zoomRatio, offsetY * 100 / zoomRatio, 0.0);
         //glRotatef(0.5f, 1.0f, 1.0f, 1.0f);
         glCallList(object);
-        font.setPixelSize(14 * zoomRatio);
-        font2.setPixelSize(10 * zoomRatio);
+        font.setPixelSize(14 * zoomRatio / this->dpiScale);
+        font2.setPixelSize(10 * zoomRatio / this->dpiScale);
         font3.setPixelSize(12);
         QPainter painter(this);
+
+        if (!objMap.size()) {
+            painter.setRenderHints(QPainter::TextAntialiasing | QPainter::Antialiasing);
+
+            GLdouble model[4][4], proj[4][4];
+            GLint view[4];
+            glGetDoublev(GL_MODELVIEW_MATRIX, &model[0][0]);
+            glGetDoublev(GL_PROJECTION_MATRIX, &proj[0][0]);
+            glGetIntegerv(GL_VIEWPORT, &view[0]);
+
+            drawTextAtWorld((GLdouble)0 - 100.0f,
+                (GLdouble)0 + 20,
+                0, &painter, model, proj, view,
+                "Devi selezionare una zona con flag hasMap.");
+            drawTextAtWorld((GLdouble)0 - 100.0f,
+                (GLdouble)0 - 20,
+                0, &painter, model, proj, view,
+                "Oppure una room in una zona del genere.");
+
+            painter.end();
+            return;
+        }
+
         int any = 0;
         for (auto& var : objMap)
         {
             if (var.Z != this->offsetZ) continue;
-            QPen normal = QPen(Qt::blue, 3);
-            QPen oneWay = QPen(QColor(90, 90, 90, 100), 2);
+            QPen normal = QPen(Qt::blue, 3/dpiScale);
+            QPen oneWay = QPen(QColor(90, 90, 90, 100), 2 / dpiScale);
             renderRoomLinks(&painter, var, normal, oneWay);
         }
         for (auto& var : objMap)
@@ -681,7 +720,10 @@ namespace ts
 
     void GlMap::resizeGL(int w, int h)
     {
-        glViewport(0, 0, (GLint)w, (GLint)h);
+        this->dpiScale = this->devicePixelRatioF();
+
+
+         glViewport(0, 0, (GLint)w, (GLint)h);
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
         glOrtho(-w / 2, w / 2, -h / 2, h / 2, 0.0, 15.0);
@@ -916,8 +958,36 @@ namespace ts
 
     void WndMap::CreateRooms(QList<const Room*>& rooms) {
         bool hasZeroZeroZero = false;
-        for (auto& r : this->area->rooms())
+        const Zone* zone;
+
+        const Zone* zoneT = this->parent->getSelectedZone();
+        if (zoneT != nullptr && zoneT->hasNewFlag(19)) {
+            auto zoneNumNew = zoneT->minVNumber() / 100;
+            if (zoneNumNew != zoneNum) {
+                zoneNum = zoneNumNew;
+            }
+        }
+
+        if (zoneNum && area) {
+            zone = area->hasZone(zoneNum) ? &area->zone(zoneNum) : nullptr;
+            if (zone == nullptr || !zone->hasNewFlag(19)) {
+                return;
+            }
+        }
+        else {
+            const Zone* zone = this->parent->getSelectedZone();
+            if (zone == nullptr || !zone->hasNewFlag(19)) {
+                qCritical("Devi selezionare una Zona (con flag hasMap) nella lista Zone o una sua room");
+                return;
+            }
+            zoneNum = zone->minVNumber()/100;
+        }
+
+        if (this->area) for (auto& r : this->area->rooms())
         {
+            if (r.zone() != zoneNum) {
+                continue;
+            }
             if (this->area->hasZone(r.zone())) {
                 auto z = this->area->zone(r.zone());
                 if (z.hasNewFlag(19)) {
@@ -931,6 +1001,8 @@ namespace ts
         }
         if (rooms.size()) {
             this->window()->setWindowTitle("Mappa - usa tastierino numerico per muoverti (o freccette + PgUp/PgDown), mouse pan e scroll per zoom");
+            auto rm = rooms.at(0);
+            map->setPos(rm->getX(), -rm->getY(), rm->getZ());
         }
         else {
             this->window()->setWindowTitle("Mappa - Nessuna room (La zona deve avere flag HasMap per poter disegnare le room)");
@@ -939,12 +1011,17 @@ namespace ts
 
     WndMap::WndMap(Area* ar, WndArea* parent)
     {
+        connect(parent, SIGNAL(somethingSelected()), this, SLOT(somethingChanged()));
+        
+
         QList<const Room*> rooms;
         try
         {
             this->area = ar;
             this->parent = parent;
-            map = new GlMap(rooms, parent);
+            QGLFormat f = QGLFormat::defaultFormat();
+            f.setVersion(2, 0);
+            map = new GlMap(f, rooms, parent);
 
             if (!connect(map, SIGNAL(doubleClicked(VNumber)), this, SLOT(doubleClicked(VNumber)))) {
                 throw Exception(ts::Exception::Runtime, "Cannot connect signal");
@@ -1008,12 +1085,22 @@ namespace ts
             GLdouble x2 = 0, y2 = 0, z2 = 0;
             float x1, y1, z1;
             getPos(x1, y1, z1);
-            double wperc = (double)x / this->width();
-            double hperc = (double)-y / this->height();
-            transformScreenToModel(width(), height(), 0, x2, y2, z2);
+            /*double wperc = (double)x / ((QWindow*)this->parent())->width();
+            double hperc = (double)-y / ((QWindow*)this->parent())->height();
+            transformScreenToModel(((QWindow*)this->parent())->width(), ((QWindow*)this->parent())->height(), 0, x2, y2, z2);
             y2 = -y2;
             double newX = (wperc/50) * x2;
-            double newY = (hperc/50) * y2;
+            double newY = (hperc/50) * y2;*/
+            //transformScreenToModel(x, -y, 0, x2, y2, z2);
+            double newX = x;
+            double newY = -y;
+            //newX *= zoomRatio;
+            //newY *= zoomRatio;
+            newX /= 96;
+            newY /= 96;
+            newX *= dpiScale;
+            newY *= dpiScale;
+
             setPos(x1 + newX, y1 + newY, z1);
         }
         repaint();
@@ -1044,10 +1131,10 @@ namespace ts
             GLdouble y = ev->pos().y();
             GLdouble z = 1.0;
             GLdouble x2, y2, z2;
-            int rX = std::min(mouseDownX, (int)x + 1);
-            int rY = std::min(mouseDownY, (int)y + 1);
-            int rX2 = std::max(mouseDownX, (int)x + 1);
-            int rY2 = std::max(mouseDownY, (int)y + 1);
+            int rX = std::fmin(mouseDownX, (int)x + 1);
+            int rY = std::fmin(mouseDownY, (int)y + 1);
+            int rX2 = std::fmax(mouseDownX, (int)x + 1);
+            int rY2 = std::fmax(mouseDownY, (int)y + 1);
             QRect clickRect(rX, rY, rX2 - rX, rY2 - rY);
             transformScreenToModel(rX, rY, z, x2, y2, z2);
             rX = x2;

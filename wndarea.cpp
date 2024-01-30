@@ -144,6 +144,23 @@ void WndArea::listItemClicked() {
         }
         selectRoom(vnum);
     }
+
+    somethingSelected();
+}
+
+const Zone* WndArea::getSelectedZone() {
+    if (m_currentObjectTypeList == ObjectData::Object_Zone && mp_twObjectList->selectedItems().size()) {
+        auto item = *(mp_twObjectList->selectedItems().begin());
+        long vnum = item->text(0).toLong();
+        return m_area.hasZone(vnum) ? & m_area.zone(vnum) : nullptr;
+    }
+    if (m_currentObjectTypeList == ObjectData::Object_Room && mp_twObjectList->selectedItems().size()) {
+        auto item = *(mp_twObjectList->selectedItems().begin());
+        long vnum = item->text(0).toLong();
+        vnum /= 100;
+        return m_area.hasZone(vnum) ? &m_area.zone(vnum) : nullptr;
+    }
+    return nullptr;
 }
 
 void WndArea::initMenuArea()
@@ -1056,6 +1073,10 @@ void WndArea::refreshZonesView()
   QApplication::processEvents();
 }
 
+//void WndArea::somethingSelected() {
+//
+//}
+
 void WndArea::somethingChanged()
 {
 #if defined( KREATOR_DEBUG )
@@ -1063,10 +1084,6 @@ void WndArea::somethingChanged()
 #endif
   mp_actSaveArea->setEnabled( true );
   refreshTitle();
-  WndMap* pWnd = NULL;
-  FindMapWindow((void**)&pWnd);
-  if (pWnd) 
-      pWnd->Refresh();
 }
 
 void WndArea::removeObject()
@@ -1213,12 +1230,6 @@ void WndArea::selectRoom(VNumber vnum)
 #endif
     if (m_currentObjectTypeList == ObjectData::Object_Room) {
         m_selectedVNum = vnum;
-        WndMap* pWnd = NULL;
-        FindMapWindow((void**)&pWnd);
-        if (pWnd) {
-            pWnd->somethingChanged();
-            pWnd->selectRoom(vnum);
-        }
     }
 }
 
@@ -1395,9 +1406,16 @@ void WndArea::showTester()
 #if defined( KREATOR_DEBUG )
   qDebug( "WndArea::showTester() called." );
 #endif
+  VNumber num = 0;
+  if (m_selectedVNum > 0 && m_currentObjectTypeList == ObjectData::Object_Room) {
+      num = m_selectedVNum;
+  }
   WndTester* pWnd = new WndTester( &m_area, this );
   m_childs.append( pWnd );
   pWnd->show();
+  if (num>0) {
+      pWnd->go(num);
+  }
 }
 
 void WndArea::showMap()
@@ -1408,25 +1426,26 @@ void WndArea::showMap()
     try
     {
         WndMap* pWnd = NULL;
-        FindMapWindow((void**)&pWnd);
-        if (!pWnd) {
+        /*FindMapWindow((void**)&pWnd);*/
+        //if (!pWnd) {
             pWnd = new WndMap(&m_area, this);
             pWnd->setObjectName("Mappa");
             pWnd->Refresh();
-            m_childs.append(pWnd);
-        }
-        else {
+            /*m_childs.append(pWnd);*/
+        //}
+        /*else {
             pWnd->setFocus();
             pWnd->Refresh();
             pWnd->raise();
             pWnd->activateWindow();
-        }
+        }*/
 
         pWnd->show();
     }
     catch (const std::exception &ex)
     {
         printf(ex.what());
+        throw;
     }
 }
 

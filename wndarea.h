@@ -27,6 +27,9 @@ class WndArea : public QMainWindow, private Ui::GuiArea
     void loadArea( const QString& );
     void select(QTreeWidgetItem* item);
     void showEditDialog(int, VNumber);
+    const Zone* getSelectedZone();
+  signals:
+    void somethingSelected();
   public slots:
     void saveArea();
     void saveAreaAs();

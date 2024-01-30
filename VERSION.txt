@@ -1,4 +1,10 @@
-﻿1.68
+﻿1.69
+- performance fix per il tester
+- rifatto il mapper che era rotto da QT5 e aveva problemi con DPI
+- corretti alcuni bug di crash
+- il filtro aree ora funziona mentre le aree stanno ancora caricando
+__________________________________
+1.68
 - nuovi behavior per i mob
 - ulteriori correzioni all'UI
 - finestra log

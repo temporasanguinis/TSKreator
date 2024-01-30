@@ -61,7 +61,9 @@ void TsKreatorMessageHandler( QtMsgType type, const QMessageLogContext &ctx, con
     sTxt = QString("[Debug] %1").arg(msg);
     break;
   case QtWarningMsg:
-    sTxt = QString( "[Warning] %1").arg(msg );
+      if (!msg.contains("too many profiles")) {
+          sTxt = QString("[Warning] %1").arg(msg);
+      }
     break;
   case QtCriticalMsg:
     sTxt = QString( "[Critical]: %1").arg(msg );

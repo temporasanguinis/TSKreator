@@ -290,10 +290,10 @@ void WndMainWindow::createItem(int index, const QString& zone_path )
           Zone new_zone( vnum );
           new_zone.loadHeaderOnly( pFile );
 
-          QTreeWidgetItem *item = new QTreeWidgetItem( mp_twObjectList );
+          QTreeWidgetItem *item = new QTreeWidgetItem(  );
           item->setIcon( COLUMN_VNUMBER, QIcon( ":/images/world.png" ) );
           item->setText( COLUMN_VNUMBER, Utils::vnumber2string( new_zone.vnumber(), 3 ) );
-          item->setText( COLUMN_INDEX, QString::number(index));
+          item->setText( COLUMN_INDEX, 0);
           item->setText( COLUMN_NAME, new_zone.name() );
           item->setText( COLUMN_PATH, zone_path );
           item->setText( COLUMN_MINMAX, Utils::vnumber2string( new_zone.minVNumber() ) + QString( " - " ) + Utils::vnumber2string( new_zone.maxVNumber() ) );
@@ -304,6 +304,11 @@ void WndMainWindow::createItem(int index, const QString& zone_path )
           QString msg = "";
           msg.sprintf( "Controllo la Zona #%ld in %s", new_zone.vnumber(), qPrintable( zone_path ) );
           showMessage( msg );
+          mp_twObjectList->addTopLevelItem(item);
+          if (mp_leFilter->text().size() && !item->text(COLUMN_NAME).contains(mp_leFilter->text(), Qt::CaseInsensitive))
+              item->setHidden(true);
+
+
         }
       }
     }
@@ -338,6 +343,7 @@ void WndMainWindow::refreshAreaView()
 
   QApplication::setOverrideCursor( Qt::WaitCursor );
   mp_twObjectList->clear();
+  mp_twObjectList->sortItems(COLUMN_INDEX, Qt::AscendingOrder);
   showMessage( trUtf8( "Creo la lista delle aree esistenti..." ) );
 
   QFileInfoList fiList = areaDir.entryInfoList( QDir::Files );
@@ -596,6 +602,8 @@ void WndMainWindow::filterList()
       else
           mp_twObjectList->topLevelItem(i)->setHidden( true );
   }
+  for (int i = 0; i < COLUMN_FLAGS; i++)
+      mp_twObjectList->resizeColumnToContents(i);
 }
 
 void WndMainWindow::checkBootFile()

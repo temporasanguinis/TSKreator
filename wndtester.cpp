@@ -189,7 +189,7 @@ const Mob * WndTester::findMobInRoom(VNumber room, QString name, bool *ok) {
         ZoneCommandList zcl = m_area.zones().at(i).commandList();
         ZoneCommandList::const_iterator it = zcl.begin();
         while (it != zcl.end()) {
-            qWarning(qPrintable(it->toString(false)));
+            //qWarning(qPrintable(it->toString(false)));
             if (it->isMobLoad() && it->argument(ZoneCommand::Argument3) == room) {
                 if (m_area.hasMob(it->argument(ZoneCommand::Argument1))) {
                     if (m_area.mob(it->argument(ZoneCommand::Argument1)).isname(name)) {
@@ -211,7 +211,7 @@ const Item * WndTester::findObjInRoom(VNumber room, QString name, bool *ok) {
         ZoneCommandList zcl = m_area.zones().at(i).commandList();
         ZoneCommandList::const_iterator it = zcl.begin();
         while (it != zcl.end()) {
-            qWarning(qPrintable(it->toString(false)));
+            //qWarning(qPrintable(it->toString(false)));
             if (it->isItemLoad() && it->argument(ZoneCommand::Argument3) == room) {
                 if (m_area.hasItem(it->argument(ZoneCommand::Argument1))) {
                     if (m_area.item(it->argument(ZoneCommand::Argument1)).isname(name)) {
@@ -783,7 +783,7 @@ void WndTester::statMob(const Mob *mob, VNumber room)
         ZoneCommandList zcl = m_area.zones().at(i).commandList();
         ZoneCommandList::const_iterator it = zcl.begin();
         while (it != zcl.end()) {
-            qWarning(qPrintable(it->toString(false)));
+            //qWarning(qPrintable(it->toString(false)));
             if (it->isMobLoad() && it->argument(ZoneCommand::Argument3) == room && it->argument(ZoneCommand::Argument1) == mob->vnumber()) {
                 inMob = true;
             }
@@ -824,7 +824,7 @@ void WndTester::statObj(const Item* mob, VNumber room)
         ZoneCommandList zcl = m_area.zones().at(i).commandList();
         ZoneCommandList::const_iterator it = zcl.begin();
         while (it != zcl.end()) {
-            qWarning(qPrintable(it->toString(false)));
+            //qWarning(qPrintable(it->toString(false)));
             if (it->isItemLoad() && it->argument(ZoneCommand::Argument3) == room && it->argument(ZoneCommand::Argument1) == mob->vnumber()) {
                 inMob = true;
             }
@@ -875,7 +875,7 @@ void WndTester::showMob(const Mob * mob, VNumber room)
         ZoneCommandList zcl = m_area.zones().at(i).commandList();
         ZoneCommandList::const_iterator it = zcl.begin();
         while (it != zcl.end()) {
-            qWarning(qPrintable(it->toString(false)));
+            //qWarning(qPrintable(it->toString(false)));
             if (it->isMobLoad() && it->argument(ZoneCommand::Argument3) == room && it->argument(ZoneCommand::Argument1) == mob->vnumber()) {
                 inMob = true;
             }
@@ -922,7 +922,7 @@ void WndTester::showObj(const Item* item, VNumber room)
         ZoneCommandList zcl = m_area.zones().at(i).commandList();
         ZoneCommandList::const_iterator it = zcl.begin();
         while (it != zcl.end()) {
-            qWarning(qPrintable(it->toString(false)));
+            //qWarning(qPrintable(it->toString(false)));
             if (it->isItemLoad() && it->argument(ZoneCommand::Argument3) == room && it->argument(ZoneCommand::Argument1) == item->vnumber()) {
                 inMob = true;
             }
@@ -1081,7 +1081,7 @@ void WndTester::initMob(const Mob* mob, VNumber room)
         ZoneCommandList zcl = m_area_data->zones().at(i).commandList();
         ZoneCommandList::const_iterator it = zcl.begin();
         while (it != zcl.end()) {
-            qWarning(qPrintable(it->toString(false)));
+            //qWarning(qPrintable(it->toString(false)));
             if (it->isMobLoad() && it->argument(ZoneCommand::Argument3) == room && it->argument(ZoneCommand::Argument1) == mob->vnumber()) {
                 editZone(m_area_data->zones().at(i), it->id());
                 return;
@@ -1101,7 +1101,7 @@ void WndTester::initObj(const Item* mob, VNumber room)
         ZoneCommandList zcl = m_area_data->zones().at(i).commandList();
         ZoneCommandList::const_iterator it = zcl.begin();
         while (it != zcl.end()) {
-            qWarning(qPrintable(it->toString(false)));
+            //qWarning(qPrintable(it->toString(false)));
             if (it->isItemLoad() && it->argument(ZoneCommand::Argument3) == room && it->argument(ZoneCommand::Argument1) == mob->vnumber()) {
                 editZone(m_area_data->zones().at(i), it->id());
                 return;

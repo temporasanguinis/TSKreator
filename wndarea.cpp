@@ -261,6 +261,18 @@ void WndArea::initMenuReport()
   mp_barReport = addToolBar( trUtf8( "Report" ) );
   mp_barReport->setIconSize( QSize(16, 16) );
 
+  mp_actReportRooms = new QAction(QIcon(":/images/ioarea.png"), trUtf8("Rooms..."), this);
+  mp_actReportRooms->setStatusTip(trUtf8("Genera il report delle room"));
+  connect(mp_actReportRooms, SIGNAL(triggered()), this, SLOT(showReportRooms()));
+  mp_menuReport->addAction(mp_actReportRooms);
+  mp_barReport->addAction(mp_actReportRooms);
+
+  mp_actReportMobs = new QAction(QIcon(":/images/ioarea.png"), trUtf8("Mobs..."), this);
+  mp_actReportMobs->setStatusTip(trUtf8("Genera il report dei mob"));
+  connect(mp_actReportMobs, SIGNAL(triggered()), this, SLOT(showReportMobs()));
+  mp_menuReport->addAction(mp_actReportMobs);
+  mp_barReport->addAction(mp_actReportMobs);
+
   mp_actReportCoins = new QAction( QIcon(":/images/coins.png"), trUtf8( "Monete..." ), this );
   mp_actReportCoins->setStatusTip( trUtf8( "Genera il report delle monete" ) );
   connect( mp_actReportCoins, SIGNAL( triggered() ), this, SLOT( showReportCoins() ) );
@@ -1363,6 +1375,30 @@ void WndArea::showReportCoins()
   pWnd->setReport( Report::coins( m_area ) );
   m_childs.append( pWnd );
   pWnd->show();
+}
+
+void WndArea::showReportMobs()
+{
+#if defined( KREATOR_DEBUG )
+    qDebug("WndArea::showReportMobs() called.");
+#endif
+    WndReport* pWnd = new WndReport(this);
+    pWnd->setWindowTitle(trUtf8("Report Mobs - TS Kreator"));
+    pWnd->setReport(Report::mobs(m_area));
+    m_childs.append(pWnd);
+    pWnd->show();
+}
+
+void WndArea::showReportRooms()
+{
+#if defined( KREATOR_DEBUG )
+    qDebug("WndArea::showReportRooms() called.");
+#endif
+    WndReport* pWnd = new WndReport(this);
+    pWnd->setWindowTitle(trUtf8("Report Rooms - TS Kreator"));
+    pWnd->setReport(Report::rooms(m_area));
+    m_childs.append(pWnd);
+    pWnd->show();
 }
 
 void WndArea::showReportTreasures()

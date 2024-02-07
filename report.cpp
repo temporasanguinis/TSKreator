@@ -3,6 +3,7 @@
 #include "constantname.h"
 #include "utils.h"
 #include "eleuconf.h"
+#include <QRegularExpression>
 
 namespace ts
 {
@@ -33,6 +34,126 @@ namespace ts
         }
 
         sRet += QString("\nIl numero totale delle monete presenti sui mobs e' %1.\n").arg(tot_coins);
+
+        return sRet;
+    }
+
+    QString Report::rooms(const Area& area)
+    {
+        if (area.rooms().empty())
+            return QString("L'area non contiene rooms.");
+        QString sRet = "";
+        QString sTmp = "";
+        int inits = 0;
+        int errors= 0;
+
+        sRet.sprintf("Init e errori delle Room dal VNumber %ld al VNumber %ld:\n\n",
+            area.bottomRoomsVNumber(), area.topRoomsVNumber());
+
+        auto it = area.rooms().begin();
+        while (it != area.rooms().end()) {
+            //if ((*it).gold() > 0) {
+            VNumber vn = (*it).vnumber();
+
+            bool newLine = false;
+            inits ++;
+
+            sTmp = "";
+
+            if ((*it).name() == "" || (*it).name().contains("Room")) {
+                if (newLine == false) {
+                    sRet += "\n";
+                    newLine = true;
+                }
+                sTmp.sprintf("Room #%ld nome incorretto.\n",
+                    (*it).vnumber());
+                sRet += sTmp;
+                errors++;
+            }
+
+            if ((*it).description().trimmed() == "") {
+                if (newLine == false) {
+                    sRet += "\n";
+                    newLine = true;
+                }
+                sTmp = "";
+                sTmp.sprintf("Room #%ld (%s).\n",
+                    (*it).vnumber(), qPrintable((*it).name()));
+                sRet += sTmp;
+
+                sTmp = "";
+                sTmp.sprintf(" !!! La room non ha description.\n");
+                sRet += sTmp;
+                errors++;
+            }
+
+            //}
+            ++it;
+        }
+
+        sRet += QString("\nIl numero totale di room e' %1.\n").arg(inits);
+        sRet += QString("Il numero di errori e' %1.\n").arg(errors);
+
+        return sRet;
+    }
+
+    QString Report::mobs(const Area& area)
+    {
+        if (area.mobs().empty())
+            return QString("L'area non contiene mobs.");
+
+        QString sRet = "";
+        QString sTmp = "";
+        int inits = 0;
+        int no_inits = 0;
+        int mob_inits = 0;
+
+        sRet.sprintf("Init e errori dei Mobs dal VNumber %ld al VNumber %ld:\n\n",
+            area.bottomMobsVNumber(), area.topMobsVNumber());
+
+        Area::mobs_const_iterator it = area.mobs().begin();
+        while (it != area.mobs().end()) {
+            //if ((*it).gold() > 0) {
+            VNumber vn = (*it).vnumber();
+
+            sRet += "\n";
+                mob_inits = area.countMobInits((*it).vnumber());
+                if (mob_inits < 1) {
+                    no_inits++;
+                }
+                sTmp = "";
+                sTmp.sprintf("Il mob #%ld (%s) ha [%s%d] init.\n",
+                    (*it).vnumber(), qPrintable((*it).shortDescription()), mob_inits == 0 ? "NOINIT -> " : "", mob_inits);
+                sRet += sTmp;
+
+                if ((*it).description() == "") {
+                    sTmp = "";
+                    sTmp.sprintf(" !!! Il mob non ha description.\n");
+                    sRet += sTmp;
+                }
+                if ((*it).longDescription() == "") {
+                    sTmp = "";
+                    sTmp.sprintf(" !!! Il mob non ha long.\n");
+                    sRet += sTmp;
+                }
+                else {
+                    int upper = (*it).longDescription().count(QRegularExpression("[A-Z]"));
+                    int lower = (*it).longDescription().count(QRegularExpression("[a-z]"));
+                    // Calculate the proportion
+                    double proportion = static_cast<double>(upper) / lower;
+                    if (proportion > 1) {
+                        sTmp = "";
+                        sTmp.sprintf(" !!! Il mob ha una long strana uppercase.\n");
+                        sRet += sTmp;
+                    }
+                }
+                inits += (mob_inits);
+            //}
+            ++it;
+        }
+
+        sRet += QString("\nIl numero totale di init dei mobs e' %1.\n").arg(inits);
+        sRet += QString("Il numero di mobs senza init e' %1.\n").arg(no_inits);
 
         return sRet;
     }

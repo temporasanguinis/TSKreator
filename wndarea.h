@@ -51,6 +51,8 @@ class WndArea : public QMainWindow, private Ui::GuiArea
     void createObject();
     void cloneObject();
     void showReportCoins();
+    void showReportMobs();
+    void showReportRooms();
     void showReportTreasures();
     void showReportExits();
     void showReportKeys();
@@ -88,6 +90,8 @@ class WndArea : public QMainWindow, private Ui::GuiArea
     QAction* mp_actClone;
     QAction* mp_actRemove;
     QAction* mp_actReportCoins;
+    QAction* mp_actReportRooms;
+    QAction* mp_actReportMobs;
     QAction* mp_actReportTreasures;
     QAction* mp_actReportExits;
     QAction* mp_actReportKeys;

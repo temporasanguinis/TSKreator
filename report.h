@@ -13,6 +13,8 @@ namespace ts
   {
   public:
     static QString coins( const Area& );
+    static QString mobs(const Area&);
+    static QString rooms(const Area&);
     static QString treasures( const Area& );
     static QString exits( const Area& );
     static QString keys( const Area& );

@@ -351,6 +351,7 @@ void WndMob::saveData()
   VNumber new_vnum = mp_leVNumber->text().toLong();
 
   QString valid = validateBehaviors();
+
   if (valid!="") {
       QMessageBox::critical(this, "Errore", QString("Ci sono errori nei behavior del mob.\nRivedere e coreggere.\n\n%0").arg(valid));
       return;
@@ -990,6 +991,7 @@ void WndMob::addBehavior() {
     rowData << new QStandardItem(QString(""));
     rowData << new QStandardItem(QString(""));
     rowData << new QStandardItem(QString(""));
+    rowData << new QStandardItem(QString(""));
     m_BehaviorModel->appendRow(rowData);
     int rowIndex = m_BehaviorModel->rowCount() - 1;
     mp_Behaviors->openPersistentEditor(m_BehaviorModel->index(rowIndex, 0));
@@ -1316,13 +1318,19 @@ QString err(int behIndex, QString err, int condIndex = -1) {
 }
 
 QString WndMob::validateBehaviors() {
+    QVariant nullVariant = QVariant::fromValue((QObject* const)nullptr);
     for (size_t i = 0; i < m_BehaviorModel->rowCount(); i++)
     {
-        QString v1 = m_BehaviorModel->item(i, 0)->data(Qt::EditRole).toString();
-        QString v2 = m_BehaviorModel->item(i, 1)->data(Qt::EditRole).toString();
-        QString v3 = m_BehaviorModel->item(i, 2)->data(Qt::EditRole).toString();
-        QString v4 = m_BehaviorModel->item(i, 4)->data(Qt::EditRole).toString();
-        QString v5 = m_BehaviorModel->item(i, 3)->data(Qt::EditRole).toString();
+        QVariant qv1 = m_BehaviorModel->item(i, 0) == nullptr ? "" : m_BehaviorModel->item(i, 0)->data(Qt::EditRole);
+        QVariant qv2 = m_BehaviorModel->item(i, 1) == nullptr ? "" : m_BehaviorModel->item(i, 1)->data(Qt::EditRole);
+        QVariant qv3 = m_BehaviorModel->item(i, 2) == nullptr ? "" : m_BehaviorModel->item(i, 2)->data(Qt::EditRole);
+        QVariant qv4 = m_BehaviorModel->item(i, 4) == nullptr ? "" : m_BehaviorModel->item(i, 4)->data(Qt::EditRole);
+        QVariant qv5 = m_BehaviorModel->item(i, 3) == nullptr ? "" : m_BehaviorModel->item(i, 3)->data(Qt::EditRole);
+        QString v1 = (qv1 == nullVariant ? "" : qv1).toString();
+        QString v2 = (qv2 == nullVariant ? "" : qv2).toString();
+        QString v3 = (qv3 == nullVariant ? "" : qv3).toString();
+        QString v4 = (qv4 == nullVariant ? "" : qv4).toString();
+        QString v5 = (qv5 == nullVariant ? "" : qv5).toString();
 
         if (v1 != "" && (v3 == "")) return err(i, "Campi mancanti");
         if ((v3 != "" && v3 != "8") && v4 == "") return err(i, "Campi mancanti");

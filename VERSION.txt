@@ -1,4 +1,10 @@
-﻿1.69
+﻿1.70
+- alcuni performance fix al tester
+- corretti alcuni bug di crash su behavior
+- aggiunti report per mob e room
+- corretto il conteggio init per mob seguaci
+__________________________________
+1.69
 - performance fix per il tester
 - rifatto il mapper che era rotto da QT5 e aveva problemi con DPI
 - corretti alcuni bug di crash

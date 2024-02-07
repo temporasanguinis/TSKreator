@@ -184,8 +184,21 @@ namespace ts
     ZoneInitList::mobs_const_iterator it = m_initList.mobsConstBegin();
     while( it != m_initList.mobsConstEnd() )
     {
-      if( (*it).isMobLoad()  )
-        iCount += (*it).countMobs( vnum );
+        if ((*it).isMobLoad()) {
+            //long vn = (*it).id();
+            long cnt1 = (*it).countMobs(vnum);
+            iCount += cnt1;
+
+            auto fit = (*it).master().sonsBegin();
+            if (fit != (*it).master().sonsEnd()) {
+                while (fit != (*it).master().sonsEnd())
+                {
+                    iCount += (*fit).isMobFollower() && (*fit).argument((*fit).Argument1) == vnum ? 1 : 0;
+
+                    ++fit;
+                }
+            }
+        }
       ++it;
     }
     return iCount;

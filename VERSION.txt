@@ -1,4 +1,7 @@
-﻿1.70
+﻿1.71
+- aggiunto nuovi item affix
+__________________________________
+1.70
 - alcuni performance fix al tester
 - corretti alcuni bug di crash su behavior
 - aggiunti report per mob e room

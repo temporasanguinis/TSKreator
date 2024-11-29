@@ -1,4 +1,7 @@
-﻿1.71
+﻿1.72
+- nuove posizioni indossabili
+__________________________________
+1.71
 - aggiunto nuovi item affix
 __________________________________
 1.70

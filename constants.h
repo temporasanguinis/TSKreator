@@ -160,7 +160,9 @@ namespace ts
   const int ITEM_WEAR_BACK					= 17;
   const int ITEM_WEAR_EAR					= 18;
   const int ITEM_WEAR_EYE					= 19;
-  const int ITEM_WEAR_POSITION_END			= 20;
+  const int ITEM_WEAR_ARROW					= 20;
+  const int ITEM_WEAR_RELIQUARY				= 21;
+  const int ITEM_WEAR_POSITION_END			= 22;
   /* Item Wear Position End */
 
   /* Weapon Damage Type */
@@ -184,7 +186,7 @@ namespace ts
   // See Handler.h for Liquid Name...
   const int ITEM_INSTRUMENT_TYPE_END = 4;
   /* Equipment Position */
-  const int EQUIPMENT_POSITION_END          = 22;
+  const int EQUIPMENT_POSITION_END          = 24;
   /* Equipment Position End */
 
   /* Room Sector Types */

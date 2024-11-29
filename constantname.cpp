@@ -231,6 +231,8 @@ namespace ts
     "all'orecchio destro",
     "all'orecchio sinistro",
     "davanti agli occhi",
+    "incoccato",
+    "reliquia",
     "\n"
   };
 

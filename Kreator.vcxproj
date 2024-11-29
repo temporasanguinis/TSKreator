@@ -439,7 +439,8 @@ copy /-y "$(ProjectDir)qt_globals.targets" "$(APPDATA)\..\Local\QtMsBuild\qt_glo
 copy /-y "$(ProjectDir)qt.natvis" "$(OutDir)"
 copy /-y "$(ProjectDir)qt.natvis" "$(APPDATA)\..\Local\QtMsBuild\qt5.natvis"
 copy /-y "$(ProjectDir)qt.natvis" "$(APPDATA)\..\Local\QtMsBuild\qt5.natvis.xml"
-copy /-y "$(ProjectDir)qt.natvis" "$(APPDATA)\..\Local\QtMsBuild\qt.natvis.xml"</Command>
+copy /-y "$(ProjectDir)qt.natvis" "$(APPDATA)\..\Local\QtMsBuild\qt.natvis.xml"
+copy /y "$(ProjectDir)qt_vars.targets" "$(QtMsBuild)\qt_vars.targets"</Command>
     </PreBuildEvent>
     <PostBuildEvent>
       <Command>
@@ -478,7 +479,8 @@ copy /-y "$(ProjectDir)qt_globals.targets" "$(APPDATA)\..\Local\QtMsBuild\qt_glo
 copy /-y "$(ProjectDir)qt.natvis" "$(OutDir)"
 copy /-y "$(ProjectDir)qt.natvis" "$(APPDATA)\..\Local\QtMsBuild\qt5.natvis"
 copy /-y "$(ProjectDir)qt.natvis" "$(APPDATA)\..\Local\QtMsBuild\qt5.natvis.xml"
-copy /-y "$(ProjectDir)qt.natvis" "$(APPDATA)\..\Local\QtMsBuild\qt.natvis.xml"</Command>
+copy /-y "$(ProjectDir)qt.natvis" "$(APPDATA)\..\Local\QtMsBuild\qt.natvis.xml"
+copy /y "$(ProjectDir)qt_vars.targets" "$(QtMsBuild)\qt_vars.targets"</Command>
     </PreBuildEvent>
     <PostBuildEvent>
       <Command>rmdir "$(ProjectDir)binaries\msvc\build" /Q /S
